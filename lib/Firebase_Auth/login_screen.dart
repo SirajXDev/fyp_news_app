@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mews_application_2/Firebase_Auth/forgot_password.dart';
-import 'package:mews_application_2/Firebase_Auth/login_with_phone.dart';
-import 'package:mews_application_2/Firebase_Auth/signup_screen.dart';
-import 'package:mews_application_2/screens/home_screen.dart';
-import 'package:mews_application_2/utils/utils.dart';
-import 'package:mews_application_2/widgets/round_button.dart';
+import 'package:news_application_2/Firebase_Auth/forgot_password.dart';
+import 'package:news_application_2/Firebase_Auth/login_with_phone.dart';
+import 'package:news_application_2/Firebase_Auth/signup_screen.dart';
+import 'package:news_application_2/screens/home_screen.dart';
+import 'package:news_application_2/utils/utils.dart';
+import 'package:news_application_2/widgets/round_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

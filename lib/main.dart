@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:mews_application_2/firebase_options.dart';
-import 'package:mews_application_2/screens/splash_screen.dart';
+import 'package:news_application_2/firebase_options.dart';
+import 'package:news_application_2/screens/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

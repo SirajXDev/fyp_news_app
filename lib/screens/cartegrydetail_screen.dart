@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import 'package:mews_application_2/models/category_model.dart';
+import 'package:news_application_2/models/category_model.dart';
 
 class CategoryNewsDetailScreen extends StatefulWidget {
   final Articles article;

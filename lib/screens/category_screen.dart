@@ -4,9 +4,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
-import 'package:mews_application_2/models/category_model.dart';
-import 'package:mews_application_2/repositiry%20copy/category_repo.dart';
-import 'package:mews_application_2/screens/cartegrydetail_screen.dart';
+import 'package:news_application_2/models/category_model.dart';
+import 'package:news_application_2/repositiry%20copy/category_repo.dart';
+import 'package:news_application_2/screens/cartegrydetail_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});

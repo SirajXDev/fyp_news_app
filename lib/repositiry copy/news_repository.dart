@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:mews_application_2/models/news_channel_headline.dart';
+import 'package:news_application_2/models/news_channel_headline.dart';
 
 class NewsRepository {
   Future<NewsChannelHeadlineModel> fetchNewsChannelHeadlineApi(

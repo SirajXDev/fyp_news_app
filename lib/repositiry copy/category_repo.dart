@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:mews_application_2/models/category_model.dart';
+import 'package:news_application_2/models/category_model.dart';
 
 class NewsCategoriesRepo {
   Future<CategoriesNewsModel> fetchNewsCategoires(String category) async {

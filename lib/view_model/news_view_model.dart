@@ -1,5 +1,6 @@
-import 'package:mews_application_2/models/news_channel_headline.dart';
-import 'package:mews_application_2/repositiry%20copy/news_repository.dart';
+
+import 'package:news_application_2/models/news_channel_headline.dart';
+import 'package:news_application_2/repositiry%20copy/news_repository.dart';
 
 class NewsViewModel {
   final _rep = NewsRepository();

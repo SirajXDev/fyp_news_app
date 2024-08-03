@@ -1,30 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mews_application_2/utils/utils.dart';
-import 'package:mews_application_2/widgets/round_button.dart';
+import 'package:news_application_2/utils/utils.dart';
+import 'package:news_application_2/widgets/round_button.dart';
 
 class SignUpScreen extends StatefulWidget {
-
   const SignUpScreen({super.key});
- void signup(){
-
- }
+  void signup() {}
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  bool loading = false;
 
-  
   final _formField = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final  FirebaseAuth  _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   void dispose() {
     super.dispose();
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +80,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Center(
               child: RoundButton(
                   title: 'Sign up',
+                  
                   onTap: () {
+            
                     if (_formField.currentState!.validate()) {
                       _auth
                           .createUserWithEmailAndPassword(
@@ -92,8 +90,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               password: passwordController.text.toString())
                           .then((value) {})
                           .onError((error, stackTrace) {
-                            Utils().toastMessage(error.toString() );
-                          });
+                        Utils().toastMessage(error.toString());
+                      
+                      });
+                    
                     }
                   }),
             ),
@@ -108,7 +108,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Login',style: TextStyle(color: Colors.blue),)),
+                    child: const Text(
+                      'Login',
+                      style: TextStyle(color: Colors.blue),
+                    )),
               ],
             )
           ],

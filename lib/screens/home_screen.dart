@@ -1,16 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:mews_application_2/models/news_channel_headline.dart';
-import 'package:mews_application_2/screens/category_screen.dart';
-import 'package:mews_application_2/screens/news_detail_screen.dart';
-import 'package:mews_application_2/view_model/news_list.dart';
-import 'package:mews_application_2/view_model/news_view_model.dart';
+import 'package:news_application_2/Firebase_Auth/login_screen.dart';
+import 'package:news_application_2/models/news_channel_headline.dart';
+import 'package:news_application_2/screens/category_screen.dart';
+import 'package:news_application_2/screens/news_detail_screen.dart';
+import 'package:news_application_2/utils/utils.dart';
+import 'package:news_application_2/view_model/news_list.dart';
+import 'package:news_application_2/view_model/news_view_model.dart';
 
 
 class HomeScreen extends StatefulWidget {
+  
   
 const   HomeScreen({super.key});
 
@@ -21,6 +25,7 @@ const   HomeScreen({super.key});
 enum FilterList { bbcNews, aryNews, independent, cnn, aljazeera }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final auth=FirebaseAuth.instance;
   final format = DateFormat('MMMM dd, yyyy');
 
   String name = 'bbc-news';
@@ -69,6 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (item == FilterList.aljazeera) {
                   name = 'al-jazeera-english';
                 }
+                 if (item == FilterList.cnn) {
+                  name = 'cnn';
+                }
+                if (item == FilterList.independent) {
+                  name = 'independent';
+                }
+
               });
             },
             itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
@@ -84,6 +96,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 value: FilterList.aljazeera,
                 child: Text('Al Jazeera English'),
               ),
+               const PopupMenuItem<FilterList>(
+                value: FilterList.cnn,
+                child: Text('CNN'),
+              ),
+               const PopupMenuItem<FilterList>(
+                value: FilterList.independent,
+                child: Text('Independent'),
+              ),
+               PopupMenuItem(child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Text('Logout'),
+                   Icon(Icons.logout_outlined)
+                 ],
+               ),
+              onTap: () {
+               auth.signOut().then((value){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
+          }).onError((error, stackTrace) {
+            Utils().toastMessage(error.toString());
+          });
+              },
+              )
+              
             ],
           ),
         ],

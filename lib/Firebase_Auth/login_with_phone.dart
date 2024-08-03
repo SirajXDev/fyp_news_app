@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mews_application_2/Firebase_Auth/verify_code.dart';
-import 'package:mews_application_2/utils/utils.dart';
-import 'package:mews_application_2/widgets/round_button.dart';
+import 'package:news_application_2/Firebase_Auth/verify_code.dart';
+import 'package:news_application_2/utils/utils.dart';
+import 'package:news_application_2/widgets/round_button.dart';
 
 class LoginWithPhoneNumber extends StatefulWidget {
   const LoginWithPhoneNumber({super.key});
