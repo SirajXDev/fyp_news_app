@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:news_application_2/screens/home_screen.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
-  void signup() {}
+
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -17,16 +18,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
+  }
+
+  void signUp() {
+    if (_formField.currentState!.validate()) {
+      setState(() {
+        loading = true;
+      });
+
+      _auth
+          .createUserWithEmailAndPassword(
+          email: emailController.text.toString(),
+          password: passwordController.text.toString())
+          .then((value) {
+        setState(() {
+          loading = false;
+        });
+
+        // Navigate to another screen or show a success message here
+         Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+      })
+          .catchError((error) {
+        setState(() {
+          loading = false;
+        });
+        Utils().toastMessage(error.toString());
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('sign up screen'),
+        title: const Text('Sign up screen'),
         backgroundColor: Colors.blue,
         centerTitle: true,
       ),
@@ -62,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(
-                        hintText: 'password',
+                        hintText: 'Password',
                         prefixIcon: Icon(Icons.lock_open),
                       ),
                       validator: (value) {
@@ -79,23 +113,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             Center(
               child: RoundButton(
-                  title: 'Sign up',
-                  
-                  onTap: () {
-            
-                    if (_formField.currentState!.validate()) {
-                      _auth
-                          .createUserWithEmailAndPassword(
-                              email: emailController.text.toString(),
-                              password: passwordController.text.toString())
-                          .then((value) {})
-                          .onError((error, stackTrace) {
-                        Utils().toastMessage(error.toString());
-                      
-                      });
-                    
-                    }
-                  }),
+                title: 'Sign up',
+                loading: loading,
+                onTap: signUp,
+              ),
             ),
             const SizedBox(
               height: 30,
@@ -103,15 +124,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Al Ready have an account?"),
+                const Text("Already have an account?"),
                 TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(color: Colors.blue),
-                    )),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
               ],
             )
           ],
