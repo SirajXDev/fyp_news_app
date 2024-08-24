@@ -44,7 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         // Navigate to another screen or show a success message here
          Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
       );
       })
           .catchError((error) {
