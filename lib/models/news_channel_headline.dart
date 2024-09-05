@@ -1,11 +1,11 @@
-class NewsChannelHeadlineModel {
+class NewsChannelHeadlineMdl {
   String? status;
   int? totalResults;
   List<Articles>? articles;
 
-  NewsChannelHeadlineModel({this.status, this.totalResults, this.articles});
+  NewsChannelHeadlineMdl({this.status, this.totalResults, this.articles});
 
-  NewsChannelHeadlineModel.fromJson(Map<String, dynamic> json) {
+  NewsChannelHeadlineMdl.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     totalResults = json['totalResults'];
     if (json['articles'] != null) {
@@ -48,8 +48,7 @@ class Articles {
       this.content});
 
   Articles.fromJson(Map<String, dynamic> json) {
-    source =
-        json['source'] != null ? Source.fromJson(json['source']) : null;
+    source = json['source'] != null ? Source.fromJson(json['source']) : null;
     author = json['author'];
     title = json['title'];
     description = json['description'];
