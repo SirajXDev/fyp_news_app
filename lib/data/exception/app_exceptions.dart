@@ -1,4 +1,5 @@
-/// Base class for custom application exceptions.
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 class AppException implements Exception {
   final _message; // Message associated with the exception
   final _prefix; // Prefix for the exception
@@ -20,7 +21,8 @@ class FetchDataException extends AppException {
   /// Constructor for creating a [FetchDataException] instance.
   ///
   /// The [message] parameter represents the error message.
-  FetchDataException([String? message]) : super(message, 'Error During Communication');
+  FetchDataException([String? message])
+      : super(message, 'Error During Communication');
 }
 
 /// Exception class representing a bad request error.
@@ -36,7 +38,8 @@ class UnauthorisedException extends AppException {
   /// Constructor for creating an [UnauthorisedException] instance.
   ///
   /// The [message] parameter represents the error message.
-  UnauthorisedException([String? message]) : super(message, 'Unauthorised request');
+  UnauthorisedException([String? message])
+      : super(message, 'Unauthorised request');
 }
 
 /// Exception class representing an invalid input error.
@@ -52,5 +55,6 @@ class NoInternetException extends AppException {
   /// Constructor for creating a [NoInternetException] instance.
   ///
   /// The [message] parameter represents the error message.
-  NoInternetException([String? message]) : super(message, 'No Internet Connection');
+  NoInternetException([String? message])
+      : super(message, 'No Internet Connection');
 }

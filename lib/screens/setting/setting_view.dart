@@ -2,12 +2,13 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_application_2/bloc/cubit/theme_cubit.dart';
-import 'package:news_application_2/configs/color/color.dart';
+import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
+import 'package:news_application_2/configs/routes/routes_name.dart';
+import 'package:news_application_2/screens/setting/parts/custom_list_tile_widget.dart';
+import 'package:news_application_2/screens/setting/parts/custom_switch_list_tile_widget.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
-import 'package:news_application_2/utils/utils.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -15,13 +16,10 @@ class SettingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeCubit, bool>(
+      buildWhen: (previous, current) => previous != current,
       builder: (context, isDarkMode) {
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          // appBar: AppBar(
-          //   title: const Text('Setting'),
-          //   centerTitle: true,
-          // ),
           body: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,10 +31,14 @@ class SettingView extends StatelessWidget {
                 ),
                 20.h,
                 // listtiles
-                const CustomListTileWidget(
+                CustomListTileWidget(
                   leadingIcon: CupertinoIcons.person,
                   title: 'Profile',
                   trailIcon: Icons.arrow_forward_ios,
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    RoutesName.profile,
+                  ),
                 ),
                 15.h,
                 CustomSwitchListTileWidget(
@@ -77,136 +79,6 @@ class SettingView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class CustomListTileWidget extends StatelessWidget {
-  const CustomListTileWidget({
-    super.key,
-    required this.leadingIcon,
-    required this.title,
-    required this.trailIcon,
-  });
-
-  final IconData leadingIcon;
-  final String title;
-  final IconData trailIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: AppColors.greyLightest,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CustomIconWidget(
-                icon: leadingIcon,
-                size: 20,
-                color: Theme.of(context).iconTheme.color,
-              ),
-              6.w,
-              TitleTextThemeWidget(
-                  title: title, size: 17, weight: FontWeight.w500),
-            ],
-          ),
-          CustomIconWidget(
-            icon: trailIcon,
-            size: 14,
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class CustomSwitchListTileWidget extends StatelessWidget {
-  CustomSwitchListTileWidget({
-    super.key,
-    required this.leadingIcon,
-    required this.title,
-    this.switchValue = false,
-    required this.onChanged,
-    required this.isThemeSwitchSelected,
-    // required this.trailIcon,
-  });
-
-  final IconData leadingIcon;
-  final String title;
-  bool switchValue;
-  void Function(bool)? onChanged;
-  bool isThemeSwitchSelected;
-  // final IconData trailIcon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      padding: const EdgeInsets.only(left: 10, right: 0, top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: AppColors.greyLightest,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CustomIconWidget(
-                icon: leadingIcon,
-                size: 20,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              6.w,
-              TitleTextThemeWidget(
-                  title: title, size: 17, weight: FontWeight.w500),
-            ],
-          ),
-          Transform.scale(
-            scale: 0.75, // Reduce the size by 25%
-            child: isThemeSwitchSelected
-                ? Switch.adaptive(
-                    activeColor: Theme.of(context).colorScheme.onPrimary,
-                    value: switchValue,
-                    onChanged: onChanged,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  )
-                : Switch(
-                    activeColor: Theme.of(context).colorScheme.onPrimary,
-                    value: switchValue,
-                    onChanged: onChanged,
-                    // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class CustomIconWidget extends StatelessWidget {
-  const CustomIconWidget({
-    super.key,
-    required this.icon,
-    this.size = 20,
-    this.color = AppColors.blackLight,
-  });
-  final IconData icon;
-  final double? size;
-  final Color? color;
-  @override
-  Widget build(BuildContext context) {
-    return Icon(
-      icon,
-      size: size,
-      color: color,
     );
   }
 }

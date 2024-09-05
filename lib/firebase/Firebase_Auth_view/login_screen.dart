@@ -5,7 +5,6 @@ import 'package:news_application_2/firebase/Firebase_Auth_view/forgot_password.d
 import 'package:news_application_2/firebase/Firebase_Auth_view/login_with_phone.dart';
 import 'package:news_application_2/firebase/Firebase_Auth_view/signup_screen.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
-import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
 class LoginScreen extends StatefulWidget {

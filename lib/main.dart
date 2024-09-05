@@ -1,13 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_application_2/bloc/cubit/theme_cubit.dart';
+import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/configs/themes/themes.dart';
 import 'package:news_application_2/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:news_application_2/screens/setting/profile/profile_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,9 @@ void main() async {
   try {
     await dotenv.load(fileName: 'assets/.env');
   } catch (e) {
-    print('Error loading .env file: $e');
+    if (kDebugMode) {
+      print('Error loading .env file: $e');
+    }
     // You can also set default values for your environment variables here
   }
 
@@ -48,7 +52,7 @@ class MyApp extends StatelessWidget {
         theme: theme,
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,
-        // home: const NavBar(),
+        home: const ProfileView(),
       ),
     );
   }

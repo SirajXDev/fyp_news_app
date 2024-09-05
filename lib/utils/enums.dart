@@ -1,3 +1,9 @@
 enum PostApiStatus { initial, loading, success, error }
 
-enum FilterList { bbcNews, aryNews, independent, cnn, aljazeera }
+enum FilterList {
+  bbcNews,
+  cnn,
+  aljazeera,
+  aryNews,
+  independent,
+}
