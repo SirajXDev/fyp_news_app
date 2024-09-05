@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/color/color.dart';
+import 'package:news_application_2/configs/components/custom_chip.dart';
 import 'package:news_application_2/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/models/news_channel_headline.dart';
 import 'package:news_application_2/screens/categ/category_screen.dart';
@@ -15,8 +17,9 @@ import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
-import 'package:news_application_2/screens/news_list/news_list.dart';
 import 'package:news_application_2/view_model/news_view_model.dart';
+
+import '../../configs/components/components_export.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final width = MediaQuery.sizeOf(context).width;
 
     return PopScope(
+      canPop: false,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -54,34 +58,51 @@ class _HomeScreenState extends State<HomeScreen> {
             // notification section ...
             Padding(
               padding: const EdgeInsets.only(
-                right: 10,
+                right: 0,
               ),
-              child: Icon(
-                Icons.notifications_none_outlined,
-                size: 20,
-                color: Theme.of(context).colorScheme.primary,
-              ),
+              child: IconButton(
+                  onPressed: () {},
+                  icon: Badge.count(
+                    count: 1,
+                    child: Icon(CupertinoIcons.bell,
+                        color: Theme.of(context).colorScheme.primary),
+                  )),
+              // Icon(
+              //   CupertinoIcons.bell,
+              //   size: 20,
+              //   color: Theme.of(context).colorScheme.primary,
+              // ),
             ),
           ],
         ),
         body: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: context.mqh * .02,
             ),
+            if (AdaptiveTheme.of(context).mode.isLight)
+              AdaptiveTheme.of(context).mode.isLight
+                  ? DividerHorizontalWidget(
+                      height: 0,
+                      startIndent: context.mqw * .028,
+                      endIndent: context.mqw * .44,
+                    )
+                  : const SizedBox.shrink(),
+
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.only(left: 10, right: 0),
               child: Row(
                 children: [
                   const TitleTextThemeWidget(title: "HeadLines"),
                   const Spacer(),
+                  // 10.w,
                   PopupMenuButton<FilterList>(
                     surfaceTintColor: AppColors.black,
                     initialValue: selectedMenu,
                     icon: CustomIconWidget(
                       icon: Icons.more_vert_outlined,
-                      size: 17,
+                      size: 15,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     onSelected: (FilterList item) {
@@ -187,16 +208,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text('No data available'),
                     );
                   } else {
+                    // Sort the articles by publication date in descending order
+                    List<Articles> sortedArticles = snapshot.data!.articles!
+                      ..sort(
+                          (a, b) => a.publishedAt!.compareTo(b.publishedAt!));
+
                     return ListView.builder(
-                      itemCount: snapshot.data!.articles!.length,
+                      itemCount: sortedArticles.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
-                        DateTime dateTime = DateTime.parse(
-                          snapshot.data!.articles![index].publishedAt
-                              .toString(),
-                        );
-
-                        String timeAgo = dateTime.timeAgo();
+                        var timeAgo = DateTime.parse(snapshot
+                                .data!.articles![index].publishedAt
+                                .toString())
+                            .timeAgo();
+                        Articles headlines = sortedArticles[index];
 
                         return InkWell(
                           onTap: () {
@@ -204,20 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => NewsDetailScreen(
-                                    snapshot.data!.articles![index].urlToImage
-                                        .toString(),
-                                    snapshot.data!.articles![index].title
-                                        .toString(),
-                                    snapshot.data!.articles![index].publishedAt
-                                        .toString(),
-                                    snapshot.data!.articles![index].author
-                                        .toString(),
-                                    snapshot.data!.articles![index].description
-                                        .toString(),
-                                    snapshot.data!.articles![index].content
-                                        .toString(),
-                                    snapshot.data!.articles![index].source!.name
-                                        .toString(),
+                                    headLines: headlines,
                                   ),
                                 ));
                           },
@@ -356,16 +368,15 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 6,
             ),
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.only(left: 10, right: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TitleTextThemeWidget(title: 'Articles'),
                   Spacer(),
                   CustomIconWidget(
                     icon: Icons.more_vert_outlined,
-                    size: 17,
-                    color: AppColors.blackLight,
+                    size: 15,
                   ),
                 ],
               ),

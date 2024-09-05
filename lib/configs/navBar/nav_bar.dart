@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/configs/color/color.dart';
-import 'package:news_application_2/configs/routes/navBar/nav_bar_controller.dart';
-import 'package:news_application_2/configs/routes/navBar/tabs.dart';
+import 'package:news_application_2/configs/navBar/nav_bar_controller.dart';
+import 'package:news_application_2/configs/navBar/tabs.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 
 class NavBar extends StatelessWidget {

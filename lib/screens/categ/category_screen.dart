@@ -9,6 +9,7 @@ import 'package:news_application_2/models/category_model.dart';
 import 'package:news_application_2/repositiry%20copy/category_repo.dart';
 import 'package:news_application_2/screens/categ_detail/cartegrydetail_screen.dart';
 import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
+import 'package:news_application_2/screens/widgets/categ_articles_list_tile_widget.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
@@ -123,6 +124,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
                       return GestureDetector(
                         onTap: () {
+                          debugPrint('imageUrl: ${article.urlToImage}');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -131,93 +133,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         article: article,
                                       )));
                         },
-                        child: article.author != null &&
-                                article.urlToImage != null
-                            ? Row(
-                                children: [
-                                  article.urlToImage != null
-                                      ? ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          child: CachedNetworkImage(
-                                            imageUrl: article.urlToImage ??
-                                                '', // Use the actual image URL
-                                            fit: BoxFit.cover,
-                                            height: height * .18,
-                                            width: width * .3,
-                                            placeholder: (context, url) =>
-                                                const Center(
-                                              child: SpinKitCircle(
-                                                  size: 50, color: Colors.blue),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    const Icon(
-                                              Icons.error_outline,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        )
-                                      : const SizedBox.shrink(),
-                                  Expanded(
-                                    child: Container(
-                                      height: height * .18,
-                                      padding: const EdgeInsets.only(left: 15),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          article.author != null
-                                              ? CustomChip(
-                                                  child: BodyTextThemeWidget(
-                                                    title: article.author ?? '',
-                                                    size: 12,
-                                                  ),
-                                                )
-                                              : const SizedBox.shrink(),
-                                          article.author != null
-                                              ? const SizedBox(
-                                                  height: 10,
-                                                )
-                                              : const SizedBox(
-                                                  height: 30,
-                                                ),
-                                          TitleTextThemeWidget(
-                                            title: article.title ?? '',
-                                            size: 16,
-                                          ),
-                                          const Spacer(),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Flexible(
-                                                child: CustomChip(
-                                                  color: AppColors.greenLight,
-                                                  child: BodyTextThemeWidget(
-                                                    title:
-                                                        article.source?.name ??
-                                                            '',
-                                                    size: 12,
-                                                  ),
-                                                ),
-                                              ),
-                                              Flexible(
-                                                child: BodyTextThemeWidget(
-                                                  title: timeAgo,
-                                                  size: 12,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
+                        child: article.author != null
+                            ? CategArticlesListTilesWidget(
+                                imageUrl: article.urlToImage,
+                                author: article.author,
+                                source: article.source?.name,
+                                title: article.title,
+                                timeAgo: timeAgo)
                             : const SizedBox.shrink(),
-                      ).paddingOnly(bottom: 4);
+                      ).paddingOnly(bottom: 2);
                     },
                   ),
           ),

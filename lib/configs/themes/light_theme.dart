@@ -27,11 +27,13 @@ ThemeData lightTheme = ThemeData.light(useMaterial3: true).copyWith(
       color: AppColors.greyLight,
     ),
   ),
+  floatingActionButtonTheme:
+      const FloatingActionButtonThemeData(backgroundColor: AppColors.blueLight),
   colorScheme: ThemeData.light().colorScheme.copyWith(
       secondary: AppColors.grey,
       primary: const Color(0xff0F0425),
       onPrimary: AppColors.blue,
-      outline: const Color(0xfff0f0f0),
+      outline: const Color.fromARGB(255, 239, 239, 239),
       onSurface: AppColors.blueLight,
       surface: const Color(0xffDCE8E8),
       primaryContainer: AppColors.orangeLight,

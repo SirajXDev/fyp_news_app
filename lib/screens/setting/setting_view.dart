@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/bloc/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
+import 'package:news_application_2/configs/components/log_out_alert.dart';
+import 'package:news_application_2/firebase/firebase_services/sign_out.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
@@ -64,7 +66,23 @@ class SettingView extends StatelessWidget {
                 ),
                 15.h,
                 //end tile
-                const CustomListTileWidget(
+                CustomListTileWidget(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => logoutAlert(
+                        context: context,
+                        onLogoutPressed: () async {
+                          await Logout.userSignOut(context);
+                          debugPrint('user-logout: ${Logout.auth}');
+                        },
+                        onCancelPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    );
+                    debugPrint('alert dialogue popup');
+                  },
                   leadingIcon: Icons.logout_outlined,
                   title: 'Logout',
                   trailIcon: Icons.arrow_forward_ios,
@@ -87,41 +105,46 @@ class CustomListTileWidget extends StatelessWidget {
     required this.leadingIcon,
     required this.title,
     required this.trailIcon,
+    this.onTap,
   });
-
+  final void Function()? onTap;
   final IconData leadingIcon;
   final String title;
   final IconData trailIcon;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 45,
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: AppColors.greyLightest,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              CustomIconWidget(
-                icon: leadingIcon,
-                size: 20,
-                color: Theme.of(context).iconTheme.color,
-              ),
-              6.w,
-              TitleTextThemeWidget(
-                  title: title, size: 17, weight: FontWeight.w500),
-            ],
-          ),
-          CustomIconWidget(
-            icon: trailIcon,
-            size: 14,
-          )
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 45,
+        padding:
+            const EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+        decoration: BoxDecoration(
+          color: AppColors.greyLightest,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                CustomIconWidget(
+                  icon: leadingIcon,
+                  size: 20,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                6.w,
+                TitleTextThemeWidget(
+                    title: title, size: 17, weight: FontWeight.w500),
+              ],
+            ),
+            CustomIconWidget(
+              icon: trailIcon,
+              size: 14,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -196,7 +219,7 @@ class CustomIconWidget extends StatelessWidget {
     super.key,
     required this.icon,
     this.size = 20,
-    this.color = AppColors.blackLight,
+    this.color,
   });
   final IconData icon;
   final double? size;
@@ -206,7 +229,7 @@ class CustomIconWidget extends StatelessWidget {
     return Icon(
       icon,
       size: size,
-      color: color,
+      color: color ?? Theme.of(context).colorScheme.primary,
     );
   }
 }

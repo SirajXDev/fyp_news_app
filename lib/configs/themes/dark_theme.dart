@@ -63,12 +63,14 @@ ThemeData darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
         color: AppColors.grey,
       ),
     ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.indigoLight),
     colorScheme: const ColorScheme.dark().copyWith(
         secondary: AppColors.grey,
         primary: AppColors.whiteColor,
         onPrimary: Colors.indigo,
-        outline: Colors.black,
-        onSurface: Colors.indigo.shade400,
+        outline: const Color.fromARGB(255, 24, 24, 24),
+        onSurface: AppColors.indigoLight,
         brightness: Brightness.dark,
         surface: const Color(0xff202934),
         primaryContainer: AppColors.green,

@@ -1,26 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/color/color.dart';
+import 'package:news_application_2/models/news_channel_headline.dart';
 import 'package:news_application_2/screens/setting/setting_view.dart';
+import 'package:news_application_2/screens/widgets/sub_tile_news_source_widget.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
+import 'package:news_application_2/utils/extensions/general_extension.dart';
+import 'package:news_application_2/utils/launch_url_method.dart';
 import 'package:news_application_2/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class NewsDetailScreen extends StatefulWidget {
-  String newsImage;
-  String newsTitle;
-  String newsDate;
-  String newsAuthor;
-  String newsDesc;
-  String newsContent;
-  String newsSource;
-  NewsDetailScreen(this.newsImage, this.newsTitle, this.newsDate,
-      this.newsAuthor, this.newsDesc, this.newsContent, this.newsSource,
-      {super.key});
-
+  NewsDetailScreen({
+    super.key,
+    required this.headLines,
+  });
+  Articles headLines;
   @override
   State<NewsDetailScreen> createState() => _NewsDetailScreenState();
 }
@@ -31,14 +29,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint(widget.newsDesc);
+    debugPrint(widget.headLines.description);
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    DateTime dateTime = DateTime.parse(widget.newsDate);
+    DateTime dateTime = DateTime.parse(widget.headLines.publishedAt!);
     String timeAgo = dateTime.timeAgo();
 
     return Scaffold(
@@ -50,19 +48,20 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: const CustomIconWidget(
+          icon: CustomIconWidget(
             icon: Icons.arrow_back_ios,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               right: 10,
             ),
             child: Image(
-              image: AssetImage('assets/images/share.png'),
+              image: const AssetImage('assets/images/share.png'),
               height: 22,
-              color: AppColors.blackLight,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],
@@ -79,7 +78,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
                 child: CachedNetworkImage(
-                  imageUrl: widget.newsImage,
+                  imageUrl: widget.headLines.urlToImage!,
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(),
@@ -91,50 +90,28 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
               margin: EdgeInsets.only(top: height * 0.4),
               padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
               height: height * 0.6,
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30))),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.outline,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
               child: ListView(
                 children: [
                   const TitleTextThemeWidget(title: "Title :"),
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(widget.newsTitle,
-                      style: GoogleFonts.poppins(
-                          fontSize: 17,
-                          color: AppColors.blackLight,
-                          fontWeight: FontWeight.w700)),
+                  TitleTextThemeWidget(
+                    title: widget.headLines.title!,
+                    size: 16,
+                  ),
                   SizedBox(height: height * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: AppColors.greyLight,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Text(
-                            widget.newsSource,
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.poppins(
-                                fontSize: 13,
-                                color: Colors.blueAccent,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ),
-                      BodyTextThemeWidget(
-                        title: timeAgo,
-                        size: 12,
-                      ),
-                    ],
+                  SubTilesNewsSourceWidget(
+                    source: widget.headLines.source!.name,
+                    author: widget.headLines.author,
+                    timeAgo: timeAgo,
                   ),
                   SizedBox(
                     height: height * 0.01,
@@ -149,28 +126,39 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                   SizedBox(
                     height: height * 0.01,
                   ),
-                  Text(
-                    widget.newsDesc,
-                    style: GoogleFonts.poppins(
-                        fontSize: 14.6,
-                        color: AppColors.blackLight,
-                        fontWeight: FontWeight.w500),
+                  BodyTextThemeWidget(
+                    title: widget.headLines.description ?? '',
+                    shrinkWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                   SizedBox(
                     height: height * 0.006,
                   ),
-                  const Row(
+                  Row(
                     children: [
                       Flexible(
-                        child: CustomChip(),
+                        child: GestureDetector(
+                          onTap: () {
+                            launchUrl(
+                              Uri.parse('https:${widget.headLines.url!}'),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 1.2),
+                            decoration: BoxDecoration(
+                              color: AppColors.orangeLight,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const BodyTextThemeWidget(
+                                title: "learn More.."),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: height * 0.03,
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
+                    height: height * 0.04,
                   ),
                 ],
               ),
@@ -181,36 +169,14 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: const CustomIconWidget(
+        backgroundColor:
+            Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        child: CustomIconWidget(
           icon: CupertinoIcons.bookmark,
           size: 22,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
-    );
-  }
-}
-
-class CustomChip extends StatelessWidget {
-  const CustomChip({
-    super.key,
-    this.text,
-    this.color,
-    this.child,
-  });
-
-  final String? text;
-  final Color? color;
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1.2),
-      decoration: BoxDecoration(
-        color: color ?? AppColors.orangeLight,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: child ?? BodyTextThemeWidget(title: text ?? "learn More.."),
     );
   }
 }

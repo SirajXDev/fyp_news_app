@@ -71,16 +71,23 @@ class TitleTextThemeWidget extends StatelessWidget {
 
 class BodyTextThemeWidget extends StatelessWidget {
   const BodyTextThemeWidget(
-      {super.key, required this.title, this.size, this.weight});
+      {super.key,
+      required this.title,
+      this.size,
+      this.weight,
+      this.overflow = TextOverflow.visible,
+      this.shrinkWrap = true});
   final String title;
   final double? size;
   final FontWeight? weight;
+  final TextOverflow? overflow;
+  final bool? shrinkWrap;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      softWrap: true,
-      overflow: TextOverflow.ellipsis,
+      softWrap: shrinkWrap,
+      overflow: overflow ?? TextOverflow.ellipsis,
       title,
       style: GoogleFonts.abel(
         fontSize: size ?? 15,

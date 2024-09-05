@@ -33,6 +33,7 @@ dependencies:
   another_flushbar: ^1.12.30
   adaptive_theme: ^3.6.0
   shared_preferences: ^2.3.2
+  url_launcher: ^6.3.0
   # get: ^4.6.6
   
 

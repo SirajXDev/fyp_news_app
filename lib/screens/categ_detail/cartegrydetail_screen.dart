@@ -5,9 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/color/color.dart';
 
 import 'package:news_application_2/models/category_model.dart';
-import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
+import 'package:news_application_2/screens/widgets/sub_tile_news_source_widget.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CategoryNewsDetailScreen extends StatefulWidget {
   final Articles article;
@@ -42,18 +43,18 @@ class _CategoryNewsDetailScreenState extends State<CategoryNewsDetailScreen> {
           },
           icon: Icon(
             Icons.arrow_back_ios,
-            color: Colors.grey[600],
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               right: 10,
             ),
             child: Image(
-              image: AssetImage('assets/images/share.png'),
+              image: const AssetImage('assets/images/share.png'),
               height: 25,
-              color: AppColors.blackLight,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],
@@ -86,9 +87,9 @@ class _CategoryNewsDetailScreenState extends State<CategoryNewsDetailScreen> {
               margin: EdgeInsets.only(top: height * 0.4),
               padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
               height: height * 0.6,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.outline,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -98,69 +99,48 @@ class _CategoryNewsDetailScreenState extends State<CategoryNewsDetailScreen> {
                   SizedBox(height: height * 0.01),
                   const TitleTextThemeWidget(title: 'Title :'),
                   SizedBox(height: height * 0.01),
-                  Text(
-                    widget.article.title ?? 'No title',
-                    style: GoogleFonts.poppins(
-                      fontSize: 17.1,
-                      color: AppColors.blackLight,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  TitleTextThemeWidget(
+                    title: widget.article.title ?? 'No title',
+                    size: 17,
                   ),
                   SizedBox(height: height * 0.02),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Flexible(
-                        child: CustomChip(
-                          color: AppColors.greyLight,
-                          child: Text(
-                            widget.article.source?.name ?? 'Unknown source',
-                            softWrap: true,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.poppins(
-                              fontSize: 13,
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        timeAgo,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: Colors.black87,
-                          fontWeight: FontWeight.w500,
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
+                  SubTilesNewsSourceWidget(
+                    source: widget.article.source?.name,
+                    author: widget.article.author,
+                    timeAgo: timeAgo,
                   ),
                   SizedBox(height: height * 0.01),
-                  // Text(
-                  //   widget.article.description ?? 'No description',
-                  //   style: GoogleFonts.poppins(
-                  //     fontSize: 15,
-                  //     color: Colors.black87,
-                  //     fontWeight: FontWeight.w500,
-                  //   ),
-                  // ),
                   const Divider(),
                   SizedBox(height: height * 0.01),
                   const TitleTextThemeWidget(title: 'Description :'),
                   SizedBox(height: height * 0.01),
-
-                  Text(
-                    widget.article.content ?? 'No content',
-                    style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      color: Colors.black87,
-                      fontWeight: FontWeight.w400,
-                    ),
+                  BodyTextThemeWidget(
+                    title: widget.article.content ?? 'No content',
                   ),
-                  SizedBox(height: height * 0.03),
+                  SizedBox(height: height * 0.01),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: () {
+                            launchUrl(
+                              Uri.parse('https:${widget.article.url}'),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 3, vertical: 1.2),
+                            decoration: BoxDecoration(
+                              color: AppColors.orangeLight,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const BodyTextThemeWidget(
+                                title: "learn More.."),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

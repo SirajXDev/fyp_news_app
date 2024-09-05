@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
+import 'package:news_application_2/configs/navBar/nav_bar.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/screens/splash/splash_screen.dart';
