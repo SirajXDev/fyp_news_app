@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/firebase/Firebase_Auth_view/login_screen.dart';
+import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart';
+import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
 import 'package:news_application_2/screens/setting/profile/profile_view.dart';
 import 'package:news_application_2/screens/splash/splash_screen.dart';
 
@@ -26,6 +28,15 @@ class Routes {
       case RoutesName.profile:
         return MaterialPageRoute(
           builder: (BuildContext context) => const ProfileView(),
+        );
+      case RoutesName.NEWS_DETAIL_SCREEN:
+        return MaterialPageRoute(
+          settings: RouteSettings(
+            arguments: settings.arguments, // Pass the arguments here
+          ),
+          builder: (BuildContext context) => NewsDetailScreen(
+            headLines: settings.arguments as Articles,
+          ),
         );
 
       default:

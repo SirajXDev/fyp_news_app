@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
-  void snackBarMessage(BuildContext context, String message, [double? size]) {
+  static void snackBarMessage(BuildContext context, String message,
+      [double? size]) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -15,39 +17,13 @@ class Utils {
       ),
     );
   }
-}
 
-// static TextStyle titleTextTheme = GoogleFonts.lato(
-//   fontSize: 18,
-//   fontWeight: FontWeight.bold,
-//   color: AppColors.black,
-//   // decoration: TextDecoration.underline,
-// );
-
-//   static TextStyle titleTextTheme({
-//     required BuildContext context,
-//     double? size,
-//     FontWeight? weight,
-//   }) {
-//     return GoogleFonts.aBeeZee(
-//       fontSize: size ?? 18,
-//       fontWeight: weight ?? FontWeight.bold,
-//       color: Theme.of(context).colorScheme.primary,
-//     );
-//   }
-
-//   static TextStyle bodyTextTheme({
-//     required BuildContext context,
-//     double? size,
-//     FontWeight? weight,
-//   }) {
-//     return GoogleFonts.abel(
-//       fontSize: size ?? 15,
-//       fontWeight: weight ?? FontWeight.bold,
-//       color: Theme.of(context).colorScheme.primary,
-//     );
-//   }
-// }
+  static const spinKit2 = SpinKitFadingCircle(
+    color: Colors.amber,
+    size: 50,
+  );
+  static final dateFormat = DateFormat('MMMM dd, yyyy');
+} // class end
 
 class TitleTextThemeWidget extends StatelessWidget {
   const TitleTextThemeWidget(
@@ -98,11 +74,3 @@ class BodyTextThemeWidget extends StatelessWidget {
     );
   }
 }
-
-const spinKit2 = SpinKitFadingCircle(
-  color: Colors.amber,
-  size: 50,
-);
-
-// news.org -> api's key
-// apiKey=4f377273fdd74ca7bfbd7ebcaffdc618

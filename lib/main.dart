@@ -2,6 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:news_application_2/repository/categ/categ_news_repo.dart';
+import 'package:news_application_2/repository/categ/categ_news_repo_imp.dart';
+import 'package:news_application_2/repository/headlines/headlines_news_repo.dart';
+import 'package:news_application_2/repository/headlines/headlines_news_repo_imp.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -11,6 +16,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:news_application_2/screens/setting/profile/profile_view.dart';
 
+// GetIt is a package used for service locator or to manage dependency injection
+GetIt getIt = GetIt.instance;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AdaptiveTheme.getThemeMode();
@@ -26,6 +33,8 @@ void main() async {
     }
     // You can also set default values for your environment variables here
   }
+
+  servicesLocator(); // Initializing service locator for dependency injection
 
   runApp(
     BlocProvider(
@@ -52,8 +61,16 @@ class MyApp extends StatelessWidget {
         theme: theme,
         initialRoute: RoutesName.splash,
         onGenerateRoute: Routes.generateRoute,
-        home: const ProfileView(),
+        // home: const ProfileView(),
       ),
     );
   }
+}
+
+// Function for initializing service locator
+void servicesLocator() {
+  getIt.registerLazySingleton<HeadlinesNewsRepo>(() =>
+      HeadlinesNewsRepoImp()); // Registering AuthHttpApiRepository as a lazy singleton for AuthApiRepository
+  getIt.registerLazySingleton<CategNewsRepo>(() =>
+      CategNewsRepoImp()); // Registering MoviesHttpApiRepository as a lazy singleton for MoviesApiRepository
 }

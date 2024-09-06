@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/color/color.dart';
+import 'package:news_application_2/models/categ_news/categ_news.dart';
 
-import 'package:news_application_2/models/category_model.dart';
 import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 
 class CategoryNewsDetailScreen extends StatefulWidget {
-  final Articles article;
-
   const CategoryNewsDetailScreen({super.key, required this.article});
+  final Articles article;
 
   @override
   State<CategoryNewsDetailScreen> createState() =>

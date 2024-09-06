@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/time_ago_widget.dart';
-import 'package:news_application_2/models/news_channel_headline.dart';
+import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart';
 import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
@@ -30,7 +30,7 @@ class HeadLinesNewsCardWidget extends StatelessWidget {
               // height: height * 0.9,
               imageUrl: headlines.urlToImage.toString(),
               fit: BoxFit.cover,
-              placeholder: (context, url) => Container(child: spinKit2),
+              placeholder: (context, url) => Container(child: Utils.spinKit2),
               errorWidget: (context, url, error) => const Icon(
                 Icons.error_outline,
                 color: Colors.red,
@@ -41,6 +41,7 @@ class HeadLinesNewsCardWidget extends StatelessWidget {
         Positioned(
           top: context.mqh * .16,
           left: context.mqw * .08,
+          bottom: 4,
           child: Card(
             color: Theme.of(context).cardColor,
             elevation: 3,
