@@ -41,7 +41,7 @@ class HeadLinesNewsCardWidget extends StatelessWidget {
         Positioned(
           top: context.mqh * .16,
           left: context.mqw * .08,
-          bottom: 4,
+          // bottom: 4,
           child: Card(
             color: Theme.of(context).cardColor,
             elevation: 3,

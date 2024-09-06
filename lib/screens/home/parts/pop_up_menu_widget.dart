@@ -10,55 +10,60 @@ class PopupMenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<FilterList>(
-      icon: const CustomIconWidget(
-        icon: Icons.more_vert,
-        size: 16,
-      ),
-      color: Theme.of(context).colorScheme.outline,
-      onSelected: (FilterList item) {
-        context
-            .read<NewsHomeBloc>()
-            .add(HeadLinesArticleNewsEvent(categ: item.name));
+    return BlocBuilder<NewsHomeBloc, NewsHomeState>(
+      // buildWhen: (previous, current) =>
+      //     previous.headLinesList.data != current.headLinesList.data,
+      builder: (context, state) {
+        return PopupMenuButton<FilterList>(
+          icon: const CustomIconWidget(
+            icon: Icons.more_vert,
+            size: 16,
+          ),
+          color: Theme.of(context).colorScheme.outline,
+          onSelected: (FilterList item) {
+            context
+                .read<NewsHomeBloc>()
+                .add(HeadLinesArticleNewsEvent(categ: item.name));
+          },
+          itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
+            const PopupMenuItem<FilterList>(
+              value: FilterList.bbcNews,
+              child: TitleTextThemeWidget(
+                title: 'BBC NEWS',
+                size: 12,
+              ),
+            ),
+            const PopupMenuItem<FilterList>(
+              value: FilterList.cnn,
+              child: TitleTextThemeWidget(
+                title: 'CNN NEWS',
+                size: 12,
+              ),
+            ),
+            const PopupMenuItem<FilterList>(
+              value: FilterList.aljazeera,
+              child: TitleTextThemeWidget(
+                title: 'AL JAZEERA ENGLISH',
+                size: 12,
+              ),
+            ),
+            const PopupMenuItem<FilterList>(
+              value: FilterList.aryNews,
+              child: TitleTextThemeWidget(
+                title: 'ARY NEWS',
+                size: 12,
+              ),
+            ),
+            const PopupMenuItem<FilterList>(
+              value: FilterList.independent,
+              child: TitleTextThemeWidget(
+                title: 'INDEPENDENT NEWS',
+                size: 12,
+              ),
+            ),
+          ],
+        );
       },
-      itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
-        const PopupMenuItem<FilterList>(
-          value: FilterList.bbcNews,
-          child: TitleTextThemeWidget(
-            title: 'BBC NEWS',
-            size: 12,
-          ),
-        ),
-        const PopupMenuItem<FilterList>(
-          value: FilterList.aryNews,
-          child: TitleTextThemeWidget(
-            title: 'CNN NEWS',
-            size: 12,
-          ),
-        ),
-        const PopupMenuItem<FilterList>(
-          value: FilterList.aryNews,
-          child: TitleTextThemeWidget(
-            title: 'AL JAZEERA ENGLISH',
-            size: 12,
-          ),
-        ),
-        const PopupMenuItem<FilterList>(
-          value: FilterList.aryNews,
-          child: TitleTextThemeWidget(
-            title: 'ARY NEWS',
-            size: 12,
-          ),
-        ),
-        const PopupMenuItem<FilterList>(
-          value: FilterList.aryNews,
-          child: TitleTextThemeWidget(
-            title: 'INDEPENDENT NEWS',
-            size: 12,
-          ),
-        ),
-        // Add other menu items here
-      ],
     );
   }
 }

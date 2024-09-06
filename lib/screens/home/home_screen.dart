@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 import 'package:news_application_2/configs/components/custom_notification_count_widget.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -75,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                           state.headLinesList.data!;
 
                       return SizedBox(
-                        height: 200,
+                        height: context.mqh * .31,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: headLinesListState.articles?.length ?? 0,
@@ -91,19 +92,16 @@ class HomeScreen extends StatelessWidget {
                                 RoutesName.NEWS_DETAIL_SCREEN,
                                 arguments: headLinesListState.articles![index],
                               ),
-                              child: Expanded(
-                                child: HeadLinesNewsCardWidget(
-                                  headlines:
-                                      headLinesListState.articles![index],
-                                  timeAgo: timeAgo,
-                                ),
+                              child: HeadLinesNewsCardWidget(
+                                headlines: headLinesListState.articles![index],
+                                timeAgo: timeAgo,
                               ),
                             );
                           },
                         ),
                       );
                     }
-                    return Container();
+                    return const SizedBox();
                   },
                 ),
 

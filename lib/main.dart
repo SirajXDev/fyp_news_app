@@ -14,7 +14,6 @@ import 'package:news_application_2/configs/themes/themes.dart';
 import 'package:news_application_2/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:news_application_2/screens/setting/profile/profile_view.dart';
 
 // GetIt is a package used for service locator or to manage dependency injection
 GetIt getIt = GetIt.instance;
@@ -26,7 +25,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   try {
-    await dotenv.load(fileName: 'assets/.env');
+    await dotenv.load(fileName: '.env');
   } catch (e) {
     if (kDebugMode) {
       print('Error loading .env file: $e');

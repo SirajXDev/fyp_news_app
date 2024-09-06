@@ -9,7 +9,7 @@ class CategNewsRepoImp implements CategNewsRepo {
   @override
   Future<CategoriesNewsModel> fetchNewsCategoires(String categ) async {
     String newsUrl =
-        'https://newsapi.org/v2/everything?q=$categ&apiKey=4f377273fdd74ca7bfbd7ebcaffdc618';
+        'https://newsapi.org/v2/everything?q=$categ&apiKey=${dotenv.env['NEWS_API_KEY']}';
     final response = await _apiServices.getApi(newsUrl);
     return CategoriesNewsModel.fromJson(response);
   }
