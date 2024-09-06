@@ -5,5 +5,4 @@ enum FilterList {
   cnn,
   aljazeera,
   aryNews,
-  independent,
 }

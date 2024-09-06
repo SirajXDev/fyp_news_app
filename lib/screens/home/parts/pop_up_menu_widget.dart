@@ -11,8 +11,7 @@ class PopupMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NewsHomeBloc, NewsHomeState>(
-      // buildWhen: (previous, current) =>
-      //     previous.headLinesList.data != current.headLinesList.data,
+      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return PopupMenuButton<FilterList>(
           icon: const CustomIconWidget(
@@ -21,9 +20,8 @@ class PopupMenuWidget extends StatelessWidget {
           ),
           color: Theme.of(context).colorScheme.outline,
           onSelected: (FilterList item) {
-            context
-                .read<NewsHomeBloc>()
-                .add(HeadLinesArticleNewsEvent(categ: item.name));
+            context.read<NewsHomeBloc>().add(SelectMenuEvent(item: item));
+            debugPrint('filterNames: ${item.name}');
           },
           itemBuilder: (context) => <PopupMenuEntry<FilterList>>[
             const PopupMenuItem<FilterList>(
@@ -51,13 +49,6 @@ class PopupMenuWidget extends StatelessWidget {
               value: FilterList.aryNews,
               child: TitleTextThemeWidget(
                 title: 'ARY NEWS',
-                size: 12,
-              ),
-            ),
-            const PopupMenuItem<FilterList>(
-              value: FilterList.independent,
-              child: TitleTextThemeWidget(
-                title: 'INDEPENDENT NEWS',
                 size: 12,
               ),
             ),

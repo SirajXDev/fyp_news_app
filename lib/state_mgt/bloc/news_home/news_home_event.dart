@@ -20,3 +20,15 @@ class HeadLinesArticleNewsEvent extends NewsHomeEvent {
   @override
   List<Object> get props => [categ];
 }
+
+class UpdateSelectedCategoryEvent extends NewsHomeEvent {
+  final String category;
+
+  UpdateSelectedCategoryEvent({required this.category}) : super();
+}
+
+class SelectMenuEvent extends NewsHomeEvent {
+  final FilterList item;
+
+  SelectMenuEvent({required this.item}) : super();
+}

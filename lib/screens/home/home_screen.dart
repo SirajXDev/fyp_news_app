@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
             headlinesNewsRepo: getIt(),
           )
             ..add(HeadLinesArticleNewsEvent(categ: "bbc-news"))
-            ..add(CategArticleNewsEvent(categ: "general")),
+            ..add(CategArticleNewsEvent(categ: "General")),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -85,18 +85,24 @@ class HomeScreen extends StatelessWidget {
                               headLinesListState.articles![index].publishedAt
                                   .toString(),
                             ).timeAgo();
+                            var headLinesData =
+                                headLinesListState.articles![index];
 
-                            return GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                context,
-                                RoutesName.NEWS_DETAIL_SCREEN,
-                                arguments: headLinesListState.articles![index],
-                              ),
-                              child: HeadLinesNewsCardWidget(
-                                headlines: headLinesListState.articles![index],
-                                timeAgo: timeAgo,
-                              ),
-                            );
+                            return headLinesData.description != null
+                                ? GestureDetector(
+                                    onTap: () => Navigator.pushNamed(
+                                      context,
+                                      RoutesName.NEWS_DETAIL_SCREEN,
+                                      arguments:
+                                          headLinesListState.articles![index],
+                                    ),
+                                    child: HeadLinesNewsCardWidget(
+                                      headlines:
+                                          headLinesListState.articles![index],
+                                      timeAgo: timeAgo,
+                                    ),
+                                  )
+                                : const SizedBox.shrink();
                           },
                         ),
                       );
@@ -149,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    return Container();
+                    return const SizedBox.shrink();
                   },
                 ),
               ],

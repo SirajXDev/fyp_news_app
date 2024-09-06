@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static void snackBarMessage(BuildContext context, String message,
@@ -23,6 +25,17 @@ class Utils {
     size: 50,
   );
   static final dateFormat = DateFormat('MMMM dd, yyyy');
+  // web url launcher
+
+  void launcherUrl(String url) {
+    try {
+      launchUrl(Uri.parse('https:$url'));
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error launching URL: $e');
+      }
+    }
+  }
 } // class end
 
 class TitleTextThemeWidget extends StatelessWidget {

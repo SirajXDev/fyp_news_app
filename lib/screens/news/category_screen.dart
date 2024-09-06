@@ -22,7 +22,6 @@ class CategoriesScreen extends StatelessWidget {
   final CategoriesNewsModel categoriesNewsModel;
   final NewsHomeState newsHomeState;
 
-  final format = DateFormat('MMM dd, yyyy');
   // String categoryName = 'General';
   // final NewsCategoriesRepo newsRepo = NewsCategoriesRepo();
   // CategoriesNewsMdl? newsData;
@@ -76,6 +75,10 @@ class CategoriesScreen extends StatelessWidget {
                     // event  -> context.read<NewsHomeBloc>().add(Categ(categEvent: categoriesList[index]))
                     context.read<NewsHomeBloc>().add(
                         CategArticleNewsEvent(categ: categoriesList[index]));
+                    context.read<NewsHomeBloc>().add(
+                          UpdateSelectedCategoryEvent(
+                              category: categoriesList[index]),
+                        );
                     // setState(() {
                     //   categoryName = categoriesList[index];
                     // });
@@ -87,7 +90,7 @@ class CategoriesScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 12),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: newsHomeState.categNewsList.data!.status ==
+                        color: newsHomeState.selectedCategory ==
                                 categoriesList[index]
                             ? AppColors.blueLight
                             : AppColors.greyLight,
