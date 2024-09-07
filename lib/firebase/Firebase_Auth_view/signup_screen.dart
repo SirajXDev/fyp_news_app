@@ -50,7 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         setState(() {
           loading = false;
         });
-        Utils().snackBarMessage(context, error.toString(), 15);
+        Utils.snackBarMessage(context, error.toString(), 15);
       });
     }
   }

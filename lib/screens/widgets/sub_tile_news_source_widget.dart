@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:news_application_2/configs/components/custom_chip.dart';
 import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';

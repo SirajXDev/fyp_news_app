@@ -13,17 +13,4 @@ class CategNewsRepoImp implements CategNewsRepo {
     final response = await _apiServices.getApi(newsUrl);
     return CategoriesNewsModel.fromJson(response);
   }
-
-  // Future<CategoriesNewsMdl> fetchNewsCategoires(String category) async {
-  // String newsUrl =
-  //     'https://newsapi.org/v2/everything?q=$category&apiKey=4f377273fdd74ca7bfbd7ebcaffdc618';
-  //   final response = await http.get(Uri.parse(newsUrl));
-  //   if (response.statusCode == 200) {
-  //     final body = jsonDecode(response.body);
-
-  //     return CategoriesNewsMdl.fromJson(body);
-  //   } else {
-  //     throw Exception('Error');
-  //   }
-  // }
 }

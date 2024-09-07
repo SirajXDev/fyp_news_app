@@ -1,41 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
-import 'package:news_application_2/models/news_channel_headline.dart';
-// import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart';
+import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart';
+import 'package:news_application_2/screens/widgets/news_web_launcher.dart';
 import 'package:news_application_2/screens/widgets/sub_tile_news_source_widget.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
-class NewsDetailScreen extends StatefulWidget {
+class NewsDetailScreen extends StatelessWidget {
   NewsDetailScreen({
     super.key,
     required this.headLines,
   });
   Articles headLines;
-  @override
-  State<NewsDetailScreen> createState() => _NewsDetailScreenState();
-}
-
-class _NewsDetailScreenState extends State<NewsDetailScreen> {
-  final format = DateFormat('MMMM dd,yyyy');
-
-  @override
-  void initState() {
-    super.initState();
-    debugPrint(widget.headLines.description);
-  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    DateTime dateTime = DateTime.parse(widget.headLines.publishedAt!);
+    DateTime dateTime = DateTime.parse(headLines.publishedAt!);
     String timeAgo = dateTime.timeAgo();
 
     return Scaffold(
@@ -77,7 +62,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30)),
                 child: CachedNetworkImage(
-                  imageUrl: widget.headLines.urlToImage!,
+                  imageUrl: headLines.urlToImage!,
                   fit: BoxFit.cover,
                   placeholder: (context, url) =>
                       const CircularProgressIndicator(),
@@ -103,13 +88,13 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     height: 10,
                   ),
                   TitleTextThemeWidget(
-                    title: widget.headLines.title!,
+                    title: headLines.title!,
                     size: 16,
                   ),
                   SizedBox(height: height * 0.02),
                   SubTilesNewsSourceWidget(
-                    source: widget.headLines.source!.name,
-                    author: widget.headLines.author,
+                    source: headLines.source!.name,
+                    author: headLines.author,
                     timeAgo: timeAgo,
                   ),
                   SizedBox(
@@ -126,14 +111,17 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     height: height * 0.01,
                   ),
                   BodyTextThemeWidget(
-                    title: widget.headLines.description ?? '',
+                    title: headLines.description ?? '',
                     shrinkWrap: true,
                     overflow: TextOverflow.visible,
                   ),
                   SizedBox(
                     height: height * 0.006,
                   ),
-                  NewsWebLauncherWidget(widget: widget),
+                  NewsWebLauncherWidget(
+                    url: headLines.url!,
+                    onTap: () => Utils().launcherUrl(headLines.url!),
+                  ),
                   SizedBox(
                     height: height * 0.04,
                   ),
@@ -154,65 +142,6 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
-    );
-  }
-}
-
-class CustomChip extends StatelessWidget {
-  const CustomChip({
-    super.key,
-    this.text,
-    this.color,
-    this.child,
-  });
-
-  final String? text;
-  final Color? color;
-  final Widget? child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1.2),
-      decoration: BoxDecoration(
-        color: color ?? AppColors.orangeLight,
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: child ?? BodyTextThemeWidget(title: text ?? "learn More.."),
-    );
-  }
-}
-
-class NewsWebLauncherWidget extends StatelessWidget {
-  const NewsWebLauncherWidget({
-    super.key,
-    required this.widget,
-  });
-
-  final NewsDetailScreen widget;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Flexible(
-          child: GestureDetector(
-            onTap: () {
-              launchUrl(
-                Uri.parse('https:${widget.headLines.url!}'),
-              );
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1.2),
-              decoration: BoxDecoration(
-                color: AppColors.orangeLight,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: const BodyTextThemeWidget(title: "learn More.."),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

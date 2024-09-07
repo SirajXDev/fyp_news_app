@@ -20,6 +20,8 @@ ThemeData lightTheme = ThemeData.light(useMaterial3: true).copyWith(
   //   ),
   //   trackColor: WidgetStateProperty.all(AppColors.blue.withOpacity(0.5)),
   // ),
+  floatingActionButtonTheme:
+      const FloatingActionButtonThemeData(backgroundColor: AppColors.blue),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: AppColors.whiteLight,
     selectedIconTheme: IconThemeData(color: AppColors.black),
