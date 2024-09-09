@@ -5,11 +5,11 @@ import 'package:news_application_2/utils/utils.dart';
 class NewsWebLauncherWidget extends StatelessWidget {
   const NewsWebLauncherWidget({
     super.key,
-    required this.url,
+    this.url,
     required this.onTap,
   });
 
-  final String url;
+  final String? url;
   final VoidCallback onTap;
 
   @override

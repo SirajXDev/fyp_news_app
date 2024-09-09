@@ -7,6 +7,7 @@ import 'package:news_application_2/screens/widgets/news_web_launcher.dart';
 import 'package:news_application_2/screens/widgets/sub_tile_news_source_widget.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class NewsDetailScreen extends StatelessWidget {
@@ -119,8 +120,8 @@ class NewsDetailScreen extends StatelessWidget {
                     height: height * 0.006,
                   ),
                   NewsWebLauncherWidget(
-                    url: headLines.url!,
-                    onTap: () => Utils().launcherUrl(headLines.url!),
+                    // url: headLines.url!,
+                    onTap: () => launchUrl(Uri.parse('https:${headLines.url}')),
                   ),
                   SizedBox(
                     height: height * 0.04,

@@ -30,6 +30,7 @@ class Utils {
   void launcherUrl(String url) {
     try {
       launchUrl(Uri.parse('https:$url'));
+      debugPrint('imagURL: $url');
     } catch (e) {
       if (kDebugMode) {
         print('Error launching URL: $e');
@@ -40,10 +41,11 @@ class Utils {
 
 class TitleTextThemeWidget extends StatelessWidget {
   const TitleTextThemeWidget(
-      {super.key, required this.title, this.size, this.weight});
+      {super.key, required this.title, this.size, this.weight, this.color});
   final String title;
   final double? size;
   final FontWeight? weight;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class TitleTextThemeWidget extends StatelessWidget {
       style: GoogleFonts.aBeeZee(
         fontSize: size ?? 18,
         fontWeight: weight ?? FontWeight.bold,
-        color: Theme.of(context).colorScheme.primary,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }

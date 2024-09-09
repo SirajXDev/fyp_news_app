@@ -24,12 +24,17 @@ class SettingView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                20.h,
+                // 20.h,
+                SizedBox(
+                  height: context.mqh * .03,
+                ),
                 HeadingTextWidget(
                   headingText: 'Setting',
                   color: Theme.of(context).colorScheme.primary,
                 ),
-                20.h,
+                SizedBox(
+                  height: context.mqh * .03,
+                ),
                 // listtiles
                 CustomListTileWidget(
                   leadingIcon: CupertinoIcons.person,
