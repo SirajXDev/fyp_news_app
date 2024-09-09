@@ -37,7 +37,9 @@ class SubTilesNewsSourceWidget extends StatelessWidget {
               Flexible(
                 child: CustomChip(
                   child: BodyTextThemeWidget(
-                    title: author ?? 'author',
+                    title: author!.length > 8
+                        ? author!.substring(0, 8)
+                        : author ?? 'author',
                     size: 12,
                   ),
                 ),

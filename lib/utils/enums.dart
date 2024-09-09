@@ -6,3 +6,9 @@ enum FilterList {
   aljazeera,
   aryNews,
 }
+
+enum SearchFilter {
+  publishedAt,
+  relevancy,
+  popularity,
+}

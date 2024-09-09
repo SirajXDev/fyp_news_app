@@ -96,7 +96,9 @@ class CategoryNewsDetailScreen extends StatelessWidget {
                   SizedBox(height: height * 0.02),
                   SubTilesNewsSourceWidget(
                     source: article.source!.name,
-                    author: article.author,
+                    author: article.author!.length > 8
+                        ? article.author?.substring(0, 8)
+                        : article.author!,
                     timeAgo: timeAgo,
                   ),
                   SizedBox(

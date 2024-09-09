@@ -47,8 +47,12 @@ class CategArticlesListTilesWidget extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: SpinKitCircle(size: 50, color: Colors.blue),
                     ),
-                    errorWidget: (context, url, error) =>
-                        Image.asset('assets/images/error-image.jpg'),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/error-image.jpg',
+                      fit: BoxFit.cover,
+                      height: context.mqh * .18,
+                      width: context.mqw * .3,
+                    ),
                   ),
                 )
               : const SizedBox.shrink(),
@@ -60,10 +64,15 @@ class CategArticlesListTilesWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   author != null
-                      ? CustomChip(
-                          child: BodyTextThemeWidget(
-                            title: author ?? '',
-                            size: 12,
+                      ? Flexible(
+                          flex: 1,
+                          child: CustomChip(
+                            child: BodyTextThemeWidget(
+                              title: author!.length > 8
+                                  ? author!.substring(0, 8)
+                                  : author ?? 'author',
+                              size: 12,
+                            ),
                           ),
                         )
                       : const SizedBox.shrink(),
@@ -74,9 +83,12 @@ class CategArticlesListTilesWidget extends StatelessWidget {
                       : const SizedBox(
                           height: 30,
                         ),
-                  TitleTextThemeWidget(
-                    title: title ?? '',
-                    size: 16,
+                  Expanded(
+                    flex: 4,
+                    child: TitleTextThemeWidget(
+                      title: title ?? '',
+                      size: 16,
+                    ),
                   ),
                   const Spacer(),
                   Row(
