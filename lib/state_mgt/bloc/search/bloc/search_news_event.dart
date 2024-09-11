@@ -8,11 +8,16 @@ abstract class SearchNewsEvent extends Equatable {
 }
 
 class SearchArticlesEvent extends SearchNewsEvent {
-  const SearchArticlesEvent({required this.keyword}) : super();
+  const SearchArticlesEvent({required this.keyword, this.sortBy}) : super();
   final String keyword;
+  final String? sortBy;
+  @override
+  List<Object> get props => [keyword, sortBy!];
 }
 
 class SearchedSortedByArticleEvent extends SearchNewsEvent {
   final SearchFilter searchFilter;
   const SearchedSortedByArticleEvent({required this.searchFilter}) : super();
+  @override
+  List<Object> get props => [searchFilter];
 }

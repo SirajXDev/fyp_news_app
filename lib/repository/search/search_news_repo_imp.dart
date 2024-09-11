@@ -3,7 +3,7 @@ import 'package:news_application_2/data/network/network_api_services.dart';
 import 'package:news_application_2/models/categ_news/categ_news.dart';
 import 'package:news_application_2/repository/search/search_news_repo.dart';
 
-class CategNewsRepoImp implements SearchNewsRepo {
+class SearchNewsRepoImp implements SearchNewsRepo {
   final _apiServices = NetworkApiService();
 
   @override

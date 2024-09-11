@@ -4,8 +4,19 @@ import 'package:news_application_2/screens/setting/profile/parts/profile_header.
 import 'package:news_application_2/screens/setting/profile/parts/profile_image.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
+
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  @override
+  void dispose() {
+    WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
