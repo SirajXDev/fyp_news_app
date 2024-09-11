@@ -20,9 +20,14 @@ class SearchNewsBloc extends Bloc<SearchNewsEvent, SearchNewsState> {
   }
   Future<void> fetchSearchNews(
       SearchArticlesEvent event, Emitter<SearchNewsState> emit) async {
-    await searchNewsRepo.fetchNewsSearches(event.keyword).then((response) {
+    await searchNewsRepo
+        .fetchNewsSearches(
+            search: event.keyword, sortBy: event.sortBy ?? 'publishedAt')
+        .then((response) {
       emit(
-        state.copyWith(searchNewsList: state.searchNewsList),
+        state.copyWith(
+          searchNewsList: ApiResponse.completed(response),
+        ),
       );
     }).onError(
       (error, stackTrace) {
@@ -33,6 +38,10 @@ class SearchNewsBloc extends Bloc<SearchNewsEvent, SearchNewsState> {
     );
   }
 
-  Future<void> fetchSortByNews(SearchedSortedByArticleEvent event,
-      Emitter<SearchNewsState> state) async {}
+  Future<void> fetchSortByNews(
+      SearchedSortedByArticleEvent event, Emitter<SearchNewsState> emit) async {
+    emit(
+      state.copyWith(searchSelectedMenu: event.searchFilter.name),
+    );
+  }
 }// bloc end

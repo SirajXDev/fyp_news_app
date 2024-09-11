@@ -4,7 +4,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_chip.dart';
 import 'package:news_application_2/configs/components/divider_horizontal_widget.dart';
-import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 
 class BackButtonWidget extends StatelessWidget {
   const BackButtonWidget({super.key, this.size, this.color});
@@ -8,11 +8,12 @@ class BackButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => Navigator.pop(context),
-        child: Icon(
-          CupertinoIcons.back,
-          color: color ?? Theme.of(context).colorScheme.primary,
-          size: size ?? 16,
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: const CustomIconWidget(
+          icon: CupertinoIcons.back,
+          size: 16,
         ));
   }
 }

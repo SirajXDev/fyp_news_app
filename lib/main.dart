@@ -7,6 +7,8 @@ import 'package:news_application_2/repository/categ/categ_news_repo.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo_imp.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo_imp.dart';
+import 'package:news_application_2/repository/search/search_news_repo.dart';
+import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -68,8 +70,7 @@ class MyApp extends StatelessWidget {
 
 // Function for initializing service locator
 void servicesLocator() {
-  getIt.registerLazySingleton<HeadlinesNewsRepo>(() =>
-      HeadlinesNewsRepoImp()); // Registering AuthHttpApiRepository as a lazy singleton for AuthApiRepository
-  getIt.registerLazySingleton<CategNewsRepo>(() =>
-      CategNewsRepoImp()); // Registering MoviesHttpApiRepository as a lazy singleton for MoviesApiRepository
+  getIt.registerLazySingleton<HeadlinesNewsRepo>(() => HeadlinesNewsRepoImp());
+  getIt.registerLazySingleton<CategNewsRepo>(() => CategNewsRepoImp());
+  getIt.registerLazySingleton<SearchNewsRepo>(() => SearchNewsRepoImp());
 }
