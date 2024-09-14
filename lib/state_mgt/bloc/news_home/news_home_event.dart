@@ -5,8 +5,8 @@ abstract class NewsHomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class CategArticleNewsEvent extends NewsHomeEvent {
-  CategArticleNewsEvent({required this.categ}) : super();
+class FetchNewsByCategoryEvent extends NewsHomeEvent {
+  FetchNewsByCategoryEvent({required this.categ}) : super();
   final String categ;
 
   @override
@@ -21,11 +21,11 @@ class HeadLinesArticleNewsEvent extends NewsHomeEvent {
   List<Object> get props => [categ];
 }
 
-class UpdateSelectedCategoryEvent extends NewsHomeEvent {
-  final String category;
+// class UpdateSelectedCategoryEvent extends NewsHomeEvent {
+//   final String category;
 
-  UpdateSelectedCategoryEvent({required this.category}) : super();
-}
+//   UpdateSelectedCategoryEvent({required this.category}) : super();
+// }
 
 class SelectMenuEvent extends NewsHomeEvent {
   final FilterList item;

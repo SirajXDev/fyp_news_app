@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:news_application_2/configs/color/color.dart';
+import 'package:news_application_2/configs/const/news_categ_list.dart';
 import 'package:news_application_2/models/categ_news/categ_news.dart';
 
 import 'package:news_application_2/screens/categ_detail/cartegrydetail_screen.dart';
@@ -15,48 +16,13 @@ import 'package:news_application_2/utils/extensions/widget_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 
 class CategoriesScreen extends StatelessWidget {
-  CategoriesScreen(
+  const CategoriesScreen(
       {super.key,
       required this.categoriesNewsModel,
       required this.newsHomeState});
 
   final CategoriesNewsModel categoriesNewsModel;
   final NewsHomeState newsHomeState;
-
-  // String categoryName = 'General';
-  // final NewsCategoriesRepo newsRepo = NewsCategoriesRepo();
-  // CategoriesNewsMdl? newsData;
-
-  List<String> categoriesList = [
-    'General',
-    'Entertainment',
-    'Health',
-    'Sports',
-    'Business',
-    'Technology'
-  ];
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchNewsData('General');
-  //   // Fetch initial data for the 'General' category
-  // }
-
-  // Future<void> fetchNewsData(String category) async {
-  //   try {
-  //     final data = await newsRepo.fetchNewsCategoires(category);
-  //     setState(() {
-  //       newsData = data;
-  //       // Sort articles by published date in ascending order
-  //       newsData!.articles!.sort((a, b) => DateTime.parse(b.publishedAt!)
-  //           .compareTo(DateTime.parse(a.publishedAt!)));
-  //     });
-  //   } catch (e) {
-  //     // Handle error
-  //     print('Error fetching news: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -67,32 +33,20 @@ class CategoriesScreen extends StatelessWidget {
             height: context.mqh * .033,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: categoriesList.length,
+              itemCount: NewsCategList.categoriesList.length,
               itemBuilder: (context, index) {
-                var categArticleList =
-                    newsHomeState.categNewsList.data!.articles;
+                String categ = NewsCategList.categoriesList[index];
                 return GestureDetector(
                   onTap: () {
-                    // event  -> context.read<NewsHomeBloc>().add(Categ(categEvent: categoriesList[index]))
-                    context.read<NewsHomeBloc>().add(
-                        CategArticleNewsEvent(categ: categoriesList[index]));
-                    context.read<NewsHomeBloc>().add(
-                          UpdateSelectedCategoryEvent(
-                              category: categoriesList[index]),
-                        );
-                    // setState(() {
-                    //   categoryName = categoriesList[index];
-                    // });
-
-                    // fetchNewsData(categoriesList[
-                    //     index]); // Fetch and update news based on selected category
+                    context
+                        .read<NewsHomeBloc>()
+                        .add(FetchNewsByCategoryEvent(categ: categ));
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 12),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: newsHomeState.selectedCategory ==
-                                categoriesList[index]
+                        color: newsHomeState.selectedCategory == categ
                             ? AppColors.blueLight
                             : AppColors.greyLight,
                         borderRadius: BorderRadius.circular(8),
@@ -100,8 +54,7 @@ class CategoriesScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Center(
-                          child:
-                              BodyTextThemeWidget(title: categoriesList[index]),
+                          child: BodyTextThemeWidget(title: categ),
                         ),
                       ),
                     ),
@@ -126,10 +79,8 @@ class CategoriesScreen extends StatelessWidget {
                           .where((article) => article.urlToImage != null)
                           .toList();
                       final categArticles = categFilteredArticles[index];
-                      // final categSrticle = categoriesNewsModel!.articles![index];
-                      String timeAgo = DateTime.parse(
-                              categArticles.publishedAt!)
-                          .timeAgo(); // Replace with the actual published date
+                      String timeAgo =
+                          DateTime.parse(categArticles.publishedAt!).timeAgo();
 
                       return GestureDetector(
                         onTap: () {
