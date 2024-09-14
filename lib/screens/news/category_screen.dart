@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/models/categ_news/categ_news.dart';
 

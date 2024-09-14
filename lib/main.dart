@@ -3,12 +3,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
+import 'package:news_application_2/repository/book_mark/book_mark_repo_imp.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo_imp.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo_imp.dart';
 import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
+import 'package:news_application_2/services/hive/book_mark_hive/hive_helper.dart';
+import 'package:news_application_2/state_mgt/bloc/bloc/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -19,8 +23,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 
 // GetIt is a package used for service locator or to manage dependency injection
 GetIt getIt = GetIt.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await HiveHelper.initHiveDB(); // Initialize Hive
+
   await AdaptiveTheme.getThemeMode();
 
   await Firebase.initializeApp(
@@ -40,7 +47,11 @@ void main() async {
   runApp(
     BlocProvider(
       create: (context) => ThemeCubit(),
-      child: const MyApp(),
+      child: BlocProvider(
+        create: (context) =>
+            BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>()),
+        child: const MyApp(),
+      ),
     ),
   );
 }
@@ -73,4 +84,8 @@ void servicesLocator() {
   getIt.registerLazySingleton<HeadlinesNewsRepo>(() => HeadlinesNewsRepoImp());
   getIt.registerLazySingleton<CategNewsRepo>(() => CategNewsRepoImp());
   getIt.registerLazySingleton<SearchNewsRepo>(() => SearchNewsRepoImp());
+  getIt.registerLazySingleton<BaseBookMarkRepo>(() => BookMarkRepoImp());
 }
+
+
+//flutter pub run build_runner build --delete-conflicting-outputs

@@ -10,6 +10,7 @@ class HeadingTextWidget extends StatelessWidget {
     this.style,
     this.weight,
     this.color,
+    this.textAlign,
   });
 
   final String headingText;
@@ -17,16 +18,18 @@ class HeadingTextWidget extends StatelessWidget {
   final FontStyle? style;
   final FontWeight? weight;
   final Color? color;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       headingText,
+      textAlign: textAlign,
       style: GoogleFonts.cabin(
         fontSize: size ?? 25.0,
         fontWeight: weight ?? FontWeight.bold,
         fontStyle: style ?? FontStyle.normal,
-        color: color ?? AppColors.black,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }
