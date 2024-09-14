@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 import 'package:news_application_2/configs/components/custom_notification_count_widget.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -13,6 +12,7 @@ import 'package:news_application_2/screens/home/parts/headlines_news_card_widget
 import 'package:news_application_2/screens/home/parts/home_news_separator.dart';
 import 'package:news_application_2/screens/home/parts/pop_up_menu_widget.dart';
 import 'package:news_application_2/screens/news/category_screen.dart';
+import 'package:news_application_2/state_mgt/bloc/bloc/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/bloc/news_home/news_home_bloc.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';

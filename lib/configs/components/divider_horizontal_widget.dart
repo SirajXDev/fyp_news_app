@@ -16,7 +16,7 @@ class DividerHorizontalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Divider(
-      height: height ?? 8,
+      height: height ?? 4,
       indent: startIndent ?? 2,
       endIndent: endIndent ?? 12,
       thickness: weight ?? .16,

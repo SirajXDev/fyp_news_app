@@ -10,7 +10,7 @@ import 'package:news_application_2/utils/utils.dart';
 class CategArticlesListTilesWidget extends StatelessWidget {
   CategArticlesListTilesWidget({
     super.key,
-    required this.timeAgo,
+    this.timeAgo,
     this.imageUrl,
     this.author,
     this.title,

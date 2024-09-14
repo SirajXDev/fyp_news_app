@@ -25,7 +25,10 @@ class NewsWebLauncherWidget extends StatelessWidget {
                 color: AppColors.orangeLight,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: const BodyTextThemeWidget(title: "learn More.."),
+              child: const BodyTextThemeWidget(
+                title: "LEARN MORE ...",
+                size: 15,
+              ),
             ),
           ),
         ),

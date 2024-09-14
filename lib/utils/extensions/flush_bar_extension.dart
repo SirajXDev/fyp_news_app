@@ -27,7 +27,7 @@ extension FlushBarErrorMessage on BuildContext {
 }
 
 extension FlushBarSuccessMessage on BuildContext {
-  void flushBarSuccessMessage({required String message}) {
+  void flushBarSuccessMessage({required String message, Color? color}) {
     showFlushbar(
         context: this,
         flushbar: Flushbar(
@@ -38,7 +38,7 @@ extension FlushBarSuccessMessage on BuildContext {
           duration: const Duration(seconds: 3),
           borderRadius: BorderRadius.circular(8),
           flushbarPosition: FlushbarPosition.TOP,
-          backgroundColor: Colors.green,
+          backgroundColor: color ?? Colors.green,
           reverseAnimationCurve: Curves.easeInOut,
           positionOffset: 20,
           icon: const Icon(
