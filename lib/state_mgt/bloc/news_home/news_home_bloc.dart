@@ -25,32 +25,8 @@ class NewsHomeBloc extends Bloc<NewsHomeEvent, NewsHomeState> {
           ),
         ) {
     on<HeadLinesArticleNewsEvent>(fetchHeadLinesNews);
-    on<CategArticleNewsEvent>(fetchCategNews);
-    on<UpdateSelectedCategoryEvent>(updateSelectedCategory);
+    on<FetchNewsByCategoryEvent>(fetchNewsByCategory);
     on<SelectMenuEvent>(updatePopupMenuSelectedItems);
-  }
-  Future<void> fetchCategNews(
-      CategArticleNewsEvent event, Emitter<NewsHomeState> emit) async {
-    await categNewsRepo.fetchNewsCategoires(event.categ).then(
-      (response) {
-        emit(
-          state.copyWith(
-            categNewsList: ApiResponse.completed(response),
-          ),
-        );
-        debugPrint('${response.articles}');
-      },
-    ).onError(
-      (error, stackTrace) {
-        emit(
-          state.copyWith(
-            categNewsList: ApiResponse.error(
-              error.toString(),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   // Future<void> fetchHeadLinesNews(HeadLinesArticleNewsEvent event, Emitter<NewsHomeState> emit)async{}
@@ -77,17 +53,6 @@ class NewsHomeBloc extends Bloc<NewsHomeEvent, NewsHomeState> {
     );
   }
 
-  Future<void> updateSelectedCategory(
-    UpdateSelectedCategoryEvent event,
-    Emitter<NewsHomeState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        selectedCategory: event.category,
-      ),
-    );
-  }
-
   Future<void> updatePopupMenuSelectedItems(
     SelectMenuEvent event,
     Emitter<NewsHomeState> emit,
@@ -109,6 +74,24 @@ class NewsHomeBloc extends Bloc<NewsHomeEvent, NewsHomeState> {
         emit(state.copyWith(selectedMenu: 'ary-news'));
         add(HeadLinesArticleNewsEvent(categ: 'ary-news'));
         break;
+    }
+  }
+
+  Future<void> fetchNewsByCategory(
+      FetchNewsByCategoryEvent event, Emitter<NewsHomeState> emit) async {
+    emit(state.copyWith(
+      selectedCategory: event.categ,
+    ));
+
+    try {
+      final response = await categNewsRepo.fetchNewsCategoires(event.categ);
+      emit(state.copyWith(
+        categNewsList: ApiResponse.completed(response),
+      ));
+    } catch (error) {
+      emit(state.copyWith(
+        categNewsList: ApiResponse.error(error.toString()),
+      ));
     }
   }
 }// class end

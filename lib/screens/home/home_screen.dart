@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
             headlinesNewsRepo: getIt(),
           )
             ..add(HeadLinesArticleNewsEvent(categ: "bbc-news"))
-            ..add(CategArticleNewsEvent(categ: "General")),
+            ..add(FetchNewsByCategoryEvent(categ: "General")),
           child: SingleChildScrollView(
             child: Column(
               children: [
