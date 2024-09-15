@@ -30,7 +30,7 @@ ThemeData lightTheme = ThemeData.light(useMaterial3: true).copyWith(
     ),
   ),
   colorScheme: ThemeData.light().colorScheme.copyWith(
-      secondary: AppColors.grey,
+      secondary: AppColors.greyLight,
       primary: const Color(0xff0F0425),
       onPrimary: AppColors.blue,
       outline: const Color(0xfff0f0f0),

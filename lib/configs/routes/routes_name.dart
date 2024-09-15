@@ -10,6 +10,9 @@ class RoutesName {
   static const String navBar = 'nav-bar';
   //setting
   static const String profile = 'profile';
+  static const String EDIT_PROFILE = 'edit-profile';
+  static const String SEARCH_DETAIL = 'search-detail';
+
   // home
   static const String NEWS_DETAIL_SCREEN = 'news_detail';
 }

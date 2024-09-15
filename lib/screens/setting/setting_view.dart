@@ -1,7 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_application_2/configs/components/custom_alert_dialog.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -71,10 +73,29 @@ class SettingView extends StatelessWidget {
                 ),
                 15.h,
                 //end tile
-                const CustomListTileWidget(
+                CustomListTileWidget(
                   leadingIcon: Icons.logout_outlined,
                   title: 'Logout',
                   trailIcon: Icons.arrow_forward_ios,
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => customAlertDialog(
+                          onAlert: () async {
+                            FirebaseAuth auth = FirebaseAuth.instance;
+                            await auth.signOut();
+                            Navigator.popUntil(
+                              context,
+                              ModalRoute.withName(RoutesName.login),
+                            );
+                          },
+                          onCancel: () {
+                            Navigator.of(context).pop();
+                          },
+                          backgroundColor:
+                              Theme.of(context).colorScheme.outline),
+                    );
+                  },
                 ),
               ],
             ).paddingSymmetric(

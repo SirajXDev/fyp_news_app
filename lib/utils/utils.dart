@@ -41,17 +41,24 @@ class Utils {
 
 class TitleTextThemeWidget extends StatelessWidget {
   const TitleTextThemeWidget(
-      {super.key, required this.title, this.size, this.weight, this.color});
+      {super.key,
+      required this.title,
+      this.size,
+      this.weight,
+      this.color,
+      this.textAlign});
   final String title;
   final double? size;
   final FontWeight? weight;
   final Color? color;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       title,
       maxLines: 3,
+      textAlign: textAlign,
       style: GoogleFonts.aBeeZee(
         fontSize: size ?? 18,
         fontWeight: weight ?? FontWeight.bold,
@@ -68,18 +75,24 @@ class BodyTextThemeWidget extends StatelessWidget {
       this.size,
       this.weight,
       this.overflow = TextOverflow.visible,
-      this.shrinkWrap = true});
+      this.shrinkWrap = true,
+      this.textAlign,
+      this.maxLines});
   final String title;
   final double? size;
   final FontWeight? weight;
   final TextOverflow? overflow;
   final bool? shrinkWrap;
+  final TextAlign? textAlign;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: textAlign,
       softWrap: shrinkWrap,
       overflow: overflow ?? TextOverflow.ellipsis,
+      maxLines: maxLines,
       title,
       style: GoogleFonts.abel(
         fontSize: size ?? 15,
