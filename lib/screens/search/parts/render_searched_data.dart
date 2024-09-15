@@ -9,8 +9,11 @@ import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 
 class RenderSearchedData extends StatelessWidget {
-  const RenderSearchedData({super.key, this.searchText});
-  final String? searchText;
+  const RenderSearchedData({
+    super.key,
+    required this.searchTextNotifier,
+  });
+  final ValueNotifier<String> searchTextNotifier;
   @override
   Widget build(BuildContext context) {
     // var articleList =
@@ -18,8 +21,16 @@ class RenderSearchedData extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SearchedTitle(
-          title: searchText ?? 'BBC News',
+        ValueListenableBuilder<String>(
+          valueListenable: searchTextNotifier,
+          builder: (context, searchText, child) {
+            if (searchText.isNotEmpty) {
+              return SearchedTitle(
+                title: searchText,
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
         const DividerHorizontalWidget(
           weight: .1,

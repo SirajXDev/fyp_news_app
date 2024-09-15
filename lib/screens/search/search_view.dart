@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
@@ -7,7 +9,6 @@ import 'package:news_application_2/screens/search/parts/search_news_text_field.d
 import 'package:news_application_2/state_mgt/bloc/search/bloc/search_news_bloc.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
-import 'package:news_application_2/utils/utils.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -18,11 +19,15 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   final TextEditingController searchTextController = TextEditingController();
-  // String? _selectedFilter;
+  final ValueNotifier<String> searchTextNotifier = ValueNotifier('');
+  Timer? _debounce; // Timer for debounce
 
   @override
   void dispose() {
     searchTextController.dispose();
+    searchTextNotifier.dispose();
+    _debounce?.cancel(); // Cancel the timer if it exists
+
     super.dispose();
   }
 
@@ -54,13 +59,22 @@ class _SearchViewState extends State<SearchView> {
                   // searh field
                   SearchNewsTextField(
                     searchTextController: searchTextController,
+                    onChanged: (text) {
+                      // Cancel the previous timer
+                      _debounce?.cancel();
+                      // Start a new timer
+                      _debounce = Timer(const Duration(milliseconds: 300), () {
+                        searchTextNotifier.value =
+                            text; // Update ValueNotifier after delay
+                      });
+                    },
                   ),
                   SizedBox(
                     height: context.mqh * .02,
                   ),
                   // render searched data
                   RenderSearchedData(
-                    searchText: searchTextController.text,
+                    searchTextNotifier: searchTextNotifier,
                   ),
                 ],
               ).paddingSymmetric(horizontal: 15),

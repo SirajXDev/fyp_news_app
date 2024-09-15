@@ -12,9 +12,11 @@ class SearchNewsTextField extends StatelessWidget {
   const SearchNewsTextField({
     super.key,
     required this.searchTextController,
+    required this.onChanged,
   });
 
   final TextEditingController searchTextController;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class SearchNewsTextField extends StatelessWidget {
         Flexible(
           child: TextField(
             controller: searchTextController,
+            onChanged: onChanged,
             autofocus: false,
             decoration: InputDecoration(
               labelText: 'Search',

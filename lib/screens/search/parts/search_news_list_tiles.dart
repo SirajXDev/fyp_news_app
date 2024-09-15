@@ -31,7 +31,11 @@ class SearchNewsListTiles extends StatelessWidget {
                 searchArticles.urlToImage
               ].contains(element))) {
             return const SizedBox.shrink();
-          } else if (searchArticles.urlToImage == null) {
+          } else if (searchArticles.urlToImage == null ||
+              searchArticles.author == null ||
+              searchArticles.title == null ||
+              searchArticles.description == null ||
+              searchArticles.source == null) {
             return const SizedBox.shrink();
           } else {
             return searchCategoriesNewsModel?.articles == null
