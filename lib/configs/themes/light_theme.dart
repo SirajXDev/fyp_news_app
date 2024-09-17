@@ -35,7 +35,7 @@ ThemeData lightTheme = ThemeData.light(useMaterial3: true).copyWith(
       onPrimary: AppColors.blue,
       outline: const Color(0xfff0f0f0),
       onSurface: AppColors.blueLight,
-      surface: const Color(0xffDCE8E8),
+      surface: AppColors.blackLightest,
       primaryContainer: AppColors.orangeLight,
       onPrimaryContainer: const Color(0xffd8d8da)),
   textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),

@@ -72,7 +72,7 @@ ThemeData darkTheme = ThemeData.dark(useMaterial3: true).copyWith(
         outline: Colors.black,
         onSurface: Colors.indigo.shade400,
         brightness: Brightness.dark,
-        surface: const Color(0xff202934),
+        surface: AppColors.whiteLightest,
         primaryContainer: AppColors.green,
         onPrimaryContainer: const Color(0xff5a5f62)),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
