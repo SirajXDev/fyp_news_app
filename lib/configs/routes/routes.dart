@@ -6,11 +6,11 @@ import 'package:news_application_2/models/channels_headlines/channels_news_headl
     as channels_articles;
 import 'package:news_application_2/models/categ_news/categ_news.dart'
     as categ_articles;
-import 'package:news_application_2/screens/news_detail/news_detail_screen.dart';
-import 'package:news_application_2/screens/search/search_detail_screen.dart';
-import 'package:news_application_2/screens/setting/profile/profile_editable_view.dart';
-import 'package:news_application_2/screens/setting/profile/profile_view.dart';
-import 'package:news_application_2/screens/splash/splash_screen.dart';
+import 'package:news_application_2/screens_module/home/news_detail/news_detail_screen.dart';
+import 'package:news_application_2/screens_module/search/search_detail_screen.dart';
+import 'package:news_application_2/screens_module/profile/profile_editable/profile_editable_view.dart';
+import 'package:news_application_2/screens_module/profile/profile_view.dart';
+import 'package:news_application_2/screens_module/splash/splash_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {

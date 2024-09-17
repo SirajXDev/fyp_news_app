@@ -77,7 +77,8 @@ class BodyTextThemeWidget extends StatelessWidget {
       this.overflow = TextOverflow.visible,
       this.shrinkWrap = true,
       this.textAlign,
-      this.maxLines});
+      this.maxLines,
+      this.color});
   final String title;
   final double? size;
   final FontWeight? weight;
@@ -85,6 +86,7 @@ class BodyTextThemeWidget extends StatelessWidget {
   final bool? shrinkWrap;
   final TextAlign? textAlign;
   final int? maxLines;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +99,7 @@ class BodyTextThemeWidget extends StatelessWidget {
       style: GoogleFonts.abel(
         fontSize: size ?? 15,
         fontWeight: weight ?? FontWeight.bold,
-        color: Theme.of(context).colorScheme.primary,
+        color: color ?? Theme.of(context).colorScheme.primary,
       ),
     );
   }
