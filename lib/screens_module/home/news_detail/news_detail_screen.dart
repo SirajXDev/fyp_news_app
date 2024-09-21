@@ -13,7 +13,9 @@ import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor
 import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
+import 'package:news_application_2/utils/helper_methods/share_helper.dart';
 import 'package:news_application_2/utils/utils.dart';
+import 'package:share_it/share_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
@@ -53,10 +55,25 @@ class NewsDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.only(
                 right: 10,
               ),
-              child: Image(
-                image: const AssetImage('assets/images/share.png'),
-                height: 22,
-                color: Theme.of(context).colorScheme.primary,
+              child: GestureDetector(
+                onTap: () async {
+                  // a link or just text if is an invalid url
+                  await ShareHelper.shareLink(
+                      url: '${headLines.url}', title: '${headLines.title}');
+                  // ShareIt.link(
+                  //     url: '${headLines.url}',
+                  //     androidSheetTitle: '${headLines.title}');
+                  // ShareHelper.shareTextAndUrl(
+                  //   text: '${headLines.title}',
+                  //   url: '${headLines.url}',
+                  // );
+                  debugPrint('share it...');
+                },
+                child: Image(
+                  image: const AssetImage('assets/images/share.png'),
+                  height: 22,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
               ),
             ),
           ],
