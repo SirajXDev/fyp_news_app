@@ -901,6 +901,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  share_it:
+    dependency: "direct main"
+    description:
+      name: share_it
+      sha256: d59126c0fdba1803734de8b6c765de1e1f2639f10c469f09faec0cccb15abae2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.7.0"
   shared_preferences:
     dependency: "direct main"
     description:

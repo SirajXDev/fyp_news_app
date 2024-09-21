@@ -40,6 +40,8 @@ dependencies:
   image_picker: ^1.1.2
   cloud_firestore: ^5.4.2
   firebase_storage: ^12.3.1
+  share_it: ^0.7.0
+  # share_plus: ^9.0.0
   # firebase_app_check: ^0.3.1+2
   # get: ^4.6.6
   
