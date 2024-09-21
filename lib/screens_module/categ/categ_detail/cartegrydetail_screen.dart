@@ -8,8 +8,8 @@ import 'package:news_application_2/models/categ_news/categ_news.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
 import 'package:news_application_2/screens_module/widgets/news_web_launcher.dart';
 import 'package:news_application_2/screens_module/widgets/sub_tile_news_source_widget.dart';
-import 'package:news_application_2/services/hive/adaptor/book_mark_adaptor.dart';
-import 'package:news_application_2/state_mgt/bloc/bloc/bookmark_bloc.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/utils.dart';

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
-import 'package:news_application_2/firebase/Firebase_Auth_view/forgot_password.dart';
-import 'package:news_application_2/firebase/Firebase_Auth_view/login_with_phone.dart';
-import 'package:news_application_2/firebase/Firebase_Auth_view/signup_screen.dart';
+import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/forgot_password.dart';
+import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_with_phone.dart';
+import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/signup_screen.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 

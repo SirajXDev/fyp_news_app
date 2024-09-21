@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:news_application_2/firebase/Firebase_Auth_view/verify_code.dart';
+import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/verify_code.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 

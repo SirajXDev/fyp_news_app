@@ -12,3 +12,10 @@ enum SearchFilter {
   relevancy,
   popularity,
 }
+
+enum ValidationType {
+  username,
+  email,
+  phoneNo,
+  // bio,
+}

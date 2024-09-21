@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
-import 'package:news_application_2/state_mgt/bloc/search/bloc/search_news_bloc.dart';
+import 'package:news_application_2/state_mgt/bloc/search/search_news_bloc.dart';
 import 'package:news_application_2/utils/enums.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';

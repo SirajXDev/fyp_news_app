@@ -1,10 +1,16 @@
 part of 'profile_bloc.dart';
 
-sealed class ProfileState extends Equatable {
-  const ProfileState();
-  
+class ProfileState extends Equatable {
+  const ProfileState({required this.profile});
+
+  final ApiResponse<Profile> profile;
+
+  ProfileState copyWith({ApiResponse<Profile>? profile}) {
+    return ProfileState(profile: profile ?? this.profile);
+  }
+
   @override
   List<Object> get props => [];
 }
 
-final class ProfileInitial extends ProfileState {}
+// final class ProfileInitial extends ProfileState {}

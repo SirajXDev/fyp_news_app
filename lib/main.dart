@@ -9,10 +9,12 @@ import 'package:news_application_2/repository/categ/categ_news_repo.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo_imp.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo.dart';
 import 'package:news_application_2/repository/headlines/headlines_news_repo_imp.dart';
+import 'package:news_application_2/repository/profile/base_profile_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
-import 'package:news_application_2/services/hive/book_mark_hive/hive_helper.dart';
-import 'package:news_application_2/state_mgt/bloc/bloc/bookmark_bloc.dart';
+import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
+import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
+import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -21,11 +23,14 @@ import 'package:news_application_2/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 
+import 'repository/profile/profile_repo_imp.dart';
+
 // GetIt is a package used for service locator or to manage dependency injection
-GetIt getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await HiveHelper.initHiveDB(); // Initialize Hive
 
   await AdaptiveTheme.getThemeMode();
@@ -33,11 +38,12 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   try {
     await dotenv.load(fileName: '.env');
   } catch (e) {
     if (kDebugMode) {
-      print('Error loading .env file: $e');
+      debugPrint('Error loading .env file: $e');
     }
     // You can also set default values for your environment variables here
   }
@@ -45,13 +51,20 @@ void main() async {
   servicesLocator(); // Initializing service locator for dependency injection
 
   runApp(
-    BlocProvider(
-      create: (context) => ThemeCubit(),
-      child: BlocProvider(
-        create: (context) =>
-            BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>()),
-        child: const MyApp(),
-      ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ThemeCubit(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>()),
+        ),
+        BlocProvider(
+          create: (context) => ProfileBloc(getIt<BaseProfileRepository>()),
+        ),
+      ],
+      child: const MyApp(),
     ),
   );
 }
@@ -81,10 +94,18 @@ class MyApp extends StatelessWidget {
 
 // Function for initializing service locator
 void servicesLocator() {
+  debugPrint('Registering HeadlinesNewsRepo');
   getIt.registerLazySingleton<HeadlinesNewsRepo>(() => HeadlinesNewsRepoImp());
+  debugPrint('Registering CategNewsRepo');
   getIt.registerLazySingleton<CategNewsRepo>(() => CategNewsRepoImp());
+  debugPrint('Registering SearchNewsRepo');
   getIt.registerLazySingleton<SearchNewsRepo>(() => SearchNewsRepoImp());
+  debugPrint('Registering BaseBookMarkRepo');
   getIt.registerLazySingleton<BaseBookMarkRepo>(() => BookMarkRepoImp());
+  debugPrint('Registering BaseProfileRepository');
+  getIt.registerLazySingleton<BaseProfileRepository>(
+      () => ProfileRepositoryImpl());
+  debugPrint('Service locator initialized');
 }
 
 

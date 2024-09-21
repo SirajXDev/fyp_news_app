@@ -37,6 +37,24 @@ class Utils {
       }
     }
   }
+
+  static InputDecoration commonDecoration({
+    required String hint,
+    required BuildContext context,
+  }) {
+    return InputDecoration(
+      hintText: hint,
+      filled: true,
+      hintStyle: TextStyle(
+        color: Theme.of(context).colorScheme.surface,
+        fontSize: 12,
+      ),
+      fillColor: Theme.of(context).colorScheme.outline,
+      contentPadding:
+          const EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 5),
+      border: InputBorder.none,
+    );
+  }
 } // class end
 
 class TitleTextThemeWidget extends StatelessWidget {

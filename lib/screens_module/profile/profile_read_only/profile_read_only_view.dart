@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:news_application_2/configs/components/back_button_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_application_2/configs/components/loading_widget.dart';
 import 'package:news_application_2/configs/components/network_image_widget.dart';
+import 'package:news_application_2/data/response/response.dart';
 import 'package:news_application_2/screens_module/profile/profile_read_only/parts/header_profile_read_only_view.dart';
+import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
-import 'package:news_application_2/utils/extensions/widget_extension.dart';
-import 'package:news_application_2/utils/utils.dart';
+import 'package:news_application_2/screens_module/profile/profile_read_only/parts/profile_read_only_field_view.dart';
 
 class ProfileReadOnlyView extends StatelessWidget {
   const ProfileReadOnlyView({
@@ -18,98 +20,79 @@ class ProfileReadOnlyView extends StatelessWidget {
 //bio -> readOnly
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        //ImagePickerProfileEditableView() inside HeaderProfileReadOnlyView()
-        const HeaderProfileReadOnlyView(),
-        SizedBox(height: context.mqh * .026),
-        Align(
-          alignment: Alignment.center,
-          child: NetworkImageWidget(
-            imageUrl: '',
-            iconSize: 40,
-            width: context.mqw * .24,
-            height: context.mqh * .12,
-          ),
-        ),
-        SizedBox(height: context.mqh * .03),
-        // fields view
-        const ProfileReadOnlyFieldView(
-          labelText: 'UserName',
-          title: 'imOpridayy',
-        ),
-        SizedBox(height: context.mqh * .02),
-        const ProfileReadOnlyFieldView(
-          labelText: 'Email',
-          title: 'imOpridayy@gmail.com',
-        ),
-        SizedBox(height: context.mqh * .02),
-        const ProfileReadOnlyFieldView(
-          labelText: 'Phone No.',
-          title: '+923139726635',
-        ),
-        SizedBox(height: context.mqh * .02),
-        const ProfileReadOnlyFieldView(
-          labelText: 'Bio',
-          title:
-              'hey this opriday, flutter developer by proffessionss ms dmsms dmdk s,dm, s,dm,smd ',
-        ),
-      ],
-    ).paddingSymmetric(horizontal: context.mqw * .056);
-  }
-}
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: context.mqh * .02, vertical: context.mqh * .04),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //ImagePickerProfileEditableView() inside HeaderProfileReadOnlyView()
+            const HeaderProfileReadOnlyView(),
+            SizedBox(height: context.mqh * .026),
+            BlocBuilder<ProfileBloc, ProfileState>(
+              buildWhen: (previous, current) =>
+                  previous.profile != current.profile,
+              builder: (context, state) {
+                var profile = state.profile.data;
+                var status = state.profile.status;
+                switch (status) {
+                  case Status.loading:
+                    return const Align(
+                      child: LoadingWidget(),
+                    );
+                  case Status.error:
+                    return Center(
+                      child: Text('Error: ${state.profile.message}'),
+                    );
+                  case Status.completed:
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: NetworkImageWidget(
+                            imageUrl: profile?.image ?? '',
+                            iconSize: 40,
+                            width: context.mqw * 0.24,
+                            height: context.mqh * 0.12,
+                          ),
+                        ),
+                        SizedBox(height: context.mqh * 0.03),
+                        ProfileReadOnlyFieldView(
+                          labelText: 'UserName',
+                          title: profile?.name ?? 'test',
+                        ),
+                        SizedBox(height: context.mqh * 0.02),
+                        ProfileReadOnlyFieldView(
+                          labelText: 'Email',
+                          title: profile?.email ?? 'test@gmail.com',
+                        ),
+                        SizedBox(height: context.mqh * 0.02),
+                        ProfileReadOnlyFieldView(
+                          labelText: 'Phone No.',
+                          title: profile?.phone ?? '+923139726635',
+                        ),
+                        SizedBox(height: context.mqh * 0.02),
+                        ProfileReadOnlyFieldView(
+                          labelText: 'Bio',
+                          title: profile?.bio ??
+                              'hey! this profile is in the testing mode..',
+                        ),
+                      ],
+                    );
 
-class ProfileReadOnlyFieldView extends StatelessWidget {
-  const ProfileReadOnlyFieldView({
-    super.key,
-    required this.title,
-    required this.labelText,
-  });
-  final String title;
-  final String labelText;
-  final int maxLinesT = 2;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleTextThemeWidget(
-          title: labelText,
-          size: 15,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        SizedBox(height: context.mqh * .006),
-        Container(
-          padding: const EdgeInsets.only(),
-          width: double.infinity,
-          height: title.length <= 52 ? context.mqh * .05 : context.mqh * .08,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.outline,
-            // border: Border.all(
-            //     color: Theme.of(context).colorScheme.onPrimary, width: .4),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: BodyTextThemeWidget(
-              title: title,
-              maxLines: maxLinesT,
-              size: 16,
-              color: Theme.of(context).colorScheme.surface,
-            ).paddingOnly(
-              left: 10,
+                  default:
+                    return const SizedBox.shrink();
+                }
+              },
             ),
-          ),
+          ],
         ),
-        // Align(
-        //   alignment: Alignment.bottomRight,
-        //   child: BodyTextThemeWidget(
-        //     title: maxLinesT <= 2 ? '${title.length}' : '',
-        //     size: 10,
-        //   ),
-        // )
-      ],
+      ),
     );
+    // .paddingSymmetric(
+    //   horizontal: context.mqw * 0.056,
+    // );
   }
 }
