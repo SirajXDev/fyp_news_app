@@ -33,9 +33,16 @@ class ImagePickerProfileEditableView extends StatelessWidget {
               backgroundColor: Theme.of(context).colorScheme.outline,
               onGalleryPressed: () async {
                 Navigator.pop(context);
-
                 XFile? file =
                     await ObtainImg.obtainImage(picker, ImageSource.gallery);
+                debugPrint('profileImage: ${file?.path}');
+                if (file?.path == null) return;
+                imgFile.value = File(file!.path);
+              },
+              onCameraPressed: () async {
+                Navigator.pop(context);
+                XFile? file =
+                    await ObtainImg.obtainImage(picker, ImageSource.camera);
                 debugPrint('profileImage: ${file?.path}');
                 if (file?.path == null) return;
                 imgFile.value = File(file!.path);
