@@ -1,4 +1,4 @@
-import 'package:news_application_2/services/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
 
 abstract class BaseBookMarkRepo {
   // Load all favorite items

@@ -6,7 +6,7 @@ import 'package:news_application_2/configs/components/heading_text_widget.dart';
 import 'package:news_application_2/main.dart';
 import 'package:news_application_2/screens_module/search/parts/render_searched_data.dart';
 import 'package:news_application_2/screens_module/search/parts/search_news_text_field.dart';
-import 'package:news_application_2/state_mgt/bloc/search/bloc/search_news_bloc.dart';
+import 'package:news_application_2/state_mgt/bloc/search/search_news_bloc.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
 

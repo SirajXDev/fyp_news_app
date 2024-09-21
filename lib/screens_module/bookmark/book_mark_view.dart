@@ -6,7 +6,7 @@ import 'package:news_application_2/configs/components/divider_horizontal_widget.
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
 import 'package:news_application_2/screens_module/bookmark/parts/emty_book_mark_widget.dart';
 import 'package:news_application_2/screens_module/widgets/categ_articles_list_tile_widget.dart';
-import 'package:news_application_2/state_mgt/bloc/bloc/bookmark_bloc.dart';
+import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';

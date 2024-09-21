@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
-import 'package:news_application_2/services/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
 
 part 'bookmark_event.dart';
 part 'bookmark_state.dart';

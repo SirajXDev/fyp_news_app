@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
-import 'package:news_application_2/services/hive/adaptor/book_mark_adaptor.dart';
-import 'package:news_application_2/services/hive/book_mark_hive/hive_helper.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
 
 class BookMarkRepoImp extends BaseBookMarkRepo {
   final HiveHelper _hiveHelper = HiveHelper();

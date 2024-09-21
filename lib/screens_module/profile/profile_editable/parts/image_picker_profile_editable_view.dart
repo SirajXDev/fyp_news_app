@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 import 'package:news_application_2/configs/components/image_pick_alert.dart';
+import 'package:news_application_2/configs/components/network_image_widget.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/helper_methods/picker_image.dart';
 
@@ -13,9 +14,11 @@ class ImagePickerProfileEditableView extends StatelessWidget {
     super.key,
     required this.imgFile,
     required this.picker,
+    this.profileImg,
   });
   final ValueNotifier<File?> imgFile;
   final ImagePicker picker;
+  final String? profileImg;
 
   // late ImagePicker _picker;
   @override
@@ -34,6 +37,7 @@ class ImagePickerProfileEditableView extends StatelessWidget {
                 XFile? file =
                     await ObtainImg.obtainImage(picker, ImageSource.gallery);
                 debugPrint('profileImage: ${file?.path}');
+                if (file?.path == null) return;
                 imgFile.value = File(file!.path);
               },
             ),
@@ -67,18 +71,25 @@ class ImagePickerProfileEditableView extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Container(
-                        width: context.mqw * .24,
-                        height: context.mqh * .12,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.outline,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const CustomIconWidget(
-                          icon: Icons.person_outline,
-                          size: 40,
-                        ),
-                      ),
+                    : profileImg != null
+                        ? NetworkImageWidget(
+                            imageUrl: profileImg ?? '',
+                            // iconSize: 40,
+                            width: context.mqw * 0.24,
+                            height: context.mqh * 0.12,
+                          )
+                        : Container(
+                            width: context.mqw * .24,
+                            height: context.mqh * .12,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.outline,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const CustomIconWidget(
+                              icon: Icons.person_outline,
+                              size: 40,
+                            ),
+                          ),
                 Positioned(
                   bottom: context.mqh * 0,
                   right: context.mqh * .01,

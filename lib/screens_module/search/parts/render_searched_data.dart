@@ -4,7 +4,7 @@ import 'package:news_application_2/configs/components/divider_horizontal_widget.
 import 'package:news_application_2/data/response/status.dart';
 import 'package:news_application_2/screens_module/search/parts/search_news_list_tiles.dart';
 import 'package:news_application_2/screens_module/search/parts/searched_title.dart';
-import 'package:news_application_2/state_mgt/bloc/search/bloc/search_news_bloc.dart';
+import 'package:news_application_2/state_mgt/bloc/search/search_news_bloc.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:news_application_2/services/hive/adaptor/book_mark_adaptor.dart';
-import 'package:news_application_2/services/hive/book_mark_hive/base_hive_helper.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/services/local/hive/book_mark_hive/base_hive_helper.dart';
 
 class HiveHelper extends BaseHiveHelper {
   static const String favoritesBoxName = 'favoritesBox';
