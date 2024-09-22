@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
+import 'package:news_application_2/main.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart'
     as channels_articles;
@@ -23,9 +24,9 @@ class Routes {
         return MaterialPageRoute(
             builder: (BuildContext context) => const LoginScreen());
 
-      case RoutesName.navBar:
+      case RoutesName.roleBasedNavigation:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const NavBar(),
+          builder: (BuildContext context) => const RoleBasedNavigation(),
         );
 
       case RoutesName.NEWS_DETAIL_SCREEN:

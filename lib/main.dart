@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo_imp.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo.dart';
@@ -13,6 +14,7 @@ import 'package:news_application_2/repository/profile/base_profile_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
 import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
+import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
 import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
@@ -22,6 +24,7 @@ import 'package:news_application_2/configs/themes/themes.dart';
 import 'package:news_application_2/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'repository/profile/profile_repo_imp.dart';
 
@@ -108,5 +111,27 @@ void servicesLocator() {
   debugPrint('Service locator initialized');
 }
 
-
 //flutter pub run build_runner build --delete-conflicting-outputs
+
+class RoleBasedNavigation extends StatelessWidget {
+  const RoleBasedNavigation({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: SharedPreferences.getInstance(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          String? storedRole = snapshot.data!.getString('role');
+          if (storedRole == 'admin') {
+            return const AdminDashBoard();
+          } else {
+            return const NavBar();
+          }
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+  }
+}

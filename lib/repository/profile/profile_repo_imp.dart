@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:news_application_2/models/profile.dart';
 import 'package:news_application_2/repository/profile/base_profile_repo.dart';
-import 'package:news_application_2/services/remote/firebase/firebase_services/profile_helper.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
 import 'package:news_application_2/services/remote/firebase/firebase_storage_helper.dart';
 
 class ProfileRepositoryImpl extends BaseProfileRepository {
@@ -57,7 +57,12 @@ class ProfileRepositoryImpl extends BaseProfileRepository {
       debugPrint('usernameFromRepo: $bio');
       debugPrint('usernameFromRepo: $id');
 
-      await _firestoreHelper.setDocument(_collectionName, id, profile.toJson());
+      await _firestoreHelper.setDocument(
+        _collectionName,
+        id,
+        profile.toJson(),
+        SetOptions(merge: true),
+      );
     } on FirebaseException catch (e) {
       // Handle Firebase-specific errors
       if (kDebugMode) {
@@ -76,6 +81,7 @@ class ProfileRepositoryImpl extends BaseProfileRepository {
   /// Retrieves user profile information
   @override
   Future<Profile> getProfile(String userId) async {
+    User? user = FirebaseAuth.instance.currentUser;
     try {
       debugPrint('Getting profile for user ID: $userId');
       final document =
@@ -86,8 +92,8 @@ class ProfileRepositoryImpl extends BaseProfileRepository {
       } else {
         return Profile(
           id: userId,
-          email: '',
-          phone: '',
+          email: user?.email ?? '',
+          phone: user?.phoneNumber ?? '',
           bio: '',
           image: '',
           name: '',

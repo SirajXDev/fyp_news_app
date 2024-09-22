@@ -1,6 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:news_application_2/configs/routes/routes.dart';
+import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/screens_module/home/home_screen.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
@@ -26,32 +31,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void signUp() {
+  void signUp(String email, String password) async {
     if (_formField.currentState!.validate()) {
       setState(() {
         loading = true;
       });
 
-      _auth
-          .createUserWithEmailAndPassword(
-              email: emailController.text.toString(),
-              password: passwordController.text.toString())
-          .then((value) {
+      String role = validateRole(email); // Get the updated role
+
+      // Create user account
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((UserCredential userCredential) async {
+        CloudFirestoreHelper cloudfirestoreHelper = CloudFirestoreHelper();
+        await cloudfirestoreHelper.setDocument(
+          'users',
+          userCredential.user?.uid ?? 'uid-01',
+          {
+            'email': email,
+            'role': role,
+          },
+          SetOptions(merge: false),
+        );
+
         setState(() {
           loading = false;
         });
 
         // Navigate to another screen or show a success message here
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        Navigator.pushReplacementNamed(context, RoutesName.login);
       }).catchError((error) {
         setState(() {
           loading = false;
         });
         Utils.snackBarMessage(context, error.toString(), 15);
       });
+    }
+  }
+
+  String validateRole(String email) {
+    if (email.endsWith('@admin.com')) {
+      return 'admin';
+    } else {
+      return 'user';
     }
   }
 
@@ -114,7 +136,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: RoundButton(
                 title: 'Sign up',
                 loading: loading,
-                onTap: signUp,
+                onTap: () => signUp(emailController.text.trim(),
+                    passwordController.text.trim()),
               ),
             ),
             const SizedBox(

@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/forgot_password.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_with_phone.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/signup_screen.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,21 +30,36 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void login() {
+  void login(String email, String password) async {
     setState(() {
       loading = true;
     });
-    _auth
-        .signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text.toString())
-        .then((value) {
+    await _auth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((UserCredential userCredential) async {
       context.flushBarSuccessMessage(
-        message: value.user!.email.toString(),
+        message: userCredential.user!.email ?? '',
       );
+      CloudFirestoreHelper cloudfirestoreHelper = CloudFirestoreHelper();
+      var docSnap = await cloudfirestoreHelper.getDocument(
+          'users', userCredential.user?.uid ?? 'uid-01');
+      var role = await docSnap.get('role') as String;
+      // Store role in shared preferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('role', role);
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AdminDashBoard(),
+            ));
+      } else {
+        Navigator.pushReplacementNamed(context, RoutesName.navBar);
+      }
+      // Redirect to respective dashboard based on role
 
       // User app
-      Navigator.pushReplacementNamed(context, RoutesName.navBar);
+
       // }
       setState(() {
         loading = false;
@@ -128,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     loading: loading,
                     onTap: () {
                       if (_formField.currentState!.validate()) {
-                        login();
+                        login(emailController.text.trim(),
+                            passwordController.text.trim());
                       }
                     }),
               ),
@@ -190,6 +209,19 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class AdminDashBoard extends StatelessWidget {
+  const AdminDashBoard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+          child: TitleTextThemeWidget(
+              title: 'Admin DashBoard For Personalise News')),
     );
   }
 }
