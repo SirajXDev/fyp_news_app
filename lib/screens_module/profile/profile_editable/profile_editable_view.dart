@@ -96,7 +96,7 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                                   FirebaseAuth auth = FirebaseAuth.instance;
                                   var user = auth.currentUser;
                                   String phoneNo = user?.phoneNumber ?? '';
-                                  String? id = user?.uid;
+                                  String id = user?.uid ?? '112';
                                   String email = user?.email ?? '';
                                   // String username = user?.displayName ?? '';
                                   // String? imagePath = user?.photoURL;
@@ -125,9 +125,10 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
 
                                   debugPrint(
                                       'imageState: ${File(profile?.image ?? '')}');
+                                  if (imgFile.value == null) return;
                                   context.read<ProfileBloc>().add(
                                         ProfileSetEvent(
-                                          id: id ?? profile?.id ?? '',
+                                          id: id,
                                           email: emaiAddress,
                                           phone: phone,
                                           imageFile: photoFile,
@@ -139,15 +140,37 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                                   Utils.snackBarMessage(
                                       context, 'profile data is stored!');
 
-                                  // Future.delayed(const Duration(seconds: 1),
-                                  //     () {
-                                  //   if (context.mounted) {
-                                  //     Navigator.pop(context);
-
-                                  //     debugPrint('profile data is success');
-                                  //   }
-                                  //   // Prints after 1 second.
-                                  // });
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    if (context.mounted) {
+                                      Navigator.pop(context);
+                                      context
+                                          .read<ProfileBloc>()
+                                          .add(ProfileGetEvent(id: id));
+                                      // Display SnackBar on success or error
+                                      context
+                                                  .read<ProfileBloc>()
+                                                  .state
+                                                  .profile
+                                                  .status ==
+                                              Status.completed
+                                          ? ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'Profile updated successfully!')))
+                                          : ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      'Error updating profile! ')));
+                                      if (imgFile.value == null) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                                content: Text(
+                                                    'Error updating profile! ')));
+                                      }
+                                    }
+                                    // Prints after 1 second.
+                                  });
                                   // auth
                                   debugPrint('auth');
                                   debugPrint('email: ${user?.email}');
