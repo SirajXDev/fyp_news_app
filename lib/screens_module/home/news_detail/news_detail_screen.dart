@@ -60,13 +60,7 @@ class NewsDetailScreen extends StatelessWidget {
                   // a link or just text if is an invalid url
                   await ShareHelper.shareLink(
                       url: '${headLines.url}', title: '${headLines.title}');
-                  // ShareIt.link(
-                  //     url: '${headLines.url}',
-                  //     androidSheetTitle: '${headLines.title}');
-                  // ShareHelper.shareTextAndUrl(
-                  //   text: '${headLines.title}',
-                  //   url: '${headLines.url}',
-                  // );
+
                   debugPrint('share it...');
                 },
                 child: Image(
