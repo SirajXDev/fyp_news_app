@@ -3,18 +3,18 @@
 class Profile {
   final String id;
   final String? name;
-  final String email;
-  final String phone;
+  final String? email;
+  final String? phone;
   final String? bio;
-  final String image;
+  final String? image;
 
   Profile({
     required this.id,
     this.name,
-    required this.email,
-    required this.phone,
+    this.email,
+    this.phone,
     this.bio,
-    required this.image,
+    this.image,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
