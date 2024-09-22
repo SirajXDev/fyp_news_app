@@ -91,104 +91,107 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              HeaderProfileEdiatbleView(
-                                onTap: () {
-                                  FirebaseAuth auth = FirebaseAuth.instance;
-                                  var user = auth.currentUser;
-                                  String phoneNo = user?.phoneNumber ?? '';
-                                  String id = user?.uid ?? '112';
-                                  String email = user?.email ?? '';
-                                  // String username = user?.displayName ?? '';
-                                  // String? imagePath = user?.photoURL;
-                                  // File? imageFile = imgFile.value;
+                              profile == null
+                                  ? const HeaderProfileEdiatbleView()
+                                  : HeaderProfileEdiatbleView(
+                                      onTap: () {
+                                        FirebaseAuth auth =
+                                            FirebaseAuth.instance;
+                                        var user = auth.currentUser;
+                                        String phoneNo =
+                                            user?.phoneNumber ?? '';
+                                        String id = user?.uid ?? '112';
+                                        String email = user?.email ?? '';
+                                        // String username = user?.displayName ?? '';
+                                        // String? imagePath = user?.photoURL;
+                                        // File? imageFile = imgFile.value;
 
-                                  // null safty validation
+                                        // null safty validation
 
-                                  var emaiAddress = email.isEmpty
-                                      ? _emailTxtEdtController.text.isEmpty
-                                          ? profile?.email ?? ''
-                                          : _emailTxtEdtController.text
-                                      : email;
-                                  var name =
-                                      _userNameTxtEdtController.text.isEmpty
-                                          ? profile?.name ?? ''
-                                          : _userNameTxtEdtController.text;
-                                  var bioo = _bioTxtEdtController.text.isEmpty
-                                      ? profile?.bio ?? ''
-                                      : _bioTxtEdtController.text;
-                                  var phone = phoneNo.isEmpty
-                                      ? _phoneNoTxtEdtController.text.isEmpty
-                                          ? profile?.phone ?? ''
-                                          : _phoneNoTxtEdtController.text
-                                      : phoneNo;
-                                  var photoFile = imgFile.value ?? File('');
+                                        var emaiAddress = email.isEmpty
+                                            ? _emailTxtEdtController
+                                                    .text.isEmpty
+                                                ? profile.email ?? ''
+                                                : _emailTxtEdtController.text
+                                            : email;
+                                        var name = _userNameTxtEdtController
+                                                .text.isEmpty
+                                            ? profile.name ?? ''
+                                            : _userNameTxtEdtController.text;
+                                        var bioo =
+                                            _bioTxtEdtController.text.isEmpty
+                                                ? profile.bio ?? ''
+                                                : _bioTxtEdtController.text;
+                                        var phone = phoneNo.isEmpty
+                                            ? _phoneNoTxtEdtController
+                                                    .text.isEmpty
+                                                ? profile.phone ?? ''
+                                                : _phoneNoTxtEdtController.text
+                                            : phoneNo;
+                                        var photoFile =
+                                            imgFile.value ?? File('');
 
-                                  debugPrint(
-                                      'imageState: ${File(profile?.image ?? '')}');
-                                  if (imgFile.value == null) return;
-                                  context.read<ProfileBloc>().add(
-                                        ProfileSetEvent(
-                                          id: id,
-                                          email: emaiAddress,
-                                          phone: phone,
-                                          imageFile: photoFile,
-                                          bio: bioo,
-                                          username: name,
-                                          imageUrl: profile?.image ?? '',
-                                        ),
-                                      );
-                                  Utils.snackBarMessage(
-                                      context, 'profile data is stored!');
+                                        debugPrint(
+                                            'imageState: ${File(profile.image ?? '')}');
+                                        if (imgFile.value == null) return;
+                                        context.read<ProfileBloc>().add(
+                                              ProfileSetEvent(
+                                                id: id,
+                                                email: emaiAddress,
+                                                phone: phone,
+                                                imageFile: photoFile,
+                                                bio: bioo,
+                                                username: name,
+                                                imageUrl: profile.image ?? '',
+                                              ),
+                                            );
+                                        Utils.snackBarMessage(
+                                            context, 'profile data is stored!');
 
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    if (context.mounted) {
-                                      Navigator.pop(context);
-                                      context
-                                          .read<ProfileBloc>()
-                                          .add(ProfileGetEvent(id: id));
-                                      // Display SnackBar on success or error
-                                      context
-                                                  .read<ProfileBloc>()
-                                                  .state
-                                                  .profile
-                                                  .status ==
-                                              Status.completed
-                                          ? ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text(
-                                                      'Profile updated successfully!')))
-                                          : ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text(
-                                                      'Error updating profile! ')));
-                                      if (imgFile.value == null) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(const SnackBar(
-                                                content: Text(
-                                                    'Error updating profile! ')));
-                                      }
-                                    }
-                                    // Prints after 1 second.
-                                  });
-                                  // auth
-                                  debugPrint('auth');
-                                  debugPrint('email: ${user?.email}');
-                                  debugPrint('phoneNo: ${user?.phoneNumber}');
+                                        Future.delayed(
+                                            const Duration(seconds: 1), () {
+                                          if (context.mounted) {
+                                            Navigator.pop(context);
+                                            context
+                                                .read<ProfileBloc>()
+                                                .add(ProfileGetEvent(id: id));
+                                            // Display SnackBar on success or error
+                                            context
+                                                        .read<ProfileBloc>()
+                                                        .state
+                                                        .profile
+                                                        .status ==
+                                                    Status.completed
+                                                ? ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            'Profile updated successfully!')))
+                                                : ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            'Error updating profile! ')));
+                                          }
+                                          // Prints after 1 second.
+                                        });
+                                        // auth
+                                        debugPrint('auth');
+                                        debugPrint('email: ${user?.email}');
+                                        debugPrint(
+                                            'phoneNo: ${user?.phoneNumber}');
 
-                                  // text controllers
+                                        // text controllers
 
-                                  debugPrint('Save Profile data');
-                                  debugPrint(
-                                      'imagePath: ${imgFile.value ?? File(profile?.image ?? '')}');
-                                  debugPrint('username: $name');
-                                  debugPrint('email: $emaiAddress');
-                                  debugPrint(
-                                      'phoneNo.: ${_phoneNoTxtEdtController.text}');
-                                  debugPrint('bio: $bioo');
-                                  debugPrint('id: $id');
-                                },
-                              ),
+                                        debugPrint('Save Profile data');
+                                        debugPrint(
+                                            'imagePath: ${imgFile.value ?? File(profile.image ?? '')}');
+                                        debugPrint('username: $name');
+                                        debugPrint('email: $emaiAddress');
+                                        debugPrint(
+                                            'phoneNo.: ${_phoneNoTxtEdtController.text}');
+                                        debugPrint('bio: $bioo');
+                                        debugPrint('id: $id');
+                                      },
+                                    ),
                               SizedBox(height: context.mqh * .04),
                               ImagePickerProfileEditableView(
                                 picker: _picker,

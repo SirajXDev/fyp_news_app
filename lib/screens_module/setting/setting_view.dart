@@ -83,11 +83,12 @@ class SettingView extends StatelessWidget {
                       builder: (context) => customAlertDialog(
                           onAlert: () async {
                             FirebaseAuth auth = FirebaseAuth.instance;
-                            await auth.signOut();
-                            Navigator.popUntil(
-                              context,
-                              ModalRoute.withName(RoutesName.login),
-                            );
+                            await auth.signOut().then((_) {
+                              if (context.mounted) {
+                                Navigator.pushReplacementNamed(
+                                    context, RoutesName.login);
+                              }
+                            });
                           },
                           onCancel: () {
                             Navigator.of(context).pop();

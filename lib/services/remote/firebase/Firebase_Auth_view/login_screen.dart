@@ -5,6 +5,7 @@ import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/f
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_with_phone.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/signup_screen.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
+import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -38,7 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
       context.flushBarSuccessMessage(
         message: value.user!.email.toString(),
       );
-      Navigator.pushNamed(context, RoutesName.home);
+
+      // User app
+      Navigator.pushReplacementNamed(context, RoutesName.navBar);
+      // }
       setState(() {
         loading = false;
       });
@@ -52,6 +56,13 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     });
   }
+
+  // Future<void> checkRole() async {
+  //   final user = _auth.currentUser;
+  //   if (user != null) {
+  //     final email = user.email;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
