@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -21,10 +19,11 @@ class CloudFirestoreHelper {
         .set(data, SetOptions(merge: true));
   }
 
-  // Custom get method
+  // Custom get method - one time update
   Future<DocumentSnapshot> getDocument(String collection, String docId) async {
     return await _firestore.collection(collection).doc(docId).get();
   }
+  // realtime update :
 
   // // Upload profile image
   // Future<String> uploadImage(File imagePath, String imageId) async {
