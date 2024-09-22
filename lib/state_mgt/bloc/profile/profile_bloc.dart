@@ -30,24 +30,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       imageFile: event.imageFile,
       bio: event.bio,
       username: event.username,
+      imageURL: event.imageUrl,
     );
-    // await _baseProfileRepository.getProfile(event.id).then((profile) {
-    //   emit(
-    //     state.copyWith(
-    //       profile: ApiResponse.completed(profile),
-    //     ),
-    //   );
-    // }).onError(
-    //   (error, stackTrace) {
-    //     emit(
-    //       state.copyWith(
-    //         profile: ApiResponse.error(
-    //           error.toString(),
-    //         ),
-    //       ),
-    //     );
-    //   },
-    // );
+    var getProfile = await _baseProfileRepository.getProfile(event.id);
+    emit(state.copyWith(profile: ApiResponse.completed(getProfile)));
   }
 
   Future<void> _getProfileMethod(

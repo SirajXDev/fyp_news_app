@@ -66,73 +66,16 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  HeaderProfileEdiatbleView(
-                    onTap: () {
-                      FirebaseAuth auth = FirebaseAuth.instance;
-                      var user = auth.currentUser;
-                      String phone = user?.phoneNumber ?? '';
-                      String id = user?.uid ?? '';
-                      String email = user?.email ?? '';
-                      String username = user?.displayName ?? '';
-                      String imagePath = user?.photoURL ?? '';
-                      phone =
-                          phone.isEmpty ? _phoneNoTxtEdtController.text : phone;
-                      if (_emailTxtEdtController.text.isEmpty &&
-                          _phoneNoTxtEdtController.text.isEmpty &&
-                          _userNameTxtEdtController.text.isEmpty) return;
-
-                      context.read<ProfileBloc>().add(
-                            ProfileSetEvent(
-                              id: id.isEmpty ? '' : id,
-                              email: email.isEmpty
-                                  ? _emailTxtEdtController.text
-                                  : email,
-                              phone: phone.isEmpty
-                                  ? _phoneNoTxtEdtController.text
-                                  : phone,
-                              imageFile: imagePath.isEmpty
-                                  ? imgFile.value
-                                  : File(imagePath),
-                              bio: _bioTxtEdtController.text,
-                              username: username.isEmpty
-                                  ? _userNameTxtEdtController.text
-                                  : username,
-                            ),
-                          );
-                      Future.delayed(const Duration(seconds: 1), () {
-                        if (context.mounted) {
-                          Navigator.pop(context);
-                          Utils.snackBarMessage(
-                              context, 'profile data is stored!');
-                          debugPrint('profile data is success');
-                        }
-                        // Prints after 1 second.
-                      });
-                      // auth
-                      debugPrint('auth');
-                      debugPrint('email: ${user?.email}');
-                      debugPrint('phoneNo: ${user?.phoneNumber}');
-
-                      // text controllers
-                      debugPrint('Save Profile data');
-                      debugPrint('imagePath: ${imgFile.value?.path}');
-                      debugPrint('username: ${_userNameTxtEdtController.text}');
-                      debugPrint('email: ${_emailTxtEdtController.text}');
-                      debugPrint('phoneNo.: ${_phoneNoTxtEdtController.text}');
-                      debugPrint('bio: ${_bioTxtEdtController.text}');
-                    },
-                  ),
-                  SizedBox(height: context.mqh * .04),
                   BlocBuilder<ProfileBloc, ProfileState>(
                     buildWhen: (previous, current) =>
                         previous.profile != current.profile,
                     builder: (context, state) {
                       var profile = state.profile.data;
                       var status = state.profile.status;
-                      _userNameTxtEdtController.text = profile?.name ?? '';
-                      _emailTxtEdtController.text = profile?.email ?? '';
-                      _phoneNoTxtEdtController.text = profile?.phone ?? '';
-                      _bioTxtEdtController.text = profile?.bio ?? '';
+                      // _userNameTxtEdtController.text = profile?.name ?? '';
+                      // _emailTxtEdtController.text = profile?.email ?? '';
+                      // _phoneNoTxtEdtController.text = profile?.phone ?? '';
+                      // _bioTxtEdtController.text = profile?.bio ?? '';
 
                       switch (status) {
                         case Status.loading:
@@ -148,55 +91,129 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              HeaderProfileEdiatbleView(
+                                onTap: () {
+                                  FirebaseAuth auth = FirebaseAuth.instance;
+                                  var user = auth.currentUser;
+                                  String phoneNo = user?.phoneNumber ?? '';
+                                  String? id = user?.uid;
+                                  String email = user?.email ?? '';
+                                  // String username = user?.displayName ?? '';
+                                  // String? imagePath = user?.photoURL;
+                                  // File? imageFile = imgFile.value;
+
+                                  // null safty validation
+
+                                  var emaiAddress = email.isEmpty
+                                      ? _emailTxtEdtController.text.isEmpty
+                                          ? profile?.email ?? ''
+                                          : _emailTxtEdtController.text
+                                      : email;
+                                  var name =
+                                      _userNameTxtEdtController.text.isEmpty
+                                          ? profile?.name ?? ''
+                                          : _userNameTxtEdtController.text;
+                                  var bioo = _bioTxtEdtController.text.isEmpty
+                                      ? profile?.bio ?? ''
+                                      : _bioTxtEdtController.text;
+                                  var phone = phoneNo.isEmpty
+                                      ? _phoneNoTxtEdtController.text.isEmpty
+                                          ? profile?.phone ?? ''
+                                          : _phoneNoTxtEdtController.text
+                                      : phoneNo;
+                                  var photoFile = imgFile.value ?? File('');
+
+                                  debugPrint(
+                                      'imageState: ${File(profile?.image ?? '')}');
+                                  context.read<ProfileBloc>().add(
+                                        ProfileSetEvent(
+                                          id: id ?? profile?.id ?? '',
+                                          email: emaiAddress,
+                                          phone: phone,
+                                          imageFile: photoFile,
+                                          bio: bioo,
+                                          username: name,
+                                          imageUrl: profile?.image ?? '',
+                                        ),
+                                      );
+                                  Utils.snackBarMessage(
+                                      context, 'profile data is stored!');
+
+                                  // Future.delayed(const Duration(seconds: 1),
+                                  //     () {
+                                  //   if (context.mounted) {
+                                  //     Navigator.pop(context);
+
+                                  //     debugPrint('profile data is success');
+                                  //   }
+                                  //   // Prints after 1 second.
+                                  // });
+                                  // auth
+                                  debugPrint('auth');
+                                  debugPrint('email: ${user?.email}');
+                                  debugPrint('phoneNo: ${user?.phoneNumber}');
+
+                                  // text controllers
+
+                                  debugPrint('Save Profile data');
+                                  debugPrint(
+                                      'imagePath: ${imgFile.value ?? File(profile?.image ?? '')}');
+                                  debugPrint('username: $name');
+                                  debugPrint('email: $emaiAddress');
+                                  debugPrint(
+                                      'phoneNo.: ${_phoneNoTxtEdtController.text}');
+                                  debugPrint('bio: $bioo');
+                                  debugPrint('id: $id');
+                                },
+                              ),
+                              SizedBox(height: context.mqh * .04),
                               ImagePickerProfileEditableView(
                                 picker: _picker,
                                 imgFile: imgFile,
                                 profileImg: profile?.image,
                               ),
                               SizedBox(height: context.mqh * .03),
-                              const BodyTextThemeWidget(title: 'User Name'),
+                              const BodyTextThemeWidget(title: 'User Name *'),
                               SizedBox(height: context.mqh * .006),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: UserNameTextFieldProfile(
                                   userNameTxtEdtController:
                                       _userNameTxtEdtController,
-                                  // initialValue: profile?.name ?? 'test',
+                                  hint: profile?.name ?? 'tester',
                                 ),
                               ),
                               SizedBox(height: context.mqh * .012),
-                              const BodyTextThemeWidget(title: 'Email'),
+                              const BodyTextThemeWidget(title: 'Email *'),
                               SizedBox(height: context.mqh * .006),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: EmailTextFieldProfile(
                                   emailTxtEdtController: _emailTxtEdtController,
                                   // initialValue:
-                                  //     profile?.email ?? 'test@gmail.com',
+                                  hint: profile?.email ?? 'tester@gmail.com',
                                 ),
                               ),
                               SizedBox(height: context.mqh * .012),
-                              const BodyTextThemeWidget(title: ' Phone No.'),
+                              const BodyTextThemeWidget(title: ' Phone No. *'),
                               SizedBox(height: context.mqh * .006),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: PhoneNoTextFieldProfile(
                                   phoneNoTxtEdtController:
                                       _phoneNoTxtEdtController,
-                                  // initialValue:
-                                  //     profile?.phone ?? '+923337654387',
+                                  hint: profile?.phone ?? '+92636363636363',
                                 ),
                               ),
                               SizedBox(height: context.mqh * .012),
-                              const BodyTextThemeWidget(
-                                  title: 'Bio  (Optional)'),
+                              const BodyTextThemeWidget(title: 'Bio *'),
                               SizedBox(height: context.mqh * .006),
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: BioTextFieldProfile(
                                   bioTxtEdtController: _bioTxtEdtController,
-                                  // initialValue: profile?.bio ??
-                                  //     'this profile for the testing phase...',
+                                  hint: profile?.bio ??
+                                      'this is tester profile, use for testing purposes..',
                                 ),
                               ),
                             ],
@@ -232,8 +249,8 @@ class UserNameTextFieldProfile extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: userNameTxtEdtController,
-      decoration:
-          Utils.commonDecoration(hint: 'Enter Username Here', context: context),
+      decoration: Utils.commonDecoration(
+          hint: hint ?? 'Enter Username Here', context: context),
       validator: (value) =>
           ValidationRules.validate(ValidationType.username, value),
       onChanged: onChanged,
@@ -262,7 +279,7 @@ class EmailTextFieldProfile extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: emailTxtEdtController,
       decoration: Utils.commonDecoration(
-          hint: 'Enter Email Address Here', context: context),
+          hint: hint ?? 'Enter Email Address Here', context: context),
       validator: (value) =>
           ValidationRules.validate(ValidationType.email, value),
       onChanged: onChanged,
@@ -290,7 +307,7 @@ class PhoneNoTextFieldProfile extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: phoneNoTxtEdtController,
       decoration: Utils.commonDecoration(
-          hint: 'Enter Phone Number Here', context: context),
+          hint: hint ?? 'Enter Phone Number Here', context: context),
       validator: (value) =>
           ValidationRules.validate(ValidationType.phoneNo, value),
       onChanged: onChanged,
@@ -317,8 +334,8 @@ class BioTextFieldProfile extends StatelessWidget {
     return TextFormField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       controller: bioTxtEdtController,
-      decoration:
-          Utils.commonDecoration(hint: 'Enter Bio Here', context: context),
+      decoration: Utils.commonDecoration(
+          hint: hint ?? 'Enter Bio Here', context: context),
       maxLines: 3,
       style: const TextStyle(fontSize: 15),
       // validator: (value) {

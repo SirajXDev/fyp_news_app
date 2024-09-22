@@ -6,11 +6,12 @@ abstract class BaseProfileRepository {
   /// Sets user profile information
   Future<void> setProfile({
     required String id,
-    required String email,
-    required String phone,
+    String? email,
+    String? phone,
     File? imageFile,
     String? bio,
     String? username,
+    String? imageURL,
   });
 
   /// Retrieves user profile information

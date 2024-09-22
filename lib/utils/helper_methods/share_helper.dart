@@ -1,8 +1,21 @@
-import 'package:share_it/share_it.dart';
+ import 'package:flutter/material.dart';
+ import 'package:share_it/share_it.dart';
 
-class ShareHelper {
-  static Future<void> shareLink({required String url, String? title}) async {
-    ShareIt.link(
-        url: url, androidSheetTitle: title ?? 'share news with your friends');
+ class ShareHelper {
+   /// Shares text and url
+
+   static Future<void> shareLink({
+     required String url,
+    required String? title,
+  }) async {
+     try {
+       await ShareIt.link(
+         url: url,
+         androidSheetTitle: title,
+       );
+     } catch (e) {
+       debugPrint('Error sharing link: $e');
+     }
   }
-}
+ }
+
