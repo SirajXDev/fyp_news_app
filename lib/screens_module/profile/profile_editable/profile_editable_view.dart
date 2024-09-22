@@ -136,16 +136,18 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                                           imageUrl: profile?.image ?? '',
                                         ),
                                       );
-                                  Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    if (context.mounted) {
-                                      Navigator.pop(context);
-                                      Utils.snackBarMessage(
-                                          context, 'profile data is stored!');
-                                      debugPrint('profile data is success');
-                                    }
-                                    // Prints after 1 second.
-                                  });
+                                  Utils.snackBarMessage(
+                                      context, 'profile data is stored!');
+
+                                  // Future.delayed(const Duration(seconds: 1),
+                                  //     () {
+                                  //   if (context.mounted) {
+                                  //     Navigator.pop(context);
+
+                                  //     debugPrint('profile data is success');
+                                  //   }
+                                  //   // Prints after 1 second.
+                                  // });
                                   // auth
                                   debugPrint('auth');
                                   debugPrint('email: ${user?.email}');

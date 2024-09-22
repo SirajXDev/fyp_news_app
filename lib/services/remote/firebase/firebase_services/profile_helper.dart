@@ -21,7 +21,11 @@ class CloudFirestoreHelper {
         .set(data, SetOptions(merge: true));
   }
 
-  // Custom get method
+  // // Custom get method - one time update
+  // Future<DocumentSnapshot> getDocument(String collection, String docId) async {
+  //   return await _firestore.collection(collection).doc(docId).get();
+  // }
+  // realtime update :
   Future<DocumentSnapshot> getDocument(String collection, String docId) async {
     return await _firestore.collection(collection).doc(docId).get();
   }
