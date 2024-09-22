@@ -81,7 +81,18 @@ class ProfileRepositoryImpl extends BaseProfileRepository {
       final document =
           await _firestoreHelper.getDocument(_collectionName, userId);
       debugPrint('Retrieved document: ${document.data()}');
-      return Profile.fromJson(document.data() as Map<String, dynamic>);
+      if (document.exists) {
+        return Profile.fromJson(document.data() as Map<String, dynamic>);
+      } else {
+        return Profile(
+          id: userId,
+          email: '',
+          phone: '',
+          bio: '',
+          image: '',
+          name: '',
+        );
+      }
     } on FirebaseException catch (e) {
       // Handle Firebase-specific errors
       if (kDebugMode) {

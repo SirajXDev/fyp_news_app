@@ -5,6 +5,7 @@ import 'package:news_application_2/main.dart';
 import 'package:news_application_2/repository/profile/base_profile_repo.dart';
 import 'package:news_application_2/screens_module/profile/profile_read_only/profile_read_only_view.dart';
 import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
+import 'package:news_application_2/utils/extensions/general_extension.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
