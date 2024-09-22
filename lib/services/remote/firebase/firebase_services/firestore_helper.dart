@@ -12,14 +12,15 @@ class CloudFirestoreHelper {
 
   // Custom set method
   Future<void> setDocument(
-      String collection, String docId, Map<String, dynamic> data) async {
-    await _firestore
-        .collection(collection)
-        .doc(docId)
-        .set(data, SetOptions(merge: true));
+      String collection, String docId, Map<String, dynamic> data,
+      [SetOptions? setOptions]) async {
+    await _firestore.collection(collection).doc(docId).set(
+          data,
+          setOptions ?? SetOptions(merge: true),
+        );
   }
 
-
+  /// one time get/fetch data
   Future<DocumentSnapshot> getDocument(String collection, String docId) async {
     return await _firestore.collection(collection).doc(docId).get();
   }

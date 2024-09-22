@@ -15,4 +15,7 @@ class RoutesName {
 
   // home
   static const String NEWS_DETAIL_SCREEN = 'news_detail';
+
+  // role based navigation between user & admin...
+  static const String roleBasedNavigation = '/role-based-navigation';
 }
