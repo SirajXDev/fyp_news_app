@@ -4,6 +4,8 @@ import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 import 'package:news_application_2/configs/components/divider_horizontal_widget.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
+import 'package:news_application_2/main.dart';
+import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
 import 'package:news_application_2/screens_module/bookmark/parts/emty_book_mark_widget.dart';
 import 'package:news_application_2/screens_module/widgets/categ_articles_list_tile_widget.dart';
 import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
@@ -20,34 +22,34 @@ class BookMarkView extends StatefulWidget {
 }
 
 class _BookMarkViewState extends State<BookMarkView> {
-  late BookmarkBloc _bookmarkBloc;
-  @override
-  void initState() {
-    super.initState();
-    _bookmarkBloc = context.read<BookmarkBloc>();
-    // if (_bookmarkBloc.isClosed == false) {
-    _bookmarkBloc.add(ReadDataFromBookMarkEvent());
-    // }
-  }
+  // late BookmarkBloc _bookmarkBloc;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _bookmarkBloc = context.read<BookmarkBloc>();
+  //   // if (_bookmarkBloc.isClosed == false) {
+  //   _bookmarkBloc.add(ReadDataFromBookMarkEvent());
+  //   // }
+  // }
 
-  @override
-  void dispose() {
-    // final bookmarkBloc = context.read<BookmarkBloc>();
-    // if (_bookmarkBloc.isClosed == false) {
-    _bookmarkBloc.close();
-    // }
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // final bookmarkBloc = context.read<BookmarkBloc>();
+  //   // if (_bookmarkBloc.isClosed == false) {
+  //   _bookmarkBloc.close();
+  //   // }
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: RefreshIndicator(
-        onRefresh: () async {
-          context.read<BookmarkBloc>().add(ReadDataFromBookMarkEvent());
-        },
-        child: SafeArea(
+      body: SafeArea(
+        child: BlocProvider(
+          create: (context) =>
+              BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>())
+                ..add(ReadDataFromBookMarkEvent()),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -128,8 +130,8 @@ class _BookMarkViewState extends State<BookMarkView> {
                 },
               ),
             ],
-          ).paddingSymmetric(horizontal: 20, vertical: 15),
-        ),
+          ),
+        ).paddingSymmetric(horizontal: 20, vertical: 15),
       ),
     );
   }
