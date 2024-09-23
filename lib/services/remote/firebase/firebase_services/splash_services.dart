@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/main.dart';
+import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/helper_methods/shared_preferences_helper.dart';
 
 class SplashServices {
@@ -11,26 +13,20 @@ class SplashServices {
 
     final sp = getIt<SharedPreferencesHelper>();
     try {
-      final storedRole = sp.getString('role');
+      final role = sp.getString('role');
 
       if (context.mounted) {
-        if (storedRole != null) {
-          Navigator.pushReplacementNamed(
-            context,
-            storedRole == 'admin'
-                ? RoutesName.roleBasedNavigation
-                : RoutesName.navBar,
-          );
+        if (role != null) {
+          NavigationUtils.pushReplacementNamed(
+              context, RoutesName.roleBasedNavigation);
         } else {
-          Navigator.pushReplacementNamed(context, RoutesName.login);
+          NavigationUtils.pushReplacementNamed(context, RoutesName.login);
         }
       } else {
         debugPrint("Context is not mounted");
-        // Handle this case, e.g., show error message or retry navigation
       }
     } catch (e) {
       debugPrint("Error retrieving stored role: $e");
-      // Handle error, e.g., show error message or redirect to login
     }
   }
 }

@@ -41,6 +41,7 @@ class Utils {
   static InputDecoration commonDecoration({
     required String hint,
     required BuildContext context,
+    Widget? suffixIcon,
   }) {
     return InputDecoration(
       hintText: hint,
@@ -53,6 +54,11 @@ class Utils {
       contentPadding:
           const EdgeInsets.only(left: 10, right: 5, top: 5, bottom: 5),
       border: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      errorBorder: InputBorder.none,
+      disabledBorder: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      suffixIcon: suffixIcon,
     );
   }
 } // class end
