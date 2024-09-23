@@ -52,8 +52,8 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
 
                 try {
                   await auth.signInWithCredential(crendital);
-                  if (mounted) {
-                    Navigator.pushNamed(context, RoutesName.home);
+                  if (context.mounted) {
+                    Navigator.pushNamed(context, RoutesName.navBar);
                   }
                 } catch (e) {
                   setState(
@@ -64,9 +64,11 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                   debugPrint(
                     e.toString(),
                   );
-                  context.flushBarErrorMessage(
-                    message: e.toString(),
-                  );
+                  if (context.mounted) {
+                    context.flushBarErrorMessage(
+                      message: e.toString(),
+                    );
+                  }
                 }
               },
             )

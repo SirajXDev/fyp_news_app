@@ -13,6 +13,7 @@ import 'package:news_application_2/repository/headlines/headlines_news_repo_imp.
 import 'package:news_application_2/repository/profile/base_profile_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
+import 'package:news_application_2/screens_module/admin/dashboard/home/admin_dashboard_view.dart';
 import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:news_application_2/configs/themes/themes.dart';
 import 'package:news_application_2/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:news_application_2/utils/helper_methods/shared_preferences_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'repository/profile/profile_repo_imp.dart';
@@ -51,7 +53,7 @@ void main() async {
     // You can also set default values for your environment variables here
   }
 
-  servicesLocator(); // Initializing service locator for dependency injection
+  await servicesLocator(); // Initializing service locator for dependency injection
 
   runApp(
     MultiBlocProvider(
@@ -96,7 +98,7 @@ class MyApp extends StatelessWidget {
 }
 
 // Function for initializing service locator
-void servicesLocator() {
+Future<void> servicesLocator() async {
   debugPrint('Registering HeadlinesNewsRepo');
   getIt.registerLazySingleton<HeadlinesNewsRepo>(() => HeadlinesNewsRepoImp());
   debugPrint('Registering CategNewsRepo');
@@ -109,6 +111,15 @@ void servicesLocator() {
   getIt.registerLazySingleton<BaseProfileRepository>(
       () => ProfileRepositoryImpl());
   debugPrint('Service locator initialized');
+  // Register SharedPreferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // Now SharedPreferences is initialized
+  getIt.registerLazySingleton<SharedPreferencesHelper>(
+      () => SharedPreferencesHelper(getIt<SharedPreferences>()));
+
+  debugPrint('Service locator initialized');
 }
 
 //flutter pub run build_runner build --delete-conflicting-outputs
@@ -118,15 +129,19 @@ class RoleBasedNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return
+        // Remove setState() and duplicate navigation
+        FutureBuilder(
       future: SharedPreferences.getInstance(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           String? storedRole = snapshot.data!.getString('role');
           if (storedRole == 'admin') {
-            return const AdminDashBoard();
-          } else {
+            return const AdminDashBoardView();
+          } else if (storedRole == 'user') {
             return const NavBar();
+          } else {
+            return const Center(child: Text('Role is not defined'));
           }
         } else {
           return const Center(child: CircularProgressIndicator());

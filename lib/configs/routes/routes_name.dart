@@ -2,11 +2,9 @@
 
 class RoutesName {
   static const String splash = 'splash';
-
   static const String login = 'login';
-
   static const String signUp = 'signup';
-  static const String home = 'home';
+  // static const String home = 'home';
   static const String navBar = 'nav-bar';
   //setting
   static const String profile = 'profile';
@@ -18,4 +16,7 @@ class RoutesName {
 
   // role based navigation between user & admin...
   static const String roleBasedNavigation = '/role-based-navigation';
+  static const String adminDashbaord = '/admin-dashboard';
+  static const String createNewsAdminPanel = '/create-news-admin';
+  static const String updateNewsAdminPanel = '/update-news-admin';
 }

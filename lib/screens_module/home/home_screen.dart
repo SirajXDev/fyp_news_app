@@ -12,7 +12,6 @@ import 'package:news_application_2/screens_module/home/parts/headlines_news_card
 import 'package:news_application_2/screens_module/home/parts/home_news_separator.dart';
 import 'package:news_application_2/screens_module/home/parts/pop_up_menu_widget.dart';
 import 'package:news_application_2/screens_module/categ/category_screen.dart';
-import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/bloc/news_home/news_home_bloc.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';

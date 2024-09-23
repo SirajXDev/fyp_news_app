@@ -17,5 +17,4 @@ enum ValidationType {
   username,
   email,
   phoneNo,
-  // bio,
 }

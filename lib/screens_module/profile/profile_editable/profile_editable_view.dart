@@ -306,9 +306,9 @@ class EmailTextFieldProfile extends StatelessWidget {
       controller: emailTxtEdtController,
       decoration: Utils.commonDecoration(
           hint: hint ?? 'Enter Email Address Here', context: context),
+      onChanged: onChanged,
       validator: (value) =>
           ValidationRules.validate(ValidationType.email, value),
-      onChanged: onChanged,
       style: const TextStyle(fontSize: 15),
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.next,
