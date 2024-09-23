@@ -51,10 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await sp.setString('role', role);
 
       if (mounted) {
-        if (role == 'admin') {
-          nextToRepacedNamed(RoutesName.adminDashbaord);
-        } else if (role == 'user') {
-          nextToRepacedNamed(RoutesName.navBar);
+        if (role.isEmpty) {
+          nextToRepacedNamed(RoutesName.roleBasedNavigation);
         } else {
           debugPrint('Role is not defined: $role');
         }

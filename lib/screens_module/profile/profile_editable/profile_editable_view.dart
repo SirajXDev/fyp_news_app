@@ -72,10 +72,6 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                     builder: (context, state) {
                       var profile = state.profile.data;
                       var status = state.profile.status;
-                      // _userNameTxtEdtController.text = profile?.name ?? '';
-                      // _emailTxtEdtController.text = profile?.email ?? '';
-                      // _phoneNoTxtEdtController.text = profile?.phone ?? '';
-                      // _bioTxtEdtController.text = profile?.bio ?? '';
 
                       switch (status) {
                         case Status.loading:
@@ -102,11 +98,6 @@ class _ProfileEditableViewState extends State<ProfileEditableView> {
                                             user?.phoneNumber ?? '';
                                         String id = user?.uid ?? '112';
                                         String email = user?.email ?? '';
-                                        // String username = user?.displayName ?? '';
-                                        // String? imagePath = user?.photoURL;
-                                        // File? imageFile = imgFile.value;
-
-                                        // null safty validation
 
                                         var emaiAddress = email.isEmpty
                                             ? _emailTxtEdtController

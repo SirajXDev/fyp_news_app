@@ -15,7 +15,6 @@ import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
 import 'package:news_application_2/screens_module/admin/dashboard/home/admin_dashboard_view.dart';
 import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
-import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
 import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
