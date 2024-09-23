@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/configs/components/custom_alert_dialog.dart';
+import 'package:news_application_2/main.dart';
+import 'package:news_application_2/screens_module/admin/dashboard/home/widgets/logout_admin_panel_widget.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
 import 'package:news_application_2/configs/components/heading_text_widget.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
@@ -11,6 +13,7 @@ import 'package:news_application_2/screens_module/setting/parts/custom_list_tile
 import 'package:news_application_2/screens_module/setting/parts/custom_switch_list_tile_widget.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
+import 'package:news_application_2/utils/helper_methods/shared_preferences_helper.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -82,13 +85,18 @@ class SettingView extends StatelessWidget {
                       context: context,
                       builder: (context) => customAlertDialog(
                           onAlert: () async {
+                            var prefs = getIt<SharedPreferencesHelper>();
+                            // make sure delete role before singingOff()
+                            await prefs.removeString('role');
                             FirebaseAuth auth = FirebaseAuth.instance;
-                            await auth.signOut().then((_) {
-                              if (context.mounted) {
-                                Navigator.pushReplacementNamed(
-                                    context, RoutesName.login);
-                              }
-                            });
+                            await auth.signOut();
+                            if (context.mounted) {
+                              pushNamedAndRemoveUntil(
+                                  context, RoutesName.login);
+                            }
+                            debugPrint(
+                                'logoutUID: ${auth.currentUser?.uid ?? 'UID-03'}');
+                            // debugPrint('logoutUID: ${removeString('role') }');
                           },
                           onCancel: () {
                             Navigator.of(context).pop();

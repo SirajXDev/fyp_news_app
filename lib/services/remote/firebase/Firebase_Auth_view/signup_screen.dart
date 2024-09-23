@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:news_application_2/configs/routes/routes.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
-import 'package:news_application_2/screens_module/home/home_screen.dart';
 import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/widgets/round_button.dart';
@@ -59,12 +56,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
 
         // Navigate to another screen or show a success message here
-        Navigator.pushReplacementNamed(context, RoutesName.login);
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, RoutesName.login);
+        }
       }).catchError((error) {
         setState(() {
           loading = false;
         });
-        Utils.snackBarMessage(context, error.toString(), 15);
+        if (mounted) {
+          Utils.snackBarMessage(context, error.toString(), 15);
+        }
       });
     }
   }
@@ -72,8 +73,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String validateRole(String email) {
     if (email.endsWith('@admin.com')) {
       return 'admin';
-    } else {
+    } else if (email.endsWith('@gmail.com')) {
       return 'user';
+    } else {
+      return 'moderator';
     }
   }
 
