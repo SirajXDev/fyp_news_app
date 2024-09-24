@@ -5,6 +5,7 @@ import 'package:news_application_2/models/categ_news/categ_news.dart';
 import 'package:news_application_2/screens_module/widgets/news_web_launcher.dart';
 import 'package:news_application_2/screens_module/widgets/sub_tile_news_source_widget.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
+import 'package:news_application_2/utils/helper_methods/share_helper.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -40,10 +41,20 @@ class SearchDetailScreen extends StatelessWidget {
             padding: const EdgeInsets.only(
               right: 10,
             ),
-            child: Image(
-              image: const AssetImage('assets/images/share.png'),
-              height: 22,
-              color: Theme.of(context).colorScheme.primary,
+            child: GestureDetector(
+              onTap: () async {
+                // a link or just text if is an invalid url
+                await ShareHelper.shareLink(
+                    url: '${searchedArticle?.url}',
+                    title: '${searchedArticle?.title}');
+
+                debugPrint('share it...');
+              },
+              child: Image(
+                image: const AssetImage('assets/images/share.png'),
+                height: 22,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ),
           ),
         ],

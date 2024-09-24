@@ -49,9 +49,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // Store role in shared preferences
       var sp = getIt<SharedPreferencesHelper>();
       await sp.setString('role', role);
-
+      final roleBaseNav = sp.getString('role');
       if (mounted) {
-        if (role.isEmpty || role == 'admin' || role == 'user') {
+        if (roleBaseNav != null) {
           nextToRepacedNamed(RoutesName.roleBasedNavigation);
         } else {
           debugPrint('Role is not defined: $role');

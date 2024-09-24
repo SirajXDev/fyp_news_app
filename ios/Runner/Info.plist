@@ -49,5 +49,10 @@
     <string>This app needs access to your camera.</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>This app needs access to your photo library.</string>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+    <string>http</string>
+    <string>tel</string>
+</array>
 </dict>
 </plist>

@@ -168,7 +168,7 @@ class _DateTimeTextFieldWidgetForCreateAdminViewState
 
         setState(() {
           widget.publishAtTextEdtContlr.text =
-              DateFormat('dd/MM/yyyy HH:mm').format(selectedDateTime);
+              DateFormat('dd/MM/yyyy HH:mm a').format(selectedDateTime);
         });
       }
     }

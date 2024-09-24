@@ -16,7 +16,7 @@ class SearchNewsListTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: context.mqh * 0.7,
-      child: ListView.separated(
+      child: ListView.builder(
         itemBuilder: (context, index) {
           Articles? searchArticles =
               searchCategoriesNewsModel?.articles?[index];
@@ -60,7 +60,7 @@ class SearchNewsListTiles extends StatelessWidget {
                   );
           }
         },
-        separatorBuilder: (context, index) => const DividerHorizontalWidget(),
+        // separatorBuilder: (context, index) => const DividerHorizontalWidget(),
         itemCount: searchCategoriesNewsModel?.articles?.length ?? 0,
         // shrinkWrap: true,
         physics: const BouncingScrollPhysics(),

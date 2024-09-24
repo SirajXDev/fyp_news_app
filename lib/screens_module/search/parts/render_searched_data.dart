@@ -16,8 +16,6 @@ class RenderSearchedData extends StatelessWidget {
   final ValueNotifier<String> searchTextNotifier;
   @override
   Widget build(BuildContext context) {
-    // var articleList =
-    //     context.watch<SearchNewsBloc>().state.searchNewsList.data!.articles!.where((v)=> v.title == ).;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

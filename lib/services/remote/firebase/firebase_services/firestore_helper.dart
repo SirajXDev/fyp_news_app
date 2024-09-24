@@ -24,20 +24,25 @@ class CloudFirestoreHelper {
   Future<DocumentSnapshot> getDocument(String collection, String docId) async {
     return await _firestore.collection(collection).doc(docId).get();
   }
-  // realtime update :
 
-  // // Upload profile image
-  // Future<String> uploadImage(File imagePath, String imageId) async {
-  //   final ref = _storage.ref('profileImages/$imageId.jpg');
-  //   await ref.putFile(imagePath);
-  //   return await ref.getDownloadURL();
-  // }
+  /// Updates an existing document in the specified collection.
+  Future<void> updateDocument(
+    String collection,
+    String docId,
+    Map<String, dynamic> data,
+  ) async {
+    await _firestore.collection(collection).doc(docId).update(data);
+  }
 
-  // // Delete profile image
-  // Future<void> deleteImage(String imageId) async {
-  //   final ref = _storage.ref('profileImages/$imageId.jpg');
-  //   await ref.delete();
-  // }
+  /// Deletes a document from the specified collection.
+  Future<void> deleteDocument(String collection, String docId) async {
+    await _firestore.collection(collection).doc(docId).delete();
+  }
+
+  /// Listens for real-time updates to a document in the specified collection.
+  Stream<DocumentSnapshot> listenDocument(String collection, String docId) {
+    return _firestore.collection(collection).doc(docId).snapshots();
+  }
 }// end class
 
 

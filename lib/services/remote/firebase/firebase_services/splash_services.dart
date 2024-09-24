@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/main.dart';
 import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
