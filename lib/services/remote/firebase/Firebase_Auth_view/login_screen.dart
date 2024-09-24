@@ -5,7 +5,7 @@ import 'package:news_application_2/main.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/forgot_password.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_with_phone.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/signup_screen.dart';
-import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/cloud_firestore_helper.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/helper_methods/shared_preferences_helper.dart';
 import 'package:news_application_2/widgets/round_button.dart';

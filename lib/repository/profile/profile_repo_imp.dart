@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:news_application_2/models/profile.dart';
 import 'package:news_application_2/repository/profile/base_profile_repo.dart';
-import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_helper.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/cloud_firestore_helper.dart';
 import 'package:news_application_2/services/remote/firebase/firebase_storage_helper.dart';
 
 class ProfileRepositoryImpl extends BaseProfileRepository {
@@ -34,7 +34,7 @@ class ProfileRepositoryImpl extends BaseProfileRepository {
     try {
       String imgUrl = '';
       if (imageFile != null) {
-        imgUrl = await _storageHelper.uploadFile(imageFile, id);
+        imgUrl = await _storageHelper.uploadFile('files', imageFile, id);
       }
       // else {
       //   // Retrieve existing image URL from Firestore or Firebase Storage
