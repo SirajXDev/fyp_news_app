@@ -10,12 +10,12 @@ class FirebaseStorageHelper {
       : _storage = storage ?? FirebaseStorage.instance;
 
 // Upload file
-  Future<String> uploadFile(File filePath, String fileName) async {
+  Future<String> uploadFile(String folderName, File filePath, String id) async {
     try {
       if (!await filePath.exists()) {
         throw Exception('File not found');
       }
-      final ref = _storage.ref('files/$fileName');
+      final ref = _storage.ref('$folderName/$id');
       final task = await ref.putFile(filePath);
       return await task.ref.getDownloadURL();
     } on FirebaseException catch (e) {
@@ -40,8 +40,8 @@ class FirebaseStorageHelper {
   }
 
   // Get file URL
-  Future<String> getFileUrl(String fileName) async {
-    final ref = _storage.ref('files/$fileName');
+  Future<String> getFileUrl(String id) async {
+    final ref = _storage.ref('files/$id');
     return await ref.getDownloadURL();
   }
 }// class end

@@ -19,6 +19,16 @@ class CreateNewsAdminModel {
     this.publishedAt,
   });
 
+  factory CreateNewsAdminModel.empty() => CreateNewsAdminModel(
+        id: '',
+        title: '',
+        desc: '',
+        author: '',
+        source: '',
+        image: '',
+        publishedAt: '',
+      );
+
   factory CreateNewsAdminModel.fromJson(Map<String, dynamic> json) {
     return CreateNewsAdminModel(
       id: json['id'],

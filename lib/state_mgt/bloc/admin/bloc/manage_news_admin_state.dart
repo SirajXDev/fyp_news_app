@@ -1,10 +1,15 @@
 part of 'manage_news_admin_bloc.dart';
 
-sealed class ManageNewsAdminState extends Equatable {
-  const ManageNewsAdminState();
-  
-  @override
-  List<Object> get props => [];
-}
+class ManageNewsAdminState extends Equatable {
+  const ManageNewsAdminState({required this.createNewsAdminModel});
+  final ApiResponse<List<CreateNewsAdminModel>> createNewsAdminModel;
+  ManageNewsAdminState copyWith(
+      {ApiResponse<List<CreateNewsAdminModel>>? createNewsAdminModel}) {
+    return ManageNewsAdminState(
+        createNewsAdminModel:
+            createNewsAdminModel ?? this.createNewsAdminModel);
+  }
 
-final class ManageNewsAdminInitial extends ManageNewsAdminState {}
+  @override
+  List<Object> get props => [createNewsAdminModel];
+}
