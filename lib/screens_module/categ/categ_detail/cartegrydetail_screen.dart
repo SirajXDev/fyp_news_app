@@ -2,15 +2,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_application_2/configs/color/color.dart';
 import 'package:news_application_2/configs/components/custom_icon_widget.dart';
 import 'package:news_application_2/main.dart';
 import 'package:news_application_2/models/categ_news/categ_news.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
 import 'package:news_application_2/screens_module/widgets/news_web_launcher.dart';
 import 'package:news_application_2/screens_module/widgets/sub_tile_news_source_widget.dart';
-import 'package:news_application_2/state_mgt/bookmark/bookmark_bloc.dart';
+import 'package:news_application_2/services/local/hive/adaptor/book_mark_adaptor.dart';
+import 'package:news_application_2/state_mgt/bloc/bookmark/bookmark_bloc.dart';
 
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
+import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/helper_methods/share_helper.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -150,14 +153,41 @@ class CategoryNewsDetailScreen extends StatelessWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // final bookmarkBloc = context.read<BookmarkBloc>();
-            // final articleBookMarkAdaptor = BookMarkHive();
+            String id = DateTime.now().toIso8601String();
 
-            // if (!bookmarkBloc.state.bookMarkList
-            //     .contains(articleBookMarkAdaptor)) {
-            //   bookmarkBloc
-            //       .add(AddToBookMarkEvent(article: articleBookMarkAdaptor));
-            // }
+            final bookMark = BookMarkHive()
+              ..urlToImage = article.urlToImage
+              ..title = article.title
+              ..description = article.description
+              ..author = article.author
+              ..source = article.source?.name
+              ..publishedAt = article.publishedAt
+              ..id = id;
+
+            final isFavorite = context
+                .read<BookmarkBloc>()
+                .baseBookMarkRepo
+                .isFavorite(article.publishedAt!);
+
+            if (isFavorite) {
+              context.read<BookmarkBloc>().add(
+                    RemoveFromBookMarkEvent(
+                      key: bookMark.publishedAt!,
+                    ),
+                  );
+              context.flushBarSuccessMessage(
+                message: "Removed From Bookmarks! ${bookMark.title}",
+                color: AppColors.red,
+              );
+            } else {
+              context.read<BookmarkBloc>().add(
+                    AddToBookMarkEvent(article: bookMark),
+                  );
+              context.flushBarSuccessMessage(
+                message: "Added To Bookmarks! ${bookMark.title}",
+              );
+            }
+            debugPrint('bookMarkTitle: $bookMark');
           },
           backgroundColor:
               Theme.of(context).floatingActionButtonTheme.backgroundColor,
@@ -167,9 +197,11 @@ class CategoryNewsDetailScreen extends StatelessWidget {
               bool isFavourite = state.bookMarkList
                   .any((categArticle) => categArticle.title == article.title);
               return CustomIconWidget(
-                icon: isFavourite
-                    ? CupertinoIcons.bookmark
-                    : CupertinoIcons.bookmark_fill,
+                icon: context.watch<BookmarkBloc>().state.bookMarkList.any(
+                        (bookmark) =>
+                            bookmark.publishedAt == article.publishedAt)
+                    ? CupertinoIcons.bookmark_fill
+                    : CupertinoIcons.bookmark,
                 size: 22,
                 color: Theme.of(context).colorScheme.primary,
               );

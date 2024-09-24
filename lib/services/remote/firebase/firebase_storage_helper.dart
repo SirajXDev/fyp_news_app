@@ -33,17 +33,11 @@ class FirebaseStorageHelper {
     }
   }
 
-  // // Download file
-  // Future<Uint8List?> downloadFile(String fileName) async {
-  //   final ref = _storage.ref('files/$fileName');
-  //   return await ref.getData();
-  // }
-
   // // Delete file
-  // Future<void> deleteFile(String fileName) async {
-  //   final ref = _storage.ref('files/$fileName');
-  //   await ref.delete();
-  // }
+  Future<void> deleteFile(String id) async {
+    final ref = _storage.ref('files/$id');
+    await ref.delete();
+  }
 
   // Get file URL
   Future<String> getFileUrl(String fileName) async {
