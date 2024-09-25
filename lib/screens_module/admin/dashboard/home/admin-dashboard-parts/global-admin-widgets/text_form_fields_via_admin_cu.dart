@@ -113,11 +113,11 @@ class _TextFormFieldsViaAdminCreateAdminViewState
           ),
           SizedBox(height: context.mqh * .02),
           // publishedAt -> The date and time that the article was published, in UTC (+000)
-          const TitleTextThemeWidget(title: 'publishedAt', size: 14),
-          SizedBox(height: context.mqh * .004),
-          DateTimeTextFieldWidgetForCreateAdminView(
-            publishAtTextEdtContlr: _publishAtTextEdtContlr,
-          ),
+
+          // SizedBox(height: context.mqh * .004),
+          // DateTimeTextFieldWidgetForCreateAdminView(
+          //   publishAtTextEdtContlr: _publishAtTextEdtContlr,
+          // ),
           //height
           SizedBox(height: context.mqh * .04),
           //submit btn here
@@ -167,7 +167,8 @@ class _SubmitFormButtonCreateNewsAdminViewState
 
   @override
   Widget build(BuildContext context) {
-    return RoundButton(
+    return
+      RoundButton(
       title: 'Submit',
       onTap: () {
         if (widget.formKey.currentState!.validate()) {
@@ -193,6 +194,7 @@ class _SubmitFormButtonCreateNewsAdminViewState
                   image: widget.imageFile.value?.path,
                 ),
               );
+
           debugPrint('publishedAtSubmit: ${widget.publishedAt.text}');
           context.flushBarSuccessMessage(
               message: 'Form submitted successfully!');

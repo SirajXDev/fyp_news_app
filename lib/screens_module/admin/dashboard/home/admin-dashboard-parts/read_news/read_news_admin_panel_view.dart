@@ -81,13 +81,16 @@ class _ReadNewsAdminPanelViewState extends State<ReadNewsAdminPanelView> {
                                   message:
                                       "Removed from Bookmarks!:\t${data.publishedAt}",
                                   color: AppColors.red);
-                            },
+
+
+                            },// ..........
                             child: ReadArticlesWidgetAdminPanel(
-                              imageUrl: data.image,
-                              title: data.title,
-                              desc: data.desc,
-                              author: data.author,
-                              source: data.source,
+                              createNewsAdminModel: data,
+                              // imageUrl: data.image,
+                              // title: data.title,
+                              // desc: data.desc,
+                              // author: data.author,
+                              // source: data.source,
                               timeAgo: dt,
                             ),
                           );

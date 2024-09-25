@@ -12,22 +12,19 @@ import 'package:news_application_2/utils/extensions/widget_extension.dart';
 import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/utils.dart';
 
+import '../../../../../../../models/news_create_admin.dart';
+
 class ReadArticlesWidgetAdminPanel extends StatelessWidget {
   const ReadArticlesWidgetAdminPanel({
-    super.key,
-    this.imageUrl,
-    this.title,
-    this.desc,
-    this.author,
-    this.source,
-    this.timeAgo,
-  });
+    super.key, required this.createNewsAdminModel, this.timeAgo,
 
-  final String? imageUrl;
-  final String? title;
-  final String? desc;
-  final String? author;
-  final String? source;
+  });
+final CreateNewsAdminModel createNewsAdminModel;
+  // final String? imageUrl;
+  // final String? title;
+  // final String? desc;
+  // final String? author;
+  // final String? source;
   final String? timeAgo;
 
 
@@ -38,7 +35,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_isExceptionalSource(imageUrl)) {
+    if (_isExceptionalSource(createNewsAdminModel.image)) {
       return const SizedBox.shrink();
     }
 
@@ -56,12 +53,12 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
   }
 
   Widget _buildImage(BuildContext context) {
-    if (imageUrl == null) return const SizedBox.shrink();
+    if (createNewsAdminModel.image == null) return const SizedBox.shrink();
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(15),
       child: CachedNetworkImage(
-        imageUrl: imageUrl ?? '',
+        imageUrl: createNewsAdminModel.image ?? '',
         fit: BoxFit.cover,
         height: context.mqh * 0.14,
         width: context.mqw * 0.26,
@@ -107,7 +104,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
       right: 3,
       child: GestureDetector(
         onTap: () =>
-            NavigationUtils.pushNamed(context, RoutesName.updateNewsAdminPanel),
+            Navigator.pushNamed(context, RoutesName.updateNewsAdminPanel, arguments: createNewsAdminModel),
         child: Container(
           padding: const EdgeInsets.all(3.0),
           decoration: BoxDecoration(
@@ -121,14 +118,14 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
   }
 
   Widget _buildAuthorChip(BuildContext context) {
-    if (author == null) return const SizedBox.shrink();
+    if (createNewsAdminModel.author == null) return const SizedBox.shrink();
 
     return Flexible(
       flex: 1,
       child: CustomChip(
         child: BodyTextThemeWidget(
           title:
-              author!.length > 8 ? author!.substring(0, 8) : author ?? 'author',
+          createNewsAdminModel.author!.length > 8 ? createNewsAdminModel.author!.substring(0, 8) : createNewsAdminModel.author ?? 'author',
           size: 12,
         ),
       ),
@@ -139,7 +136,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
     return Expanded(
       flex: 2,
       child: TitleTextThemeWidget(
-        title: title ?? '',
+        title: createNewsAdminModel.title ?? '',
         size: 16,
       ),
     );
@@ -153,7 +150,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
           child: CustomChip(
             color: AppColors.greenLight,
             child: BodyTextThemeWidget(
-              title: source ?? '',
+              title: createNewsAdminModel.source ?? '',
               size: 12,
             ),
           ),

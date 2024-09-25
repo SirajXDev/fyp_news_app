@@ -80,7 +80,10 @@ class Routes {
 
       case RoutesName.updateNewsAdminPanel:
         return MaterialPageRoute(
-          builder: (BuildContext context) => UpdateNewsAdminPanelView(),
+          settings: RouteSettings(
+            arguments: settings.arguments, // Pass the arguments here
+          ),
+          builder: (BuildContext context) => UpdateNewsAdminPanelView(createNewsAdminModel: settings.arguments as CreateNewsAdminModel,),     //UpdateNewsAdminPanelView()
         );
 
       case RoutesName.PERSONALIZE_NEWS_DETAIL:

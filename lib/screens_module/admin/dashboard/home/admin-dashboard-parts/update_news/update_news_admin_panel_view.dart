@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:news_application_2/configs/components/divider_horizontal_widget.dart';
+import 'package:news_application_2/models/news_create_admin.dart';
 import 'package:news_application_2/screens_module/admin/dashboard/home/admin-dashboard-parts/global-admin-widgets/pick_image_via_admin_cu.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/utils.dart';
@@ -10,7 +11,8 @@ import '../global-admin-widgets/text_form_fields_via_admin_cu.dart';
 import 'parts/text_field_update_admin_view.dart';
 
 class UpdateNewsAdminPanelView extends StatelessWidget {
-  UpdateNewsAdminPanelView({super.key});
+  UpdateNewsAdminPanelView({super.key, required this.createNewsAdminModel});
+  final CreateNewsAdminModel createNewsAdminModel;
   ValueNotifier<File?> imgFile = ValueNotifier(null);
 
   @override
@@ -21,7 +23,7 @@ class UpdateNewsAdminPanelView extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.outline,
           title: const TitleTextThemeWidget(
-            title: 'Create Personalize News Admin Panel',
+            title: 'Update Personalize News Admin Panel',
             size: 16,
           ),
           elevation: 1,
@@ -55,7 +57,7 @@ class UpdateNewsAdminPanelView extends StatelessWidget {
                 //height
                 SizedBox(height: context.mqh * .03),
                 //fields // in this widget clc will performs
-                TextFormFieldsViaUpdateAdminView(imgFile: imgFile),
+                TextFormFieldsViaUpdateAdminView(imgFile: imgFile, createNewsAdminModel: createNewsAdminModel,),
               ],
             ),
           ),

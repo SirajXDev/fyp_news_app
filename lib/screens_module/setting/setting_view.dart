@@ -51,15 +51,15 @@ class SettingView extends StatelessWidget {
                   ),
                 ),
                 15.h,
-                CustomSwitchListTileWidget(
-                  leadingIcon: CupertinoIcons.bell,
-                  title: 'Notification',
-                  switchValue: true,
-                  onChanged: (bool v) {},
-                  isThemeSwitchSelected: false,
-                  // trailIcon: null,
-                ),
-                15.h,
+                // CustomSwitchListTileWidget(
+                //   leadingIcon: CupertinoIcons.bell,
+                //   title: 'Notification',
+                //   switchValue: true,
+                //   onChanged: (bool v) {},
+                //   isThemeSwitchSelected: false,
+                //   // trailIcon: null,
+                // ),
+                // 15.h,
 
                 CustomSwitchListTileWidget(
                   leadingIcon: CupertinoIcons.moon,

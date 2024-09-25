@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_application_2/configs/components/date_time_text_field_widget.dart';
+import 'package:news_application_2/models/news_create_admin.dart';
 
 import 'package:news_application_2/state_mgt/bloc/admin/bloc/manage_news_admin_bloc.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
@@ -15,8 +16,9 @@ import 'package:news_application_2/utils/validation/news_validator.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
 class TextFormFieldsViaUpdateAdminView extends StatefulWidget {
-  const TextFormFieldsViaUpdateAdminView({super.key, required this.imgFile});
+  const TextFormFieldsViaUpdateAdminView({super.key, required this.imgFile, required this.createNewsAdminModel});
   final ValueNotifier<File?> imgFile;
+  final CreateNewsAdminModel createNewsAdminModel;
   @override
   State<TextFormFieldsViaUpdateAdminView> createState() =>
       _TextFormFieldsViaAdminCreateAdminViewState();
@@ -119,7 +121,8 @@ class _TextFormFieldsViaAdminCreateAdminViewState
               desc: _discTextEdtContlrUpdate,
               author: _authorTextEdtContlrUpdate,
               source: _sourceTextEdtContlrUpdate,
-              imageFile: widget.imgFile),
+              imageFile: widget.imgFile, createNewsAdminModel: widget.createNewsAdminModel,
+          ),
           //height
           SizedBox(height: context.mqh * .004),
         ],
@@ -136,7 +139,7 @@ class SubmitFormButtonCreateNewsAdminView extends StatefulWidget {
     required this.desc,
     required this.author,
     required this.source,
-    required this.imageFile,
+    required this.imageFile, required this.createNewsAdminModel,
   });
   final GlobalKey<FormState> formKey;
   final TextEditingController title;
@@ -144,6 +147,8 @@ class SubmitFormButtonCreateNewsAdminView extends StatefulWidget {
   final TextEditingController author;
   final TextEditingController source;
   final ValueNotifier<File?> imageFile;
+  final CreateNewsAdminModel createNewsAdminModel;
+
 
   @override
   State<SubmitFormButtonCreateNewsAdminView> createState() =>
@@ -158,45 +163,47 @@ class _SubmitFormButtonCreateNewsAdminViewState
   Widget build(BuildContext context) {
     return RoundButton(
       title: 'Submit',
+      loading: _isDataLoading,
       onTap: () {
         if (widget.formKey.currentState!.validate()) {
           // Form is valid
-          // DialogUtils.showSuccessSnackBar(
-          //     context, 'Form submitted successfully!');
           String uid = FirebaseAuth.instance.currentUser?.uid ?? 'uid';
           debugPrint('submit: ${widget.imageFile}');
 
           if (widget.imageFile.value?.path == null) return;
 
-          // setState(() {
-          //   _isDataLoading = true;
-          // });
+          // Set loading state to true
+          setState(() {
+            _isDataLoading = true; // Start loading
+          });
+
+          // Dispatch the event to the Bloc
           context.read<ManageNewsAdminBloc>().add(
-                UpdateNewsAdminDashboard(
-                  id: uid,
-                  title: widget.title.text,
-                  desc: widget.desc.text,
-                  author: widget.author.text,
-                  source: widget.source.text,
-                  publishedAt: Timestamp.now(), // Convert DateTime to Timestamp
-                  image: widget.imageFile.value?.path,
-                ),
-              );
+            UpdateNewsAdminDashboard(
+              id: widget.createNewsAdminModel.id,
+              title: widget.title.text,
+              desc: widget.desc.text,
+              author: widget.author.text,
+              source: widget.source.text,
+              publishedAt: Timestamp.now(), // Convert DateTime to Timestamp
+              image: widget.imageFile.value?.path,
+            ),
+          );
           context.flushBarSuccessMessage(
               message: 'Form submitted successfully!');
-
-          // NavigationUtils.popNavigation(context);
-
-          // setState(() {
-          //   _isDataLoading = false;
-          // });
+          // Set loading state to true
+          setState(() {
+            _isDataLoading = false; // Start loading
+          });
         } else {
           context.flushBarErrorMessage(
               message: 'Please fill in all required fields');
+          // Set loading state to true
+          setState(() {
+            _isDataLoading = false; // Start loading
+          });
         }
       },
       color: Theme.of(context).colorScheme.onPrimary,
-      // loading: _isDataLoading,
-    );
-  }
+    );  }
 }

@@ -49,10 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
             size: 20,
           ),
           centerTitle: false,
-          actions: const [
+          actions:  [
             Padding(
               padding: EdgeInsets.only(right: 10),
-              child: CustomNotificationCountWidget(icon: CupertinoIcons.bell),
+              child: GestureDetector(onTap: () => NavigationUtils.pushNamed(context, RoutesName.profile), child: CustomIconWidget(icon: CupertinoIcons.profile_circled, size: 24,)),
             ),
           ],
         ),
