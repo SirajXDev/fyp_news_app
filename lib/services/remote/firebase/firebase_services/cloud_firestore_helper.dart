@@ -20,6 +20,12 @@ class CloudFirestoreHelper {
         );
   }
 
+  // Custom set method
+  Future<DocumentReference<Map<String, dynamic>>> addDocument(
+      String collection, Map<String, dynamic> data) async {
+    return await _firestore.collection(collection).add(data);
+  }
+
   /// one time get/fetch data
   Future<DocumentSnapshot> getDocument(String collection, String docId) async {
     return await _firestore.collection(collection).doc(docId).get();

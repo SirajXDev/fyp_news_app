@@ -24,11 +24,19 @@ class ManageNewsAdminBloc
       Emitter<ManageNewsAdminState> emit) async {
     try {
       // Convert DateTime to Timestamp
-      await _baseAdminCRUdRepo.createNewsAdminToDB(event.createNewsAdminModel);
-      CreateNewsAdminModel fetchData = await _baseAdminCRUdRepo
-          .readNewsAdminToDB(event.createNewsAdminModel.id);
+
+      await _baseAdminCRUdRepo.createNewsAdminToDB(
+          event.id,
+          event.image,
+          event.title,
+          event.desc,
+          event.author,
+          event.source,
+          event.publishedAt);
+      List<CreateNewsAdminModel> fetchData =
+          await _baseAdminCRUdRepo.readNewsAdminToDB();
       emit(state.copyWith(
-          createNewsAdminModel: ApiResponse.completed([fetchData])));
+          createNewsAdminModel: ApiResponse.completed(fetchData)));
     } catch (e) {
       emit(state.copyWith(createNewsAdminModel: ApiResponse.error('$e')));
       Logger.logError('_addNewsAdminMethod: $e');
@@ -38,10 +46,10 @@ class ManageNewsAdminBloc
   Future<void> _fetchNewsAdminMethod(
       FetchNewsAdminDashboard event, Emitter<ManageNewsAdminState> emit) async {
     try {
-      CreateNewsAdminModel fetchData =
-          await _baseAdminCRUdRepo.readNewsAdminToDB(event.docId);
+      List<CreateNewsAdminModel> fetchData =
+          await _baseAdminCRUdRepo.readNewsAdminToDB();
       emit(state.copyWith(
-          createNewsAdminModel: ApiResponse.completed([fetchData])));
+          createNewsAdminModel: ApiResponse.completed(fetchData)));
     } catch (e) {
       emit(state.copyWith(createNewsAdminModel: ApiResponse.error('$e')));
       Logger.logError('_fetchNewsAdminMethod: $e');
@@ -51,11 +59,23 @@ class ManageNewsAdminBloc
   Future<void> _modifyNewsAdminMethod(UpdateNewsAdminDashboard event,
       Emitter<ManageNewsAdminState> emit) async {
     try {
-      _baseAdminCRUdRepo.updateNewsAdminToDB(event.updateNewsAdminModel);
-      CreateNewsAdminModel fetchData = await _baseAdminCRUdRepo
-          .readNewsAdminToDB(event.updateNewsAdminModel.id);
+      String imageId = DateTime.now().millisecondsSinceEpoch.toString();
+
+      var updateNewsAdminModel = CreateNewsAdminModel(
+        id: event.id,
+        image: event.image,
+        title: event.title,
+        desc: event.desc,
+        source: event.source,
+        author: event.author,
+        publishedAt: event.publishedAt,
+        imageId: imageId,
+      );
+      _baseAdminCRUdRepo.updateNewsAdminToDB(updateNewsAdminModel);
+      List<CreateNewsAdminModel> fetchData =
+          await _baseAdminCRUdRepo.readNewsAdminToDB();
       emit(state.copyWith(
-          createNewsAdminModel: ApiResponse.completed([fetchData])));
+          createNewsAdminModel: ApiResponse.completed(fetchData)));
     } catch (e) {
       emit(state.copyWith(createNewsAdminModel: ApiResponse.error('$e')));
       Logger.logError('_fetchNewsAdminMethod: $e');
@@ -65,11 +85,11 @@ class ManageNewsAdminBloc
   Future<void> _removeNewsAdminMethod(DeleteNewsAdminDashboard event,
       Emitter<ManageNewsAdminState> emit) async {
     try {
-      await _baseAdminCRUdRepo.deleteNewsAdminToDB(event.docId);
-      CreateNewsAdminModel fetchData =
-          await _baseAdminCRUdRepo.readNewsAdminToDB(event.docId);
+      await _baseAdminCRUdRepo.deleteNewsAdminToDB(event.deleteNewsAdminModel);
+      List<CreateNewsAdminModel> fetchData =
+          await _baseAdminCRUdRepo.readNewsAdminToDB();
       emit(state.copyWith(
-          createNewsAdminModel: ApiResponse.completed([fetchData])));
+          createNewsAdminModel: ApiResponse.completed(fetchData)));
     } catch (e) {
       emit(state.copyWith(createNewsAdminModel: ApiResponse.error('$e')));
       Logger.logError('_fetchNewsAdminMethod: $e');

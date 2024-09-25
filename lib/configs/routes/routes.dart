@@ -76,7 +76,7 @@ class Routes {
 
       case RoutesName.updateNewsAdminPanel:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const UpdateNewsAdminPanelView(),
+          builder: (BuildContext context) => UpdateNewsAdminPanelView(),
         );
 
       default:

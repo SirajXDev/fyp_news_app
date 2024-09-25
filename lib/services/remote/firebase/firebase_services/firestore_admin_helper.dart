@@ -7,65 +7,38 @@ class FirestoreAdminHelper {
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
   // Custom set method for subcollection
-  Future<void> setSubDocument(
+  Future<void> addDocumentAdmin(
     String collectionName,
-    String collectionId,
-    String subCollectionName,
-    String subCollectionId,
     Map<String, dynamic> data,
   ) async {
-    await _firestore
-        .collection(collectionName)
-        .doc(collectionId)
-        .collection(subCollectionName)
-        .doc(subCollectionId)
-        .set(data);
+    final docRef = _firestore.collection(collectionName).doc();
+    final docId = docRef.id;
+    data['docId'] = docId;
+    await docRef.set(data);
   }
 
   // Get subdocument
-  Future<DocumentSnapshot> getSubDocument(
+  Future<QuerySnapshot<Map<String, dynamic>>> getDocumentSnaphotAdmin(
     String collectionName,
-    String collectionId,
-    String subCollectionName,
-    String subCollectionId,
   ) async {
-    return await _firestore
-        .collection(collectionName)
-        .doc(collectionId)
-        .collection(subCollectionName)
-        .doc(subCollectionId)
-        .get();
+    return await _firestore.collection(collectionName).get();
   }
 
   // Update subdocument
-  Future<void> updateSubDocument(
+  Future<void> updateDocumentSnapshotAdmin(
     String collectionName,
     String collectionId,
-    String subCollectionName,
-    String subCollectionId,
     Map<String, dynamic> data,
   ) async {
-    await _firestore
-        .collection(collectionName)
-        .doc(collectionId)
-        .collection(subCollectionName)
-        .doc(subCollectionId)
-        .update(data);
+    await _firestore.collection(collectionName).doc(collectionId).update(data);
   }
 
   // Delete subdocument
-  Future<void> deleteSubDocument(
+  Future<void> deleteSubDocumentSnapshotAdmin(
     String collectionName,
     String collectionId,
-    String subCollectionName,
-    String subCollectionId,
   ) async {
-    await _firestore
-        .collection(collectionName)
-        .doc(collectionId)
-        .collection(subCollectionName)
-        .doc(subCollectionId)
-        .delete();
+    await _firestore.collection(collectionName).doc(collectionId).delete();
   }
 
   // Listen for real-time updates to a subdocument

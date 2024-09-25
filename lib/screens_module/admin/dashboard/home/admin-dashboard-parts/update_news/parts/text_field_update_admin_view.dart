@@ -4,44 +4,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:news_application_2/configs/components/date_time_text_field_widget.dart';
 
 import 'package:news_application_2/state_mgt/bloc/admin/bloc/manage_news_admin_bloc.dart';
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
-import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/utils/validation/news_validator.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
-class TextFormFieldsViaAdminCreateAdminView extends StatefulWidget {
-  const TextFormFieldsViaAdminCreateAdminView(
-      {super.key, required this.imgFile});
+class TextFormFieldsViaUpdateAdminView extends StatefulWidget {
+  const TextFormFieldsViaUpdateAdminView({super.key, required this.imgFile});
   final ValueNotifier<File?> imgFile;
   @override
-  State<TextFormFieldsViaAdminCreateAdminView> createState() =>
+  State<TextFormFieldsViaUpdateAdminView> createState() =>
       _TextFormFieldsViaAdminCreateAdminViewState();
 }
 
 class _TextFormFieldsViaAdminCreateAdminViewState
-    extends State<TextFormFieldsViaAdminCreateAdminView> {
+    extends State<TextFormFieldsViaUpdateAdminView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _titleTextEdtContlr = TextEditingController();
-  final TextEditingController _discTextEdtContlr = TextEditingController();
-  final TextEditingController _authorTextEdtContlr = TextEditingController();
-  final TextEditingController _sourceTextEdtContlr = TextEditingController();
-  final TextEditingController _publishAtTextEdtContlr = TextEditingController();
+  final TextEditingController _titleTextEdtContlrUpdate =
+      TextEditingController();
+  final TextEditingController _discTextEdtContlrUpdate =
+      TextEditingController();
+  final TextEditingController _authorTextEdtContlrUpdate =
+      TextEditingController();
+  final TextEditingController _sourceTextEdtContlrUpdate =
+      TextEditingController();
 
   @override
   void dispose() {
-    _titleTextEdtContlr.dispose();
-    _discTextEdtContlr.dispose();
-    _authorTextEdtContlr.dispose();
-    _sourceTextEdtContlr.dispose();
-    _publishAtTextEdtContlr.dispose();
+    _titleTextEdtContlrUpdate.dispose();
+    _discTextEdtContlrUpdate.dispose();
+    _authorTextEdtContlrUpdate.dispose();
+    _sourceTextEdtContlrUpdate.dispose();
     super.dispose();
   }
 
@@ -56,7 +55,7 @@ class _TextFormFieldsViaAdminCreateAdminViewState
           const TitleTextThemeWidget(title: 'Title', size: 14),
           SizedBox(height: context.mqh * .004),
           TextFormField(
-            controller: _titleTextEdtContlr,
+            controller: _titleTextEdtContlrUpdate,
             decoration: Utils.commonDecoration(
                 hint: 'Enter Title Here?', context: context),
             // style: const TextStyle(fontSize: 15),
@@ -73,7 +72,7 @@ class _TextFormFieldsViaAdminCreateAdminViewState
           SizedBox(
             height: context.mqh * .1,
             child: TextFormField(
-              controller: _discTextEdtContlr,
+              controller: _discTextEdtContlrUpdate,
               minLines: null,
               maxLines: null,
               expands:
@@ -91,7 +90,7 @@ class _TextFormFieldsViaAdminCreateAdminViewState
           const TitleTextThemeWidget(title: 'Author', size: 14),
           SizedBox(height: context.mqh * .004),
           TextFormField(
-            controller: _authorTextEdtContlr,
+            controller: _authorTextEdtContlrUpdate,
             decoration: Utils.commonDecoration(
                 hint: 'Enter Author Name Here?', context: context),
             validator: (value) => NewsValidators.authorValid(value),
@@ -104,30 +103,22 @@ class _TextFormFieldsViaAdminCreateAdminViewState
           const TitleTextThemeWidget(title: 'Source Name', size: 14),
           SizedBox(height: context.mqh * .004),
           TextFormField(
-            controller: _sourceTextEdtContlr,
+            controller: _sourceTextEdtContlrUpdate,
             decoration: Utils.commonDecoration(
                 hint: 'Enter Source Name Here?', context: context),
             validator: (value) => NewsValidators.sourceValid(value),
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
           ),
-          SizedBox(height: context.mqh * .02),
-          // publishedAt -> The date and time that the article was published, in UTC (+000)
-          const TitleTextThemeWidget(title: 'publishedAt', size: 14),
-          SizedBox(height: context.mqh * .004),
-          DateTimeTextFieldWidgetForCreateAdminView(
-            publishAtTextEdtContlr: _publishAtTextEdtContlr,
-          ),
           //height
           SizedBox(height: context.mqh * .04),
           //submit btn here
           SubmitFormButtonCreateNewsAdminView(
               formKey: _formKey,
-              title: _titleTextEdtContlr,
-              desc: _discTextEdtContlr,
-              author: _authorTextEdtContlr,
-              source: _sourceTextEdtContlr,
-              publishedAt: _publishAtTextEdtContlr,
+              title: _titleTextEdtContlrUpdate,
+              desc: _discTextEdtContlrUpdate,
+              author: _authorTextEdtContlrUpdate,
+              source: _sourceTextEdtContlrUpdate,
               imageFile: widget.imgFile),
           //height
           SizedBox(height: context.mqh * .004),
@@ -145,7 +136,6 @@ class SubmitFormButtonCreateNewsAdminView extends StatefulWidget {
     required this.desc,
     required this.author,
     required this.source,
-    required this.publishedAt,
     required this.imageFile,
   });
   final GlobalKey<FormState> formKey;
@@ -153,7 +143,6 @@ class SubmitFormButtonCreateNewsAdminView extends StatefulWidget {
   final TextEditingController desc;
   final TextEditingController author;
   final TextEditingController source;
-  final TextEditingController publishedAt;
   final ValueNotifier<File?> imageFile;
 
   @override
@@ -183,7 +172,7 @@ class _SubmitFormButtonCreateNewsAdminViewState
             _isDataLoading = true;
           });
           context.read<ManageNewsAdminBloc>().add(
-                CreateNewsAdminDashboard(
+                UpdateNewsAdminDashboard(
                   id: uid,
                   title: widget.title.text,
                   desc: widget.desc.text,
@@ -193,7 +182,6 @@ class _SubmitFormButtonCreateNewsAdminViewState
                   image: widget.imageFile.value?.path,
                 ),
               );
-          debugPrint('publishedAtSubmit: ${widget.publishedAt.text}');
           context.flushBarSuccessMessage(
               message: 'Form submitted successfully!');
 
