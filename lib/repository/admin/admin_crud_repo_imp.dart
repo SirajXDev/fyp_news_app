@@ -39,7 +39,7 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
         Logger.logImageUploaded(imageFile);
       }
 
-      // Save news article to Firestore
+      // Save news article to Firestore jsdjshdjhdj
       await _firestoreHelper.setDocument(
         _collectionName,
         createNewsAdminModel.id,
