@@ -13,7 +13,7 @@ class FirestoreAdminHelper {
   ) async {
     final docRef = _firestore.collection(collectionName).doc();
     final docId = docRef.id;
-    data['docId'] = docId;
+    data['id'] = docId;
     await docRef.set(data);
   }
 
