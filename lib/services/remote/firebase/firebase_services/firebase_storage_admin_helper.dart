@@ -17,7 +17,7 @@ class FirebaseStorageAdminHelper {
   ) async {
     // String subFolderId = DateTime.now().millisecondsSinceEpoch.toString();
     Reference storageReference =
-        _storage.ref('$folderName/$folderId/$subFolderName/$subFolderId');
+        _storage.ref('$folderName/$subFolderId');
     UploadTask uploadTask = storageReference.putFile(filePath);
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     return await taskSnapshot.ref.getDownloadURL();
@@ -31,7 +31,7 @@ class FirebaseStorageAdminHelper {
     String subFolderId,
   ) async {
     Reference storageReference =
-        _storage.ref('$folderName/$folderId/$subFolderName/$subFolderId');
+        _storage.ref('$folderName/$subFolderId');
     await storageReference.delete();
   }
 
@@ -43,7 +43,7 @@ class FirebaseStorageAdminHelper {
     String subFolderId,
   ) async {
     Reference storageReference =
-        _storage.ref('$folderName/$folderId/$subFolderName/$subFolderId');
+        _storage.ref('$folderName');
     return await storageReference.getDownloadURL();
   }
 
@@ -58,7 +58,7 @@ class FirebaseStorageAdminHelper {
     for (File filePath in filePaths) {
       String subFolderId = DateTime.now().millisecondsSinceEpoch.toString();
       Reference storageReference =
-          _storage.ref('$folderName/$folderId/$subFolderName/$subFolderId');
+          _storage.ref('$folderName');
       UploadTask uploadTask = storageReference.putFile(filePath);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
