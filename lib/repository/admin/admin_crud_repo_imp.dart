@@ -7,7 +7,8 @@ import 'package:news_application_2/services/remote/firebase/firebase_services/cl
 import 'package:news_application_2/services/remote/firebase/firebase_storage_helper.dart';
 
 class AdminCrudRepoImp extends BaseAdminCRUdRepo {
-  static const _collectionName = 'admin-dashboard';
+  static const _collectionName = 'NewsArticlesAdmin';
+  // static const _subCollectionName = 'news-articles';
 
   final CloudFirestoreHelper _firestoreHelper;
   final FirebaseStorageHelper _storageHelper;
@@ -19,7 +20,6 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
         _storageHelper = storageHelper ?? FirebaseStorageHelper();
 
   /// Creates a news article in the database
-  /// Creates a news article in the database
   @override
   Future<void> createNewsAdminToDB(
     CreateNewsAdminModel createNewsAdminModel,
@@ -29,6 +29,7 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
       final imageFile = _validateImageFile(createNewsAdminModel.image);
 
       // Upload image to storage
+
       if (imageFile != null) {
         await _storageHelper.uploadFile(
           _collectionName,
@@ -90,15 +91,25 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
   /// Updates a news article in the database
   @override
   Future<void> updateNewsAdminToDB(
-    String collection,
-    String docId,
     CreateNewsAdminModel createNewsAdminModel,
   ) async {
     try {
+      // Validate image file
+      final imageFile = _validateImageFile(createNewsAdminModel.image);
+
+      // Upload image to storage
+      if (imageFile != null) {
+        await _storageHelper.uploadFile(
+          _collectionName,
+          imageFile,
+          createNewsAdminModel.id,
+        );
+        Logger.logImageUploaded(imageFile);
+      }
       // Update news article document in Firestore
       await _firestoreHelper.updateDocument(
-        collection,
-        docId,
+        _collectionName,
+        createNewsAdminModel.id,
         createNewsAdminModel.toJson(),
       );
 
@@ -112,10 +123,12 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
 
   /// Deletes a news article from the database
   @override
-  Future<void> deleteNewsAdminToDB(String collection, String docId) async {
+  Future<void> deleteNewsAdminToDB(String docId) async {
     try {
       // Delete news article document from Firestore
-      await _firestoreHelper.deleteDocument(collection, docId);
+      await _storageHelper.deleteFile(docId);
+
+      await _firestoreHelper.deleteDocument(_collectionName, docId);
 
       // Log deleted news article ID
       Logger.logNewsArticleDeleted(docId);

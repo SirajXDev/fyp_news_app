@@ -19,24 +19,11 @@ class BookMarkView extends StatefulWidget {
 }
 
 class _BookMarkViewState extends State<BookMarkView> {
-  // late BookmarkBloc _bookmarkBloc;
-  // @override
   @override
   void initState() {
     super.initState();
     context.read<BookmarkBloc>().add(ReadDataFromBookMarkEvent());
-    // if (_bookmarkBloc.isClosed == false) {
-    // }
   }
-
-  // @override
-  // void dispose() {
-  //   // final bookmarkBloc = context.read<BookmarkBloc>();
-  //   // if (_bookmarkBloc.isClosed == false) {
-  //   _bookmarkBloc.close();
-  //   // }
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {

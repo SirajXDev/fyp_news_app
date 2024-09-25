@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:news_application_2/configs/routes/navBar/nav_bar.dart';
+import 'package:news_application_2/repository/admin/admin_crud_repo_imp.dart';
+import 'package:news_application_2/repository/admin/base_admin_crud_repo.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo.dart';
 import 'package:news_application_2/repository/book_mark/book_mark_repo_imp.dart';
 import 'package:news_application_2/repository/categ/categ_news_repo.dart';
@@ -15,6 +17,7 @@ import 'package:news_application_2/repository/search/search_news_repo.dart';
 import 'package:news_application_2/repository/search/search_news_repo_imp.dart';
 import 'package:news_application_2/screens_module/admin/dashboard/home/admin_dashboard_view.dart';
 import 'package:news_application_2/services/local/hive/book_mark_hive/hive_helper.dart';
+import 'package:news_application_2/state_mgt/bloc/admin/bloc/manage_news_admin_bloc.dart';
 import 'package:news_application_2/state_mgt/bloc/profile/profile_bloc.dart';
 import 'package:news_application_2/state_mgt/bloc/bookmark/bookmark_bloc.dart';
 import 'package:news_application_2/state_mgt/cubit/theme_cubit.dart';
@@ -57,16 +60,15 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => ThemeCubit()),
         BlocProvider(
-          create: (context) => ThemeCubit(),
-        ),
+            create: (context) =>
+                BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>())),
         BlocProvider(
-          create: (context) =>
-              BookmarkBloc(baseBookMarkRepo: getIt<BaseBookMarkRepo>()),
-        ),
+            create: (context) => ProfileBloc(getIt<BaseProfileRepository>())),
         BlocProvider(
-          create: (context) => ProfileBloc(getIt<BaseProfileRepository>()),
-        ),
+            create: (context) =>
+                ManageNewsAdminBloc(getIt<BaseAdminCRUdRepo>())),
       ],
       child: const MyApp(),
     ),
@@ -98,27 +100,34 @@ class MyApp extends StatelessWidget {
 
 // Function for initializing service locator
 Future<void> servicesLocator() async {
+  debugPrint('Service locator initialized');
+
   debugPrint('Registering HeadlinesNewsRepo');
   getIt.registerLazySingleton<HeadlinesNewsRepo>(() => HeadlinesNewsRepoImp());
+
   debugPrint('Registering CategNewsRepo');
   getIt.registerLazySingleton<CategNewsRepo>(() => CategNewsRepoImp());
+
   debugPrint('Registering SearchNewsRepo');
   getIt.registerLazySingleton<SearchNewsRepo>(() => SearchNewsRepoImp());
+
   debugPrint('Registering BaseBookMarkRepo');
   getIt.registerLazySingleton<BaseBookMarkRepo>(() => BookMarkRepoImp());
+
   debugPrint('Registering BaseProfileRepository');
   getIt.registerLazySingleton<BaseProfileRepository>(
       () => ProfileRepositoryImpl());
-  debugPrint('Service locator initialized');
-  // Register SharedPreferences
+
+  debugPrint('  - BaseAdminCRUdRepo (AdminCrudRepoImp)');
+  getIt.registerLazySingleton<BaseAdminCRUdRepo>(() => AdminCrudRepoImp());
+
+  debugPrint('  - Register SharedPreferences');
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
-  // Now SharedPreferences is initialized
+  debugPrint('  - Now SharedPreferences is initialized');
   getIt.registerLazySingleton<SharedPreferencesHelper>(
       () => SharedPreferencesHelper(getIt<SharedPreferences>()));
-
-  debugPrint('Service locator initialized');
 }
 
 //flutter pub run build_runner build --delete-conflicting-outputs
