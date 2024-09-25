@@ -1,5 +1,7 @@
 // import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CreateNewsAdminModel {
   final String id;
   final String? image;
@@ -7,7 +9,7 @@ class CreateNewsAdminModel {
   final String? desc;
   final String? author;
   final String? source;
-  final String? publishedAt;
+  final Timestamp? publishedAt;
 
   CreateNewsAdminModel({
     required this.id,
@@ -26,7 +28,7 @@ class CreateNewsAdminModel {
         author: '',
         source: '',
         image: '',
-        publishedAt: '',
+        publishedAt: null,
       );
 
   factory CreateNewsAdminModel.fromJson(Map<String, dynamic> json) {
