@@ -37,11 +37,10 @@ class CreateNewsAdminDashboard extends ManageNewsAdminEvent {
 }
 
 class FetchNewsAdminDashboard extends ManageNewsAdminEvent {
-  final String docId;
 
-  const FetchNewsAdminDashboard({required this.docId});
+  const FetchNewsAdminDashboard();
   @override
-  List<Object> get props => [docId];
+  List<Object> get props => [];
 }
 
 class UpdateNewsAdminDashboard extends ManageNewsAdminEvent {

@@ -25,10 +25,10 @@ class ReadNewsAdminPanelView extends StatefulWidget {
 class _ReadNewsAdminPanelViewState extends State<ReadNewsAdminPanelView> {
   @override
   void initState() {
-    String docId = FirebaseAuth.instance.currentUser?.uid ?? 'docId';
+    // String docId = FirebaseAuth.instance.currentUser?.uid ?? 'docId';
     context
         .read<ManageNewsAdminBloc>()
-        .add(FetchNewsAdminDashboard(docId: docId));
+        .add(FetchNewsAdminDashboard());
     super.initState();
   }
 

@@ -168,9 +168,9 @@ class _SubmitFormButtonCreateNewsAdminViewState
 
           if (widget.imageFile.value?.path == null) return;
 
-          setState(() {
-            _isDataLoading = true;
-          });
+          // setState(() {
+          //   _isDataLoading = true;
+          // });
           context.read<ManageNewsAdminBloc>().add(
                 UpdateNewsAdminDashboard(
                   id: uid,
@@ -187,16 +187,16 @@ class _SubmitFormButtonCreateNewsAdminViewState
 
           // NavigationUtils.popNavigation(context);
 
-          setState(() {
-            _isDataLoading = false;
-          });
+          // setState(() {
+          //   _isDataLoading = false;
+          // });
         } else {
           context.flushBarErrorMessage(
               message: 'Please fill in all required fields');
         }
       },
       color: Theme.of(context).colorScheme.onPrimary,
-      loading: _isDataLoading,
+      // loading: _isDataLoading,
     );
   }
 }

@@ -10,6 +10,8 @@ class RoutesName {
   static const String profile = 'profile';
   static const String EDIT_PROFILE = 'edit-profile';
   static const String SEARCH_DETAIL = 'search-detail';
+  static const String PERSONALIZE_NEWS_DETAIL = 'personalize-news-detail';
+
 
   // home
   static const String NEWS_DETAIL_SCREEN = 'news_detail';

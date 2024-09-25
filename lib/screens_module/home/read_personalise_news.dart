@@ -12,8 +12,8 @@ import 'package:news_application_2/utils/extensions/widget_extension.dart';
 import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/utils.dart';
 
-class ReadArticlesWidgetAdminPanel extends StatelessWidget {
-  const ReadArticlesWidgetAdminPanel({
+class ReadPersonaliseNewsWidget extends StatelessWidget {
+  const ReadPersonaliseNewsWidget({
     super.key,
     this.imageUrl,
     this.title,
@@ -83,9 +83,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
       child: Container(
         height: context.mqh * 0.18,
         padding: const EdgeInsets.only(left: 15),
-        child: Stack(
-          children: [
-            _buildEditIcon(context),
+        child:
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,31 +92,12 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
                 _buildSourceAndTimeAgo(context),
                 const DividerHorizontalWidget(),
               ],
-            ),
-          ],
-        ).paddingOnly(top: 10),
+            ).paddingOnly(top: 10),
+
       ),
     );
   }
 
-  Widget _buildEditIcon(BuildContext context) {
-    return Positioned(
-      top: 3,
-      right: 3,
-      child: GestureDetector(
-        onTap: () =>
-            NavigationUtils.pushNamed(context, RoutesName.updateNewsAdminPanel),
-        child: Container(
-          padding: const EdgeInsets.all(3.0),
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).colorScheme.onPrimary),
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          child: const CustomIconWidget(icon: Icons.edit),
-        ),
-      ),
-    );
-  }
 
   Widget _buildAuthorChip(BuildContext context) {
     if (author == null) return const SizedBox.shrink();
@@ -128,7 +107,7 @@ class ReadArticlesWidgetAdminPanel extends StatelessWidget {
       child: CustomChip(
         child: BodyTextThemeWidget(
           title:
-              author!.length > 8 ? author!.substring(0, 8) : author ?? 'author',
+          author!.length > 8 ? author!.substring(0, 8) : author ?? 'author',
           size: 12,
         ),
       ),
