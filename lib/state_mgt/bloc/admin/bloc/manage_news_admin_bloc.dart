@@ -59,7 +59,7 @@ class ManageNewsAdminBloc
   Future<void> _modifyNewsAdminMethod(UpdateNewsAdminDashboard event,
       Emitter<ManageNewsAdminState> emit) async {
     try {
-      String imageId = DateTime.now().millisecondsSinceEpoch.toString();
+      // String imageId = DateTime.now().millisecondsSinceEpoch.toString();
 
       var updateNewsAdminModel = CreateNewsAdminModel(
         id: event.id,
@@ -69,7 +69,7 @@ class ManageNewsAdminBloc
         source: event.source,
         author: event.author,
         publishedAt: event.publishedAt,
-        imageId: imageId,
+        imageId: event.imageId,
       );
       _baseAdminCRUdRepo.updateNewsAdminToDB(updateNewsAdminModel);
       List<CreateNewsAdminModel> fetchData =

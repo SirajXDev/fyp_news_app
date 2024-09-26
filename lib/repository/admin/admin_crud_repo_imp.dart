@@ -122,22 +122,24 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
 
       // Upload image to storage
 
-      if (imageFile != null) {
-        await _storageAdminHelper.uploadFile(
+      if (imageFile == null)return;
+        String downloadedImg =  await _storageAdminHelper.uploadFile(
           _collectionName,
           updateNewsAdminModel.id,
           _subStorageName,
           updateNewsAdminModel.imageId ?? 'empty',
-          imageFile,
+          imageFile ,
         );
         Logger.logImageUploaded(imageFile);
-      }
+
 
       // Update news article document in Firestore
       await _firestoreAdminHelper.updateDocumentSnapshotAdmin(
         _collectionName,
         updateNewsAdminModel.id,
+        downloadedImg,
         updateNewsAdminModel.toJson(),
+
       );
 
       // Log updated news article details

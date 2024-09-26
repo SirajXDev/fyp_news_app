@@ -51,6 +51,8 @@ class UpdateNewsAdminDashboard extends ManageNewsAdminEvent {
   final String? author;
   final String? source;
   final Timestamp? publishedAt;
+  final String? imageId;
+
   const UpdateNewsAdminDashboard({
     required this.image,
     this.title,
@@ -59,6 +61,7 @@ class UpdateNewsAdminDashboard extends ManageNewsAdminEvent {
     this.source,
     this.publishedAt,
     required this.id,
+    this.imageId,
   });
   @override
   List<Object> get props => [

@@ -11,9 +11,12 @@ import 'package:news_application_2/state_mgt/bloc/admin/bloc/manage_news_admin_b
 import 'package:news_application_2/utils/extensions/flush_bar_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
+import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/utils/validation/news_validator.dart';
 import 'package:news_application_2/widgets/round_button.dart';
+
+import '../../../../../../../data/response/status.dart';
 
 class TextFormFieldsViaUpdateAdminView extends StatefulWidget {
   const TextFormFieldsViaUpdateAdminView({super.key, required this.imgFile, required this.createNewsAdminModel});
@@ -164,7 +167,7 @@ class _SubmitFormButtonCreateNewsAdminViewState
     return RoundButton(
       title: 'Submit',
       loading: _isDataLoading,
-      onTap: () {
+      onTap: () async{
         if (widget.formKey.currentState!.validate()) {
           // Form is valid
           String uid = FirebaseAuth.instance.currentUser?.uid ?? 'uid';
@@ -187,13 +190,40 @@ class _SubmitFormButtonCreateNewsAdminViewState
               source: widget.source.text,
               publishedAt: Timestamp.now(), // Convert DateTime to Timestamp
               image: widget.imageFile.value?.path,
+              imageId: widget.createNewsAdminModel.imageId,
             ),
           );
+
+          await Future.delayed(Duration(seconds: 1)); // Adjust the delay duration as needed
+          widget.title.clear();
+          widget.desc.clear();
+          widget.author.clear();
+          widget.source.clear();
+          widget.imageFile.value = null;
           context.flushBarSuccessMessage(
               message: 'Form submitted successfully!');
           // Set loading state to true
           setState(() {
-            _isDataLoading = false; // Start loading
+            _isDataLoading = false; //
+
+            context
+                .read<ManageNewsAdminBloc>()
+                .state.createNewsAdminModel
+
+                .status ==
+                Status.completed
+                ?
+                context.read<ManageNewsAdminBloc>().add(FetchNewsAdminDashboard())
+                // NavigationUtils.popNavigation(context)
+
+            // ScaffoldMessenger.of(context)
+            //     .showSnackBar(const SnackBar(
+            //     content: Text(
+            //         'Profile updated successfully!')))
+                : ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(
+                content: Text(
+                    'Error updating news! ')));// Start loading
           });
         } else {
           context.flushBarErrorMessage(

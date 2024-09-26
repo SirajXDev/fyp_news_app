@@ -16,6 +16,8 @@ import 'package:news_application_2/utils/utils.dart';
 import 'package:news_application_2/utils/validation/news_validator.dart';
 import 'package:news_application_2/widgets/round_button.dart';
 
+import '../../../../../../data/response/status.dart';
+
 class TextFormFieldsViaAdminCreateAdminView extends StatefulWidget {
   const TextFormFieldsViaAdminCreateAdminView(
       {super.key, required this.imgFile});
@@ -170,7 +172,7 @@ class _SubmitFormButtonCreateNewsAdminViewState
     return
       RoundButton(
       title: 'Submit',
-      onTap: () {
+      onTap: () async{
         if (widget.formKey.currentState!.validate()) {
           // Form is valid
           // DialogUtils.showSuccessSnackBar(
@@ -199,7 +201,31 @@ class _SubmitFormButtonCreateNewsAdminViewState
           context.flushBarSuccessMessage(
               message: 'Form submitted successfully!');
 
-          // NavigationUtils.popNavigation(context);
+
+          // Clear the TextField values after submission
+          await Future.delayed(Duration(seconds: 1)); // Adjust the delay duration as needed
+          widget.title.clear();
+          widget.desc.clear();
+          widget.author.clear();
+          widget.source.clear();
+          widget.imageFile.value = null;
+
+          context
+              .read<ManageNewsAdminBloc>()
+              .state.createNewsAdminModel
+
+              .status ==
+              Status.completed
+              ?
+          NavigationUtils.popNavigation(context)
+          // ScaffoldMessenger.of(context)
+          //     .showSnackBar(const SnackBar(
+          //     content: Text(
+          //         'Profile updated successfully!')))
+              : ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(
+              content: Text(
+                  'Error updating profile! ')));//
 
           setState(() {
             _isDataLoading = false;

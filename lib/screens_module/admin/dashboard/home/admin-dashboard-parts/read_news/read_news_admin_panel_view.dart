@@ -25,11 +25,13 @@ class ReadNewsAdminPanelView extends StatefulWidget {
 class _ReadNewsAdminPanelViewState extends State<ReadNewsAdminPanelView> {
   @override
   void initState() {
-    // String docId = FirebaseAuth.instance.currentUser?.uid ?? 'docId';
-    context
-        .read<ManageNewsAdminBloc>()
-        .add(FetchNewsAdminDashboard());
     super.initState();
+    _fetchData();
+  }
+
+  // Method to fetch data
+  void _fetchData() {
+    context.read<ManageNewsAdminBloc>().add(FetchNewsAdminDashboard());
   }
 
   @override
@@ -37,6 +39,7 @@ class _ReadNewsAdminPanelViewState extends State<ReadNewsAdminPanelView> {
     return BlocBuilder<ManageNewsAdminBloc, ManageNewsAdminState>(
       builder: (context, state) {
         var dataList = state.createNewsAdminModel.data;
+
         if (state.createNewsAdminModel.status == Status.loading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -45,72 +48,67 @@ class _ReadNewsAdminPanelViewState extends State<ReadNewsAdminPanelView> {
           return BodyTextThemeWidget(
               title: 'ERROR: ${state.createNewsAdminModel.message}');
         } else if (state.createNewsAdminModel.status == Status.completed) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: context.mqh * 0.7,
-                child: dataList!.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: dataList.length ?? 0,
-                        itemBuilder: (BuildContext context, int index) {
-                          var data = dataList[index];
-                          var dt = data.publishedAt?.toDate().timeAgo();
-                          return Dismissible(
-                            key: ValueKey(
-                              data.id,
-                            ),
-                            direction: DismissDirection.vertical,
-                            background: Container(
-                              alignment: Alignment.center,
-                              child: const CustomIconWidget(
-                                icon: Icons.delete,
-                                color: AppColors.redLight,
-                                size: 30,
-                              ),
-                            ),
-                            dragStartBehavior: DragStartBehavior.down,
-                            onDismissed: (direction) {
-                              context.read<ManageNewsAdminBloc>().add(
-                                    DeleteNewsAdminDashboard(
-                                        deleteNewsAdminModel: data),
-                                  );
-
-                              context.flushBarSuccessMessage(
-                                  message:
-                                      "Removed from Bookmarks!:\t${data.publishedAt}",
-                                  color: AppColors.red);
-
-
-                            },// ..........
-                            child: ReadArticlesWidgetAdminPanel(
-                              createNewsAdminModel: data,
-                              // imageUrl: data.image,
-                              // title: data.title,
-                              // desc: data.desc,
-                              // author: data.author,
-                              // source: data.source,
-                              timeAgo: dt,
-                            ),
-                          );
-                        },
-                      )
-                    : const Center(
-                        child: Flexible(
-                          child: TitleTextThemeWidget(
-                            title:
-                                'Create Personalize News By Clicking Add Button Below 👇',
-                            textAlign: TextAlign.center,
+          return RefreshIndicator(
+            onRefresh: () async {
+              // Fetch data when the user pulls to refresh
+              _fetchData();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: context.mqh * 0.7,
+                  child: dataList!.isNotEmpty
+                      ? ListView.builder(
+                    itemCount: dataList.length ?? 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      var data = dataList[index];
+                      var dt = data.publishedAt?.toDate().timeAgo();
+                      return Dismissible(
+                        key: ValueKey(data.id),
+                        direction: DismissDirection.vertical,
+                        background: Container(
+                          alignment: Alignment.center,
+                          child: const CustomIconWidget(
+                            icon: Icons.delete,
+                            color: AppColors.redLight,
+                            size: 30,
                           ),
                         ),
+                        dragStartBehavior: DragStartBehavior.down,
+                        onDismissed: (direction) {
+                          context.read<ManageNewsAdminBloc>().add(
+                            DeleteNewsAdminDashboard(
+                                deleteNewsAdminModel: data),
+                          );
+
+                          context.flushBarSuccessMessage(
+                              message: "Removed from Bookmarks!:\t${data.publishedAt}",
+                              color: AppColors.red);
+                        },
+                        child: ReadArticlesWidgetAdminPanel(
+                          createNewsAdminModel: data,
+                          timeAgo: dt,
+                        ),
+                      );
+                    },
+                  )
+                      : const Center(
+                    child: Flexible(
+                      child: TitleTextThemeWidget(
+                        title: 'Create Personalize News By Clicking Add Button Below 👇',
+                        textAlign: TextAlign.center,
                       ),
-              ),
-            ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         } else {
           return const BodyTextThemeWidget(
-              title: 'SomeTHing is went wrong, try again later!');
+              title: 'Something went wrong, try again later!');
         }
       },
     );

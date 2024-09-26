@@ -28,8 +28,10 @@ class FirestoreAdminHelper {
   Future<void> updateDocumentSnapshotAdmin(
     String collectionName,
     String collectionId,
+    String image,
     Map<String, dynamic> data,
   ) async {
+    data['image'] = image;
     await _firestore.collection(collectionName).doc(collectionId).update(data);
   }
 
