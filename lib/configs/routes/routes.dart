@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_application_2/configs/routes/routes_name.dart';
 import 'package:news_application_2/main.dart';
+import 'package:news_application_2/models/news_create_admin.dart';
 import 'package:news_application_2/screens_module/admin/dashboard/home/admin-dashboard-parts/create_news/create_news_admin_panel_view.dart';
 import 'package:news_application_2/screens_module/admin/dashboard/home/admin-dashboard-parts/update_news/update_news_admin_panel_view.dart';
+import 'package:news_application_2/screens_module/home/home_screen.dart';
 import 'package:news_application_2/services/remote/firebase/Firebase_Auth_view/login_screen.dart';
 import 'package:news_application_2/models/channels_headlines/channels_news_headlines.dart'
     as channels_articles;
@@ -13,6 +15,8 @@ import 'package:news_application_2/screens_module/search/search_detail_screen.da
 import 'package:news_application_2/screens_module/profile/profile_editable/profile_editable_view.dart';
 import 'package:news_application_2/screens_module/profile/profile_view.dart';
 import 'package:news_application_2/screens_module/splash/splash_screen.dart';
+
+import '../../screens_module/home/personalize_detail_widget.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -76,7 +80,37 @@ class Routes {
 
       case RoutesName.updateNewsAdminPanel:
         return MaterialPageRoute(
-          builder: (BuildContext context) => const UpdateNewsAdminPanelView(),
+          settings: RouteSettings(
+            arguments: settings.arguments, // Pass the arguments here
+          ),
+          builder: (BuildContext context) => UpdateNewsAdminPanelView(createNewsAdminModel: settings.arguments as CreateNewsAdminModel,),     //UpdateNewsAdminPanelView()
+        );
+
+      case RoutesName.PERSONALIZE_NEWS_DETAIL:
+
+        return MaterialPageRoute(
+          settings: RouteSettings(arguments: settings.arguments),
+          builder: (BuildContext context) {
+            if (settings.arguments == null) {
+              return Scaffold(
+                appBar: AppBar(title: Text('Error')),
+                body: Center(child: Text('Arguments cannot be null')),
+              );
+            }
+
+            final personalizeNewsModel = settings.arguments as CreateNewsAdminModel?;
+
+            if (personalizeNewsModel == null) {
+              return Scaffold(
+                appBar: AppBar(title: Text('Error')),
+                body: Center(child: Text('Invalid arguments provided')),
+              );
+            }
+
+            return PersonaliseNewsDetailsScreenWidget(
+              personalizeNewsModel: personalizeNewsModel,
+            );
+          },
         );
 
       default:

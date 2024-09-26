@@ -12,15 +12,32 @@ import 'package:news_application_2/screens_module/home/parts/headlines_news_card
 import 'package:news_application_2/screens_module/home/parts/home_news_separator.dart';
 import 'package:news_application_2/screens_module/home/parts/pop_up_menu_widget.dart';
 import 'package:news_application_2/screens_module/categ/category_screen.dart';
+import 'package:news_application_2/screens_module/home/read_personalise_news.dart';
+import 'package:news_application_2/state_mgt/bloc/admin/bloc/manage_news_admin_bloc.dart';
 import 'package:news_application_2/state_mgt/bloc/news_home/news_home_bloc.dart';
 import 'package:news_application_2/utils/extensions/date_time_extension.dart';
 import 'package:news_application_2/utils/extensions/general_extension.dart';
 import 'package:news_application_2/utils/extensions/widget_extension.dart';
+import 'package:news_application_2/utils/helper_methods/navigation_utils.dart';
 import 'package:news_application_2/utils/utils.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../admin/dashboard/home/admin-dashboard-parts/read_news/parts/read_articles_admin_Panel.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   // late NewsHomeBloc _newsHomeBloc;
+  
+  @override
+  void initState() {
+    context.read<ManageNewsAdminBloc>().add(FetchNewsAdminDashboard());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -32,10 +49,10 @@ class HomeScreen extends StatelessWidget {
             size: 20,
           ),
           centerTitle: false,
-          actions: const [
+          actions:  [
             Padding(
               padding: EdgeInsets.only(right: 10),
-              child: CustomNotificationCountWidget(icon: CupertinoIcons.bell),
+              child: GestureDetector(onTap: () => NavigationUtils.pushNamed(context, RoutesName.profile), child: CustomIconWidget(icon: CupertinoIcons.profile_circled, size: 24,)),
             ),
           ],
         ),
@@ -114,6 +131,67 @@ class HomeScreen extends StatelessWidget {
                 const HomeNewsSeparator(),
                 const SizedBox(height: 6),
 
+
+                SizedBox(height: context.mqh * .01),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const TitleTextThemeWidget(title: 'Personalize News'),
+                      const Spacer(),
+                      CustomIconWidget(
+                        icon: Icons.more_vert_outlined,
+                        size: 17,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: context.mqh * .01),
+
+                // A  D M I N _ S E C T I O N
+                BlocBuilder<ManageNewsAdminBloc,ManageNewsAdminState>(builder: (context,state){
+                  var data = state.createNewsAdminModel.data;
+
+                  if(state.createNewsAdminModel.status == Status.loading){
+                    return const CircularProgressIndicator();
+                  }
+                  else if(state.createNewsAdminModel.status == Status.error){
+                    return TitleTextThemeWidget(title: "ERROR: ${state.createNewsAdminModel.message}");
+                  }
+                  else if(state.createNewsAdminModel.status == Status.completed){
+
+                    return SizedBox(
+                      height: context.mqh * .4,
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(horizontal: context.mqh * .012),
+                        child: ListView.builder(itemCount: data?.length, itemBuilder: (BuildContext, index){
+                          var adminObj = data?[index];
+                          return    GestureDetector(
+                            onTap: ()=> Navigator.pushNamed(context, RoutesName.PERSONALIZE_NEWS_DETAIL, arguments: adminObj),
+                            child: ReadPersonaliseNewsWidget(
+                            imageUrl: adminObj?.image,
+                              title: adminObj?.title,
+                              desc: adminObj?.desc,
+                              author: adminObj?.author,
+                              source: adminObj?.source,
+                              // timeAgo: adminObj?.,
+                            ),
+                          );
+                        },),
+                      ),
+                    );
+
+                  }
+                  else{
+                    return SizedBox.shrink();
+                  }
+
+                },),
+                // personalise news section
+
+                SizedBox(height: context.mqh * .01),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
@@ -130,7 +208,6 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: context.mqh * .01),
-
                 // Separate BlocBuilder for Categories
                 BlocBuilder<NewsHomeBloc, NewsHomeState>(
                   buildWhen: (previous, current) =>
@@ -165,3 +242,5 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+

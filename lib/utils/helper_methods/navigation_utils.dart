@@ -19,4 +19,11 @@ class NavigationUtils {
       routeName,
     );
   }
+
+  static void pushNamed(BuildContext context, String routeName) {
+    Navigator.pushNamed(
+      context,
+      routeName,
+    );
+  }
 }

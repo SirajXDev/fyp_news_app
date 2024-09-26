@@ -8,33 +8,75 @@ abstract class ManageNewsAdminEvent extends Equatable {
 }
 
 class CreateNewsAdminDashboard extends ManageNewsAdminEvent {
-  final CreateNewsAdminModel createNewsAdminModel;
-  const CreateNewsAdminDashboard({required this.createNewsAdminModel});
+  // final CreateNewsAdminModel createNewsAdminModel;
+  final String id;
+  final String? image;
+  final String? title;
+  final String? desc;
+  final String? author;
+  final String? source;
+  final Timestamp? publishedAt;
+  const CreateNewsAdminDashboard({
+    required this.image,
+    this.title,
+    this.desc,
+    this.author,
+    this.source,
+    this.publishedAt,
+    required this.id,
+  });
   @override
-  List<Object> get props => [createNewsAdminModel];
+  List<Object> get props => [
+        id,
+        title ?? '',
+        desc ?? '',
+        author ?? '',
+        source ?? '',
+        publishedAt ?? ''
+      ];
 }
 
 class FetchNewsAdminDashboard extends ManageNewsAdminEvent {
-  final String docId;
 
-  const FetchNewsAdminDashboard({required this.docId});
+  const FetchNewsAdminDashboard();
   @override
-  List<Object> get props => [docId];
+  List<Object> get props => [];
 }
 
 class UpdateNewsAdminDashboard extends ManageNewsAdminEvent {
-  final CreateNewsAdminModel updateNewsAdminModel;
+  final String id;
+  final String? image;
+  final String? title;
+  final String? desc;
+  final String? author;
+  final String? source;
+  final Timestamp? publishedAt;
+  final String? imageId;
+
   const UpdateNewsAdminDashboard({
-    required this.updateNewsAdminModel,
+    required this.image,
+    this.title,
+    this.desc,
+    this.author,
+    this.source,
+    this.publishedAt,
+    required this.id,
+    this.imageId,
   });
   @override
-  List<Object> get props => [updateNewsAdminModel];
+  List<Object> get props => [
+        id,
+        title ?? '',
+        desc ?? '',
+        author ?? '',
+        source ?? '',
+        publishedAt ?? ''
+      ];
 }
 
 class DeleteNewsAdminDashboard extends ManageNewsAdminEvent {
-  final String docId;
-
-  const DeleteNewsAdminDashboard({required this.docId});
+  final CreateNewsAdminModel deleteNewsAdminModel;
+  const DeleteNewsAdminDashboard({required this.deleteNewsAdminModel});
   @override
-  List<Object> get props => [docId];
+  List<Object> get props => [deleteNewsAdminModel];
 }

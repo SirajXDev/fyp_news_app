@@ -1,50 +1,68 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:news_application_2/models/news_create_admin.dart';
 import 'package:news_application_2/repository/admin/base_admin_crud_repo.dart';
-import 'package:news_application_2/services/remote/firebase/firebase_services/cloud_firestore_helper.dart';
-import 'package:news_application_2/services/remote/firebase/firebase_storage_helper.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/firebase_storage_admin_helper.dart';
+import 'package:news_application_2/services/remote/firebase/firebase_services/firestore_admin_helper.dart';
 
 class AdminCrudRepoImp extends BaseAdminCRUdRepo {
   static const _collectionName = 'NewsArticlesAdmin';
-  // static const _subCollectionName = 'news-articles';
+  static const _subStorageName = 'newsImg';
 
-  final CloudFirestoreHelper _firestoreHelper;
-  final FirebaseStorageHelper _storageHelper;
+  final FirestoreAdminHelper _firestoreAdminHelper;
+  final FirebaseStorageAdminHelper _storageAdminHelper;
 
   AdminCrudRepoImp({
-    CloudFirestoreHelper? firestoreHelper,
-    FirebaseStorageHelper? storageHelper,
-  })  : _firestoreHelper = firestoreHelper ?? CloudFirestoreHelper(),
-        _storageHelper = storageHelper ?? FirebaseStorageHelper();
+    FirestoreAdminHelper? firestoreAdminHelper,
+    FirebaseStorageAdminHelper? storageAdminHelper,
+  })  : _firestoreAdminHelper = firestoreAdminHelper ?? FirestoreAdminHelper(),
+        _storageAdminHelper =
+            storageAdminHelper ?? FirebaseStorageAdminHelper();
 
   /// Creates a news article in the database
   @override
   Future<void> createNewsAdminToDB(
-    CreateNewsAdminModel createNewsAdminModel,
+    final String id,
+    final String? image,
+    final String? title,
+    final String? desc,
+    final String? author,
+    final String? source,
+    final Timestamp? publishedAt,
   ) async {
     try {
       // Validate image file
-      final imageFile = _validateImageFile(createNewsAdminModel.image);
+      final imageFile = _validateImageFile(image);
+      String imageId = DateTime.now().millisecondsSinceEpoch.toString();
 
       // Upload image to storage
 
-      if (imageFile != null) {
-        await _storageHelper.uploadFile(
-          _collectionName,
-          imageFile,
-          createNewsAdminModel.id,
-        );
-        Logger.logImageUploaded(imageFile);
-      }
+      if (imageFile == null) return;
+
+      String downloadedImg = await _storageAdminHelper.uploadFile(
+        _collectionName,
+        id,
+        _subStorageName,
+        imageId,
+        imageFile,
+      );
+      Logger.logImageUploaded(imageFile);
 
       // Save news article to Firestore jsdjshdjhdj
-      await _firestoreHelper.setDocument(
-        _collectionName,
-        createNewsAdminModel.id,
-        createNewsAdminModel.toJson(),
-      );
+      var createNewsAdminModel = CreateNewsAdminModel(
+          id: id,
+          image: downloadedImg,
+          title: title,
+          desc: desc,
+          author: author,
+          source: source,
+          publishedAt: publishedAt,
+          imageId: imageId);
+
+      await _firestoreAdminHelper.addDocumentAdmin(
+          _collectionName, createNewsAdminModel.toJson());
 
       // Log created news article details
       Logger.logNewsArticleCreated(createNewsAdminModel);
@@ -65,21 +83,26 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
 
   /// Retrieves a news article from the database
   @override
-  Future<CreateNewsAdminModel> readNewsAdminToDB(String id) async {
+  Future<List<CreateNewsAdminModel>> readNewsAdminToDB() async {
     try {
       // Retrieve news article document from Firestore
       final documentSnapshot =
-          await _firestoreHelper.getDocument(_collectionName, id);
+          await _firestoreAdminHelper.getDocumentSnaphotAdmin(
+        _collectionName,
+      );
 
       // Check if document exists
-      if (documentSnapshot.exists) {
+      if (documentSnapshot.docs.isNotEmpty) {
         // Return news article model
-        return CreateNewsAdminModel.fromJson(
-            documentSnapshot.data() as Map<String, dynamic>);
+
+        // Return list of news article models
+        return documentSnapshot.docs
+            .map((document) => CreateNewsAdminModel.fromJson(document.data()))
+            .toList();
       } else {
         // Log and return empty model if document not found
-        Logger.logError('News Article Not Found: ID=$id');
-        return CreateNewsAdminModel.empty(); // Return empty model
+        Logger.logError('News Article Not Found: ');
+        return []; // Return empty model
       }
     } catch (e) {
       // Log and rethrow error
@@ -91,30 +114,36 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
   /// Updates a news article in the database
   @override
   Future<void> updateNewsAdminToDB(
-    CreateNewsAdminModel createNewsAdminModel,
+    CreateNewsAdminModel updateNewsAdminModel,
   ) async {
     try {
       // Validate image file
-      final imageFile = _validateImageFile(createNewsAdminModel.image);
+      final imageFile = _validateImageFile(updateNewsAdminModel.image);
 
       // Upload image to storage
-      if (imageFile != null) {
-        await _storageHelper.uploadFile(
+
+      if (imageFile == null)return;
+        String downloadedImg =  await _storageAdminHelper.uploadFile(
           _collectionName,
-          imageFile,
-          createNewsAdminModel.id,
+          updateNewsAdminModel.id,
+          _subStorageName,
+          updateNewsAdminModel.imageId ?? 'empty',
+          imageFile ,
         );
         Logger.logImageUploaded(imageFile);
-      }
+
+
       // Update news article document in Firestore
-      await _firestoreHelper.updateDocument(
+      await _firestoreAdminHelper.updateDocumentSnapshotAdmin(
         _collectionName,
-        createNewsAdminModel.id,
-        createNewsAdminModel.toJson(),
+        updateNewsAdminModel.id,
+        downloadedImg,
+        updateNewsAdminModel.toJson(),
+
       );
 
       // Log updated news article details
-      Logger.logNewsArticleUpdated(createNewsAdminModel);
+      Logger.logNewsArticleUpdated(updateNewsAdminModel);
     } catch (e) {
       // Log update error
       Logger.logError('Error updating news article: $e');
@@ -123,15 +152,22 @@ class AdminCrudRepoImp extends BaseAdminCRUdRepo {
 
   /// Deletes a news article from the database
   @override
-  Future<void> deleteNewsAdminToDB(String docId) async {
+  Future<void> deleteNewsAdminToDB(
+      CreateNewsAdminModel createNewsAdminModel) async {
     try {
       // Delete news article document from Firestore
-      await _storageHelper.deleteFile(docId);
+      await _storageAdminHelper.deleteFile(
+        _collectionName,
+        createNewsAdminModel.id,
+        _subStorageName,
+        createNewsAdminModel.imageId ?? 'empty',
+      );
 
-      await _firestoreHelper.deleteDocument(_collectionName, docId);
+      await _firestoreAdminHelper.deleteSubDocumentSnapshotAdmin(
+          _collectionName, createNewsAdminModel.id);
 
       // Log deleted news article ID
-      Logger.logNewsArticleDeleted(docId);
+      Logger.logNewsArticleDeleted(createNewsAdminModel.id);
     } catch (e) {
       // Log delete error
       Logger.logError('Error deleting news article: $e');

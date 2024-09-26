@@ -35,6 +35,8 @@ class _PickImageViaAdminViewCUState extends State<PickImageViaAdminViewCU> {
     super.dispose();
   }
 
+  bool isImageLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -76,9 +78,16 @@ class _PickImageViaAdminViewCUState extends State<PickImageViaAdminViewCU> {
     ImagePicker imagePicker,
     ValueNotifier<File?> imgFile,
   ) async {
+    setState(() {
+      isImageLoading = true;
+    });
     XFile? file = await ObtainImg.obtainImage(imagePicker, ImageSource.gallery);
     if (file == null) return;
+
     imgFile.value = File(file.path);
+    setState(() {
+      isImageLoading = false;
+    });
     debugPrint('Gallery Image Path: ${file.path}');
     debugPrint('Gallery Image Path (valueNotifier): ${imgFile.value?.path}');
   }
@@ -87,9 +96,15 @@ class _PickImageViaAdminViewCUState extends State<PickImageViaAdminViewCU> {
     ImagePicker imagePicker,
     ValueNotifier<File?> imgFile,
   ) async {
+    setState(() {
+      isImageLoading = true;
+    });
     XFile? file = await ObtainImg.obtainImage(imagePicker, ImageSource.camera);
     if (file == null) return;
     imgFile.value = File(file.path);
+    setState(() {
+      isImageLoading = false;
+    });
     debugPrint('Camera Image Path: ${file.path}');
   }
 }

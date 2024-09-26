@@ -10,6 +10,7 @@ class CreateNewsAdminModel {
   final String? author;
   final String? source;
   final Timestamp? publishedAt;
+  final String? imageId;
 
   CreateNewsAdminModel({
     required this.id,
@@ -19,6 +20,7 @@ class CreateNewsAdminModel {
     this.author,
     this.source,
     this.publishedAt,
+    this.imageId,
   });
 
   factory CreateNewsAdminModel.empty() => CreateNewsAdminModel(
@@ -29,6 +31,7 @@ class CreateNewsAdminModel {
         source: '',
         image: '',
         publishedAt: null,
+        imageId: '',
       );
 
   factory CreateNewsAdminModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +43,7 @@ class CreateNewsAdminModel {
       author: json['author'],
       source: json['source'],
       publishedAt: json['publishedAt'],
+      imageId: json['imageId'],
     );
   }
 
@@ -52,6 +56,7 @@ class CreateNewsAdminModel {
       'author': author,
       'source': source,
       'publishedAt': publishedAt,
+      'imageId': imageId,
     };
   }
 }

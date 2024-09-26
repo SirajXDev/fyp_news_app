@@ -5,7 +5,7 @@ class NewsFieldValidator {
     String? lengthMessage,
     int? minLength,
   }) {
-    if (!RegExp(r'^[a-zA-Z0-9\s\.,!?-]+$').hasMatch(value!)) {
+    if (!RegExp(r'^[a-zA-Z0-9\s.:,!?-]*$').hasMatch(value!)) {
       return invalidMessage ?? 'Invalid input';
     } else if (value.trim().length < (minLength ?? 10)) {
       return lengthMessage ??

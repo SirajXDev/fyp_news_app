@@ -54,7 +54,7 @@ class CreateNewsAdminPanelView extends StatelessWidget {
                 //height
                 SizedBox(height: context.mqh * .03),
                 //fields // in this widget clc will performs
-                TextFormFieldsViaAdminCU(imgFile: imgFile),
+                TextFormFieldsViaAdminCreateAdminView(imgFile: imgFile),
               ],
             ),
           ),
